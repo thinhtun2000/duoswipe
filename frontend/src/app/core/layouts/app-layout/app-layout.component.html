@@ -1,0 +1,132 @@
+<header>
+  <nav class="navbar navbar-expand-md shadow-sm">
+    <div class="container">
+      <a class="navbar-brand order-2" href="#">DuoSwipe</a>
+      <button
+        class="navbar-toggler order-1"
+        type="button"
+        data-bs-toggle="offcanvas"
+        data-bs-target="#offcanvasNavbar"
+        data-bs-keyboard="true"
+        aria-controls="offcanvasNavbar"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div
+        class="offcanvas offcanvas-start order-3 d-md-none"
+        tabindex="-1"
+        id="offcanvasNavbar"
+        aria-labelledby="offcanvasNavbarLabel"
+      >
+        <div class="offcanvas-header">
+          <h5 class="offcanvas-title" id="offcanvasNavbarLabel">DuoSwipe</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="offcanvas"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="offcanvas-body">
+          <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+            <li class="nav-item">
+              <a
+                class="nav-link active text-dark"
+                data-bs-dismiss="offcanvas"
+                aria-current="page"
+                routerLink="/"
+                >Home</a
+              >
+            </li>
+            <li class="nav-item" *ngIf="true">
+              <a
+                class="nav-link active text-dark"
+                data-bs-dismiss="offcanvas"
+                aria-current="page"
+                routerLink="/"
+                >Swipe</a
+              >
+            </li>
+            <li class="nav-item" *ngIf="true">
+              <a
+                class="nav-link active text-dark"
+                data-bs-dismiss="offcanvas"
+                aria-current="page"
+                routerLink="/"
+                >Profile</a
+              >
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="navbar-collapse order-4 d-none d-md-block" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" routerLink="/"
+              >Home</a
+            >
+          </li>
+          <li class="nav-item" *ngIf="true">
+            <a class="nav-link active" aria-current="page" routerLink="/"
+              >Swipe</a
+            >
+          </li>
+          <li class="nav-item" *ngIf="true">
+            <a class="nav-link active" aria-current="page" routerLink="/"
+              >Profile</a
+            >
+          </li>
+        </ul>
+      </div>
+
+      <div class="nav-item order-5">
+        <div class="dropdown">
+          <button
+            class="btn dropdown-toggle p-0 profile-btn"
+            id="navbarDropdownMenuLink"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            <i class="bi bi-person-circle" style="font-size: 25px"></i>
+          </button>
+          <div
+            class="dropdown-menu dropdown-menu-end shadow-sm"
+            aria-labelledby="navbarDropdownMenuLink"
+          >
+            <li>
+              <div class="dropdown-item">
+                <!-- {{ (user$ | async)?.userName }} -->
+              </div>
+            </li>
+            <li>
+              <hr class="dropdown-divider" />
+            </li>
+            <li>
+              <div class="dropdown-item" routerLink="/app/user/profile">
+                View Profile
+              </div>
+            </li>
+            <li>
+              <hr class="dropdown-divider" />
+            </li>
+            <li>
+              <div class="dropdown-item">Sign Out</div>
+            </li>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<main class="container py-5">
+  <router-outlet></router-outlet>
+</main>
+
+<footer class="bg-light py-3">
+  <div class="container">
+    Copyright &copy; {{ currentDate | date: "y" }} | All rights reserved.
+  </div>
+</footer>
