@@ -1,11 +1,14 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { HomePageComponent } from './core/home-page/home-page.component';
-import { UserProfileComponent } from './user/user-profile/user-profile.component';
+import { AppLayoutComponent } from './core/layouts/app-layout/app-layout.component';
+import { HomePageComponent } from './core/pages/home-page/home-page.component';
 
 const routes: Routes = [
-  { path: '', component: HomePageComponent },
-  { path: 'user-profile', component: UserProfileComponent },
+  {
+    path: '',
+    component: AppLayoutComponent,
+    children: [{ path: 'home', component: HomePageComponent }],
+  },
 ];
 
 @NgModule({
