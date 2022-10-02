@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { Route, RouterModule } from '@angular/router';
-import { AppLayoutComponent } from './layouts/app-layout/app-layout.component';
+import { SimpleAppLayoutComponent } from './layouts/simple-app-layout/simple-app-layout.component';
 import { HomePageComponent } from './pages/home-page/home-page.component';
 
 const routes: Route[] = [
   {
     path: '',
-    component: AppLayoutComponent,
+    component: SimpleAppLayoutComponent,
     children: [{ path: 'home', component: HomePageComponent }],
   },
 ];
