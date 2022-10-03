@@ -63,11 +63,33 @@ def delete_user(userId):
 
 
 @app.route('/', method=['POST', 'GET'])
+# get user information from input
 def index():
     if request.method == 'POST':
-        pass
+        name = request.form.get['name']
+        pwd = request.form.get['password']
+        email = request.form.get['email']
+
+        try:
+            create_user(name, pwd, email)
+            return redirect('/')
+        except:
+            return 'There was an issue adding your information'
+
     else:
+        # display user information ordered by user_id
+        display = User.query.order_by(User.user_id).all()
         return render_template('index.html')
+
+
+@app.route('/delete/<int:user_id>')
+# delete user information
+def delete(user_id):
+    try:
+        delete_user(user_id)
+        return redirect('/')
+    except:
+        return 'There was an issue deleting your information'
 
 
 if __name__ == "__main__":
