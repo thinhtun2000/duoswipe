@@ -8,7 +8,7 @@ from flask_sqlalchemy import SQLAlchemy
 DIALECT = 'mysql'
 DRIVER = 'pymysql'
 USERNAME = 'root'
-PASSWORD = ''
+PASSWORD = 'root'
 HOST = '127.0.0.1'
 PORT = '3306'
 DATABASE = 'duoswipe'
@@ -88,6 +88,16 @@ def delete(user_id):
     try:
         delete_user(user_id)
         return redirect('/')
+    except:
+        return 'There was an issue deleting your information'
+
+
+@app.route('/user/<int:user_id>')
+# delete user information
+def get_user(userId):
+    try:
+        user = User.query.filter_by(user_id=userId).first()
+        # return render_template('index.html', users=users)
     except:
         return 'There was an issue deleting your information'
 
