@@ -8,7 +8,7 @@ from flask_sqlalchemy import SQLAlchemy
 DIALECT = 'mysql'
 DRIVER = 'pymysql'
 USERNAME = 'root'
-PASSWORD = 'root'
+PASSWORD = ''
 HOST = '127.0.0.1'
 PORT = '3306'
 DATABASE = 'duoswipe'
@@ -62,13 +62,13 @@ def delete_user(userId):
     db.session.commit()
 
 
-@app.route('/', method=['POST', 'GET'])
+@app.route('/', methods=['POST', 'GET'])
 # get user information from input
 def index():
     if request.method == 'POST':
-        name = request.form.get['name']
-        pwd = request.form.get['password']
-        email = request.form.get['email']
+        name = request.form['name']
+        pwd = request.form['password']
+        email = request.form['email']
 
         try:
             create_user(name, pwd, email)
@@ -78,8 +78,8 @@ def index():
 
     else:
         # display user information ordered by user_id
-        display = User.query.order_by(User.user_id).all()
-        return render_template('index.html')
+        users = User.query.order_by(User.user_id).all()
+        return render_template('index.html', users=users)
 
 
 @app.route('/delete/<int:user_id>')
@@ -94,3 +94,4 @@ def delete(user_id):
 
 if __name__ == "__main__":
     app.run(debug=True)
+    #create_user("user1", "user1", "user1")
