@@ -1,8 +1,5 @@
-
-
 from flask import Flask, render_template, url_for, request, redirect
 from flask_sqlalchemy import SQLAlchemy
-
 
 # Connect to Mysql
 DIALECT = 'mysql'
@@ -13,9 +10,8 @@ HOST = '127.0.0.1'
 PORT = '3306'
 DATABASE = 'duoswipe'
 URI = '{}+{}://{}:{}@{}:{}/{}?charset=UTF8MB4'.format(
-        DIALECT, DRIVER, USERNAME, PASSWORD, HOST, PORT, DATABASE
+    DIALECT, DRIVER, USERNAME, PASSWORD, HOST, PORT, DATABASE
 )
-
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = URI
@@ -31,6 +27,7 @@ class User(db.Model):
     name = db.Column(db.String(16), unique=True)
     password = db.Column(db.String(16), nullable=False)
     email = db.Column(db.String(32), nullable=False, unique=True)
+    language_id = db.Column(db.INTEGER)
     location_id = db.Column(db.INTEGER)
     pref_pos = db.Column(db.INTEGER)
     pref_lang = db.Column(db.INTEGER)
@@ -44,7 +41,7 @@ class User(db.Model):
 
 
 # Insert into 'users'
-def create_user(name, pwd, email, location_id=None, pref_pos=None,
+def create_user(name, pwd, email, language_id=None, location_id=None, pref_pos=None, pref_lang=None,
                 pref_day=None, pref_time=None, pos_1=None, pos_2=None):
     user = User()
     user.name = name
@@ -55,9 +52,24 @@ def create_user(name, pwd, email, location_id=None, pref_pos=None,
     db.session.commit()
 
 
+# Update user
+def update_profile(userId, language_id=None, location_id=None, pref_pos=None, pref_lang=None,
+                   pref_day=None, pref_time=None, pos_1=None, pos_2=None):
+    user = User.query.get_or_404(userId)
+    user.language_id = language_id
+    user.location_id = location_id
+    user.pref_pos = pref_pos
+    user.pref_lang = pref_lang
+    user.pref_day = pref_day
+    user.pref_time = pref_time
+    user.pos_1 = pos_1
+    user.pos_2 = pos_2
+    db.session.commit()
+
+
 # Delete user
 def delete_user(userId):
-    user = User.query.filter_by(user_id=userId).first()
+    user = User.query.get_or_404(userId)
     db.session.delete(user)
     db.session.commit()
 
@@ -92,16 +104,34 @@ def delete(user_id):
         return 'There was an issue deleting your information'
 
 
-@app.route('/user/<int:user_id>')
+@app.route('/profile/<int:userId>', methods=['GET', 'POST'])
 # delete user information
 def get_user(userId):
-    try:
-        user = User.query.filter_by(user_id=userId).first()
-        # return render_template('index.html', users=users)
-    except:
-        return 'There was an issue deleting your information'
+    if request.method == 'GET':
+        try:
+            user = User.query.get_or_404(userId)
+            return render_template('profile.html', user=user)
+        except:
+            return 'There was an issue getting your information'
+
+    elif request.method == 'POST':
+        language_id = request.form['language_id']
+        location_id = request.form['location_id']
+        pref_pos = request.form['pref_pos']
+        pref_lang = request.form['pref_lang']
+        pref_day = request.form['pref_day']
+        pref_time = request.form['pref_time']
+        pos_1 = request.form['pos_1']
+        pos_2 = request.form['pos_2']
+
+        try:
+            update_profile(userId, language_id, location_id, pref_pos, pref_lang,
+                           pref_day, pref_time, pos_1, pos_2)
+            return redirect('/profile/' + str(userId))
+        except:
+            return 'There was an issue adding your information'
 
 
 if __name__ == "__main__":
     app.run(debug=True)
-    #create_user("user1", "user1", "user1")
+    # create_user("user1", "user1", "user1")
