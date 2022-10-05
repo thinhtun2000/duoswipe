@@ -1,7 +1,8 @@
 <h1>test</h1>
 {% extends 'base.html' %} {% block head %}
 <title>Task Master</title>
-{% endblock %} {% block body %}
+{% endblock %}
+{% block body %}
 <div class="content">
   <h1 style="text-align: center">Task Master</h1>
   <table>
@@ -29,13 +30,4 @@
   </div>
 </div>
 
-<div class="form">
-  <form action="/" method="GET">
-    <input type="text" name="name" id="name" />
-    <input type="text" name="password" id="password" />
-    <input type="text" name="email" id="email" />
-    <input type="submit" value="Add Task" />
-  </form>
-</div>
-</div>
 {% endblock %}
