@@ -1,5 +1,7 @@
 from flask import Flask, render_template, url_for, request, redirect
 from flask_sqlalchemy import SQLAlchemy
+from flask_cors import CORS
+
 
 # Connect to Mysql
 DIALECT = 'mysql'
@@ -16,6 +18,8 @@ URI = '{}+{}://{}:{}@{}:{}/{}?charset=UTF8MB4'.format(
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = URI
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+CORS(app)
 
 db = SQLAlchemy(app)
 
@@ -88,7 +92,7 @@ def index():
         except:
             return 'There was an issue adding your information'
 
-    else:
+    elif request.method == 'GET':
         # display user information ordered by user_id
         users = User.query.order_by(User.user_id).all()
         return render_template('index.html', users=users)
@@ -110,7 +114,11 @@ def get_user(userId):
     if request.method == 'GET':
         try:
             user = User.query.get_or_404(userId)
-            return render_template('profile.html', user=user)
+            # return render_template('profile.html', user=user)
+            return dict(user_id=user.user_id,
+                        name=user.name,
+                        password=user.password,
+                        email=user.email)
         except:
             return 'There was an issue getting your information'
 
@@ -134,4 +142,3 @@ def get_user(userId):
 
 if __name__ == "__main__":
     app.run(debug=True)
-    # create_user("user1", "user1", "user1")
