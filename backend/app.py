@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for, request, redirect
+from flask import Flask, render_template, request, redirect
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 
@@ -42,6 +42,9 @@ class User(db.Model):
 
     def __repr__(self):
         return 'User %r' % self.user_id
+
+    def as_dict(self):
+        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
 
 
 # Insert into 'users'
@@ -114,11 +117,7 @@ def get_user(userId):
     if request.method == 'GET':
         try:
             user = User.query.get_or_404(userId)
-            # return render_template('profile.html', user=user)
-            return dict(user_id=user.user_id,
-                        name=user.name,
-                        password=user.password,
-                        email=user.email)
+            return User.as_dict(user)
         except:
             return 'There was an issue getting your information'
 
