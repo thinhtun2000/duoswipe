@@ -1,12 +1,22 @@
 from connToDB import app
-from flask import Flask, render_template, request, redirect
+from flask import render_template, request, redirect
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
+# from flask_login import LoginManager, login_user
 
 
 CORS(app)
-
 db = SQLAlchemy(app)
+
+
+# create LoginManager object
+# login_m = LoginManager()
+# login_m.login_view = 'login'
+# login_m.login_message = 'Access denied'
+# login_m.login_message_category = 'info'
+
+# link login_m to app
+# login_m.init_app(app)
 
 
 # Table 'users'
@@ -97,7 +107,7 @@ def delete(user_id):
 
 
 @app.route('/profile/<int:userId>', methods=['GET', 'POST'])
-# delete user information
+# get user profile
 def get_user(userId):
     if request.method == 'GET':
         try:
@@ -122,6 +132,43 @@ def get_user(userId):
             return redirect('/profile/' + str(userId))
         except:
             return 'There was an issue adding your information'
+
+
+# @app.route('/login', method=['GET', 'POST'])
+# def login():
+#     if request.method == 'POST':
+#         user_id = request.form['user_id']
+#         user = User.query.get(user_id)
+#
+#         if user is not None and request.form['password'] == user['password']:
+#             curr_user = User()
+#             curr_user.user_id = user_id
+#
+#             login_user(curr_user)
+#
+#             return redirect('/')
+#
+#         else:
+#             return "Incorrect username or password"
+#
+#     # GET
+#     return render_template('login.html')
+
+
+@app.route('/login', method=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        # query user
+        user_email = request.form['email']
+        user = User.query.filter(User.email == user_email).first()
+
+        # check password
+        if user is not None and request.form['password'] == user['password']:
+            return 'success'
+        else:
+            return 'fail'
+    # GET
+    return render_template('login.html')
 
 
 if __name__ == "__main__":
