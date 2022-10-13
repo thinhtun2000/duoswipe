@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { LoginRequest } from 'src/app/core/models/loginRequest';
 import { AuthService } from 'src/app/core/services/auth/auth.service';
 import { UserApiService } from 'src/app/core/services/user-api/user-api.service';
 import { UserService } from 'src/app/core/services/user/user.service';
@@ -29,7 +30,13 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  public onSubmit(): void {}
+  public onSubmit(): void {
+    const loginRequestObject = this.form.value as LoginRequest;
+    this.authSvc.login(loginRequestObject).subscribe((response) => {
+      console.log(response);
+    });
+    console.log('Hi');
+  }
 
   public changeVisibility(): void {
     var x = (document.getElementById('passwordInput') as HTMLInputElement).type;
