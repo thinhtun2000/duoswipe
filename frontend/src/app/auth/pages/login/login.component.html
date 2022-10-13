@@ -1,0 +1,98 @@
+<div class="d-flex flex-row justify-content-center align-items-start">
+  <div class="card shadow-sm" style="width: 25rem">
+    <div class="card-header">Login</div>
+    <div class="card-body">
+      <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <div class="d-flex flex-row align-items-bottom" style="height: 90px">
+          <label for="usernameInput" class="col-form-label flex-grow-1"
+            >Username
+            <input
+              type="email"
+              [ngClass]="{
+                'form-control': true,
+                'is-invalid':
+                  form.controls['username'].invalid &&
+                  (form.controls['username'].dirty ||
+                    form.controls['username'].touched)
+              }"
+              id="usernameInput"
+              aria-describedby="usernameHelp"
+              formControlName="username"
+            />
+            <ng-container
+              *ngIf="
+                form.controls['username'].invalid &&
+                (form.controls['username'].dirty ||
+                  form.controls['username'].touched)
+              "
+            >
+              <div
+                class="invalid-feedback"
+                *ngIf="form.controls['username'].errors?.['required']"
+              >
+                Username required.
+              </div>
+            </ng-container></label
+          >
+        </div>
+        <div class="d-flex flex-row align-items-bottom" style="height: 100px">
+          <label for="passwordInput" class="col-form-label flex-grow-1"
+            >Password
+            <input
+              type="password"
+              [ngClass]="{
+                'form-control': true,
+                'is-invalid':
+                  form.controls['password'].invalid &&
+                  (form.controls['password'].dirty ||
+                    form.controls['password'].touched)
+              }"
+              id="passwordInput"
+              formControlName="password"
+            />
+            <ng-container
+              *ngIf="
+                form.controls['password'].invalid &&
+                (form.controls['password'].dirty ||
+                  form.controls['password'].touched)
+              "
+            >
+              <div
+                class="invalid-feedback"
+                *ngIf="form.controls['password'].errors?.['required']"
+              >
+                Password required.
+              </div>
+            </ng-container>
+          </label>
+        </div>
+        <div class="d-flex flex-row align-items-bottom">
+          <input type="checkbox" (click)="changeVisibility()" />
+          &nbsp;Show password
+        </div>
+        <div
+          class="d-flex flex-row align-items-bottom justify-content-center mt-2"
+        >
+          <button
+            type="submit"
+            class="btn btn-primary flex-grow-1"
+            [disabled]="submitting"
+          >
+            <ng-container *ngIf="submitting; else defaultContent">
+              <div class="spinner-border spinner-border-sm" role="status"></div>
+              Loading...
+            </ng-container>
+
+            <ng-template #defaultContent>Login</ng-template>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<div class="d-flex flex-row justify-content-center align-items-bottom my-3">
+  <p>
+    Having trouble signing in?
+    <a routerLink="/forgot-password"> Reset password</a>
+  </p>
+</div>

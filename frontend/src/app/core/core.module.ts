@@ -7,6 +7,7 @@ import { HomePageComponent } from './pages/home-page/home-page.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { CoreRoutingModule } from './core-routing.module';
 import { SimpleAppLayoutComponent } from './layouts/simple-app-layout/simple-app-layout.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -15,6 +16,13 @@ import { SimpleAppLayoutComponent } from './layouts/simple-app-layout/simple-app
     DashboardComponent,
     SimpleAppLayoutComponent,
   ],
-  imports: [CommonModule, RouterModule, CoreRoutingModule, HttpClientModule],
+  imports: [
+    CommonModule,
+    RouterModule,
+    CoreRoutingModule,
+    HttpClientModule,
+    FormsModule,
+    ReactiveFormsModule,
+  ],
 })
 export class CoreModule {}
