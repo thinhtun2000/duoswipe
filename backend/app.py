@@ -8,7 +8,7 @@ from flask_cors import CORS
 DIALECT = 'mysql'
 DRIVER = 'pymysql'
 USERNAME = 'root'
-PASSWORD = 'root'
+PASSWORD = ''
 HOST = '127.0.0.1'
 PORT = '3306'
 DATABASE = 'duoswipe'
