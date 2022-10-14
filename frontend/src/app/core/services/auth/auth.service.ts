@@ -11,7 +11,7 @@ import { UserService } from '../user/user.service';
 })
 export class AuthService {
   loginRqt: LoginRequest = {
-    username: 'will@nmsu.edu',
+    email: 'will',
     password: 'user1',
   };
 

@@ -25,13 +25,15 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     this.form = this.fb.group({
-      username: ['', [Validators.required]],
+      email: ['', [Validators.required]],
       password: ['', [Validators.required]],
     });
   }
 
   public onSubmit(): void {
     const loginRequestObject = this.form.value as LoginRequest;
+    console.log(loginRequestObject);
+
     this.authSvc.login(loginRequestObject).subscribe((response) => {
       console.log(response);
     });
