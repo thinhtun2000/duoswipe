@@ -6,6 +6,7 @@ import { HomePageComponent } from './pages/home-page/home-page.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { CoreRoutingModule } from './core-routing.module';
 import { SimpleAppLayoutComponent } from './layouts/simple-app-layout/simple-app-layout.component';
+import { MatchPageComponent } from './pages/match-page/match-page.component';
 
 @NgModule({
   declarations: [AppLayoutComponent, HomePageComponent, DashboardComponent, SimpleAppLayoutComponent],

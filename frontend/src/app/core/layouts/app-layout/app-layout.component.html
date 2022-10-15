@@ -1,17 +1,19 @@
 <header>
-  <nav class="navbar navbar-expand-md shadow-sm">
+  <nav class="navbar navbar-expand-md shadow-sm"> 
     <div class="container">
-      <a class="navbar-brand order-2" routerLink="/app/dashboard">DuoSwipe</a>
-      <button
-        class="navbar-toggler order-1"
-        type="button"
-        data-bs-toggle="offcanvas"
-        data-bs-target="#offcanvasNavbar"
-        data-bs-keyboard="true"
-        aria-controls="offcanvasNavbar"
-      >
-        <span class="navbar-toggler-icon"></span>
-      </button>
+      <div class="headerDiv">
+        <a class="navbar-brand order-2" routerLink="/app/dashboard">DuoSwipe</a>
+        <button
+          class="navbar-toggler order-1"
+          type="button"
+          data-bs-toggle="offcanvas"
+          data-bs-target="#offcanvasNavbar"
+          data-bs-keyboard="true"
+          aria-controls="offcanvasNavbar"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      </div>
 
       <div
         class="offcanvas offcanvas-start order-3 d-md-none"
@@ -44,6 +46,15 @@
                 class="nav-link active text-dark"
                 data-bs-dismiss="offcanvas"
                 aria-current="page"
+                routerLink="user/profile"
+                >Profile</a
+              >
+            </li>
+            <li class="nav-item" *ngIf="true">
+              <a
+                class="nav-link active text-dark"
+                data-bs-dismiss="offcanvas"
+                aria-current="page"
                 routerLink="/home"
                 >Swipe</a
               >
@@ -53,8 +64,8 @@
                 class="nav-link active text-dark"
                 data-bs-dismiss="offcanvas"
                 aria-current="page"
-                routerLink="user/profile"
-                >Profile</a
+                routerLink="matches"
+                >Matches</a
               >
             </li>
           </ul>
@@ -72,6 +83,14 @@
             >
           </li>
           <li class="nav-item" *ngIf="true">
+            <a
+              class="nav-link active"
+              aria-current="page"
+              routerLink="user/profile"
+              >Profile</a
+            >
+          </li>
+          <li class="nav-item" *ngIf="true">
             <a class="nav-link active" aria-current="page" routerLink=""
               >Swipe</a
             >
@@ -80,8 +99,8 @@
             <a
               class="nav-link active"
               aria-current="page"
-              routerLink="user/profile"
-              >Profile</a
+              routerLink="matches"
+              >Matches</a
             >
           </li>
         </ul>

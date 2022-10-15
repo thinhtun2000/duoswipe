@@ -1,3 +1,16 @@
 /* You can add global styles to this file, and also import other style files */
 @import "~bootstrap/dist/css/bootstrap.css";
 @import "~bootstrap-icons/font/bootstrap-icons.css";
+body{
+    background-color: #C2D2E2;
+    font-size: 24px;
+}
+footer{
+    font-size: 16px;
+}
+.headerDiv a{
+    font-size: 30px;
+}
+header{
+    background-color: white;
+}

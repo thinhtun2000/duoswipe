@@ -4,6 +4,7 @@ import { AppLayoutComponent } from './core/layouts/app-layout/app-layout.compone
 import { DashboardComponent } from './core/pages/dashboard/dashboard.component';
 import { HomePageComponent } from './core/pages/home-page/home-page.component';
 import { UserProfileComponent } from './user/pages/user-profile/user-profile.component';
+import { MatchPageComponent } from './core/pages/match-page/match-page.component';
 
 const routes: Routes = [
   {
@@ -17,6 +18,7 @@ const routes: Routes = [
     children: [
       { path: '', pathMatch: 'full', redirectTo: 'dashboard' },
       { path: 'dashboard', component: DashboardComponent },
+      { path: 'matches', component: MatchPageComponent },
       {
         path: 'user',
         loadChildren: () =>
