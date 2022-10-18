@@ -9,8 +9,7 @@ import { UserService } from 'src/app/core/services/user/user.service';
   styleUrls: ['./user-profile.component.scss'],
 })
 export class UserProfileComponent implements OnInit {
-  public user: User;
-  @Output() eUser: EventEmitter<User> = new EventEmitter<User>();
+  public user: User | null;
 
   constructor(
     private userApiSvc: UserApiService,
@@ -18,8 +17,8 @@ export class UserProfileComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.userApiSvc.getUserById('1').subscribe((response) => {
-      this.user = response;
+    this.userSvc.user$.subscribe((user) => {
+      this.user = user;
       console.log(this.user);
     });
   }

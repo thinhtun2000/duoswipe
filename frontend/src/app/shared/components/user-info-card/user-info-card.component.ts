@@ -15,7 +15,7 @@ import { User } from 'src/app/core/models/user';
 })
 export class UserInfoCardComponent implements OnInit {
   public form: FormGroup;
-  @Input() user: User;
+  @Input() user: User | null;
 
   constructor(private fb: FormBuilder) {}
 

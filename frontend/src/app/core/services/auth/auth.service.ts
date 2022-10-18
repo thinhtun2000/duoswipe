@@ -2,6 +2,7 @@ import { HttpResponseBase } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { LoginRequest } from '../../models/loginRequest';
+import { LoginResponse } from '../../models/loginResponse';
 import { AuthApiService } from '../auth-api/auth-api.service';
 import { UserApiService } from '../user-api/user-api.service';
 import { UserService } from '../user/user.service';
@@ -10,18 +11,11 @@ import { UserService } from '../user/user.service';
   providedIn: 'root',
 })
 export class AuthService {
-  loginRqt: LoginRequest = {
-    email: 'will',
-    password: 'user1',
-  };
-
   constructor(private authApi: AuthApiService) {}
 
-  public login(loginRequestObject: LoginRequest): Observable<any> {
-    return this.authApi.login(this.loginRqt).pipe(
-      map((response: HttpResponseBase) => {
-        console.log(response);
-      })
-    );
+  public login(loginRequestObject: LoginRequest): Observable<LoginResponse> {
+    return this.authApi
+      .login(loginRequestObject)
+      .pipe(map((response: LoginResponse) => response));
   }
 }

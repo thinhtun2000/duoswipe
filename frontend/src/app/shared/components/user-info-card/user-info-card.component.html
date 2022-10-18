@@ -14,6 +14,7 @@
                 id="name"
                 class="form-control"
                 formControlName="name"
+                [value]="user?.name"
             /></label>
           </div>
           <div class="d-flex flex-row align-items-bottom">
@@ -24,6 +25,7 @@
                 id="email"
                 class="form-control"
                 formControlName="email"
+                [value]="user?.email"
             /></label>
           </div>
         </form>
@@ -31,5 +33,3 @@
     </div>
   </div>
 </div>
-<div>Name: {{ user.name }}</div>
-<div>Email: {{ user.email }}</div>
