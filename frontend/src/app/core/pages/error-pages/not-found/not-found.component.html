@@ -1,1 +1,9 @@
-<p>not-found works!</p>
+<app-error-card
+  title="404 Not Found"
+  message="Sorry we couldn't find the page you are looking for. If you think this is
+  a mistake please contact customer support."
+>
+  <a class="btn btn-primary" [routerLink]="previousRoute$ | async"
+    ><i class="bi bi-arrow-left"></i> Return</a
+  >
+</app-error-card>
