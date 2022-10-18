@@ -12,6 +12,8 @@ import { UnauthorizedComponent } from './pages/error-pages/unauthorized/unauthor
 import { ForbiddenComponent } from './pages/error-pages/forbidden/forbidden.component';
 import { NotFoundComponent } from './pages/error-pages/not-found/not-found.component';
 import { ErrorCardComponent } from './components/error-card/error-card/error-card.component';
+import { MatchPageComponent } from './pages/match-page/match-page.component';
+
 
 @NgModule({
   declarations: [
