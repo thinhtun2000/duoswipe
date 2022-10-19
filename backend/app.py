@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, redirect
 from flask_sqlalchemy import SQLAlchemy
-from flask_cors import CORS
+from flask_cors import CORS, cross_origin
 # from flask_login import LoginManager, login_user
 
 
@@ -8,7 +8,7 @@ from flask_cors import CORS
 DIALECT = 'mysql'
 DRIVER = 'pymysql'
 USERNAME = 'root'
-PASSWORD = 'root'
+PASSWORD = ''
 HOST = '127.0.0.1'
 PORT = '3306'
 DATABASE = 'duoswipe'
@@ -19,8 +19,10 @@ URI = '{}+{}://{}:{}@{}:{}/{}?charset=UTF8MB4'.format(
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = URI
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['CORS_HEADERS'] = 'Content-Type'
 
-CORS(app)
+cors = CORS(app, origins=["http://localhost:4200"])
+
 db = SQLAlchemy(app)
 
 
@@ -152,34 +154,37 @@ def get_user(userId):
 # @app.route('/login', methods=['GET', 'POST'])
 # def login():
 #     if request.method == 'POST':
-#         user_id = request.form['user_id']
-#         user = User.query.get(user_id)
-#
+#         email = request.form['email']
+#         user = User.query.filter(User.email == email).first()
+
 #         if user is not None and request.form['password'] == user['password']:
 #             curr_user = User()
-#             curr_user.user_id = user_id
-#
+#             curr_user.email = email
+
 #             login_user(curr_user)
-#
+
 #             return redirect('/')
-#
+
 #         else:
 #             return "Incorrect username or password"
-#
+
 #     # GET
 #     return render_template('login.html')
 
 
 @app.route('/login', methods=['GET', 'POST'])
+@cross_origin(origin='localhost',headers=['Content- Type','Authorization'])
 def login():
     if request.method == 'POST':
         # query user
-        user_email = request.form['email']
+        user_info = request.get_json()
+        user_email = user_info['email']
         user = User.query.filter(User.email == user_email).first()
+        user = User.as_dict(user)
 
         # check password
-        if user is not None and request.form['password'] == user['password']:
-            return 'success'
+        if user is not None and user_info['password'] == user['password']:
+            return {'status': 'success', 'user_id': user['user_id']}
         else:
             return 'fail'
     # GET
