@@ -1,19 +1,13 @@
-import {
-  AfterContentInit,
-  AfterViewInit,
-  Component,
-  Input,
-  OnInit,
-} from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { User } from 'src/app/core/models/user';
 
 @Component({
-  selector: 'app-user-info-card',
-  templateUrl: './user-info-card.component.html',
-  styleUrls: ['./user-info-card.component.scss'],
+  selector: 'app-user-preferences-card',
+  templateUrl: './user-preferences-card.component.html',
+  styleUrls: ['./user-preferences-card.component.scss'],
 })
-export class UserInfoCardComponent implements OnInit {
+export class UserPreferencesCardComponent implements OnInit {
   public form: FormGroup;
   @Input() user: User | null;
 

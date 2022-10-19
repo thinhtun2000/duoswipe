@@ -1,0 +1,57 @@
+<div class="d-flex flex-row justify-content-center align-item-center">
+  <div class="card shadow-sm" style="width: 600px">
+    <div class="card-header">
+      <ng-content select="[title]"></ng-content>
+    </div>
+    <div class="card-body">
+      <div class="d-flex flex-column justify-content-start align-items-center">
+        <form [formGroup]="form" style="width: 100%">
+          <div class="d-flex flex-row align-items-bottom">
+            <label for="pref_pos" class="col-form-label flex-grow-1"
+              >Preferred Position:
+              <input
+                type="text"
+                id="pref_pos"
+                class="form-control"
+                formControlName="pref_pos"
+                [value]="user?.pref_pos"
+            /></label>
+          </div>
+          <div class="d-flex flex-row align-items-bottom">
+            <label for="pref_lang" class="col-form-label flex-grow-1"
+              >Preferred Language:
+              <input
+                type="text"
+                id="pref_lang"
+                class="form-control"
+                formControlName="pref_lang"
+                [value]="user?.pref_lang"
+            /></label>
+          </div>
+          <div class="d-flex flex-row align-items-bottom">
+            <label for="pref_day" class="col-form-label flex-grow-1"
+              >Preferred Day:
+              <input
+                type="text"
+                id="pref_day"
+                class="form-control"
+                formControlName="pref_day"
+                [value]="user?.pref_day"
+            /></label>
+          </div>
+          <div class="d-flex flex-row align-items-bottom">
+            <label for="pref_time" class="col-form-label flex-grow-1"
+              >Preferred Time:
+              <input
+                type="text"
+                id="pref_time"
+                class="form-control"
+                formControlName="pref_time"
+                [value]="user?.pref_time"
+            /></label>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
