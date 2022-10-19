@@ -1,5 +1,5 @@
 <header>
-  <nav class="navbar navbar-expand-md shadow-sm"> 
+  <nav class="navbar navbar-expand-md shadow-sm">
     <div class="container">
       <div class="headerDiv">
         <a class="navbar-brand order-2" routerLink="/app/dashboard">DuoSwipe</a>
@@ -55,7 +55,7 @@
                 class="nav-link active text-dark"
                 data-bs-dismiss="offcanvas"
                 aria-current="page"
-                routerLink="/home"
+                routerLink="swipe"
                 >Swipe</a
               >
             </li>
@@ -91,15 +91,12 @@
             >
           </li>
           <li class="nav-item" *ngIf="true">
-            <a class="nav-link active" aria-current="page" routerLink=""
+            <a class="nav-link active" aria-current="page" routerLink="swipe"
               >Swipe</a
             >
           </li>
           <li class="nav-item" *ngIf="true">
-            <a
-              class="nav-link active"
-              aria-current="page"
-              routerLink="matches"
+            <a class="nav-link active" aria-current="page" routerLink="matches"
               >Matches</a
             >
           </li>
@@ -122,7 +119,7 @@
           >
             <li>
               <div class="dropdown-item">
-                <!-- {{ (user$ | async)?.userName }} -->
+                {{ (user$ | async)?.name }}
               </div>
             </li>
             <li>

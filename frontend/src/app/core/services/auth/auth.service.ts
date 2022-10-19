@@ -1,6 +1,6 @@
 import { HttpResponseBase } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { map, Observable } from 'rxjs';
+import { catchError, map, Observable, of, tap } from 'rxjs';
 import { LoginRequest } from '../../models/loginRequest';
 import { LoginResponse } from '../../models/loginResponse';
 import { AuthApiService } from '../auth-api/auth-api.service';
@@ -11,11 +11,21 @@ import { UserService } from '../user/user.service';
   providedIn: 'root',
 })
 export class AuthService {
-  constructor(private authApi: AuthApiService) {}
+  constructor(private authApi: AuthApiService, private userSvc: UserService) {}
 
   public login(loginRequestObject: LoginRequest): Observable<LoginResponse> {
     return this.authApi
       .login(loginRequestObject)
       .pipe(map((response: LoginResponse) => response));
+  }
+
+  logout(): Observable<boolean> {
+    return of(true).pipe(
+      tap(() => {
+        this.userSvc.setUser(null);
+        //this.tokenSvc.removeToken();
+      }),
+      catchError(() => of(false))
+    );
   }
 }
