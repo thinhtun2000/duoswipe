@@ -1,14 +1,14 @@
 from flask import Flask, render_template, request, redirect
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS, cross_origin
-# from flask_login import LoginManager, login_user
+from flask_login import LoginManager, login_user, logout_user, login_required
 
 
 # Connect to Mysql
 DIALECT = 'mysql'
 DRIVER = 'pymysql'
 USERNAME = 'root'
-PASSWORD = ''
+PASSWORD = 'root'
 HOST = '127.0.0.1'
 PORT = '3306'
 DATABASE = 'duoswipe'
@@ -24,16 +24,6 @@ app.config['CORS_HEADERS'] = 'Content-Type'
 cors = CORS(app, origins=["http://localhost:4200"])
 
 db = SQLAlchemy(app)
-
-
-# create LoginManager object
-# login_m = LoginManager()
-# login_m.login_view = 'login'
-# login_m.login_message = 'Access denied'
-# login_m.login_message_category = 'info'
-
-# link login_m to app
-# login_m.init_app(app)
 
 
 # Table 'users'
@@ -57,6 +47,21 @@ class User(db.Model):
 
     def as_dict(self):
         return {c.name: getattr(self, c.name) for c in self.__table__.columns}
+
+    def get_id(self):
+        return self.user_id
+
+    @property
+    def is_authenticated(self):
+        return True
+
+    @property
+    def is_active(self):
+        return True
+
+    @property
+    def is_anonymous(self):
+        return False
 
 
 # Insert into 'users'
@@ -94,7 +99,6 @@ def delete_user(userId):
 
 
 @app.route('/', methods=['POST', 'GET'])
-# get user information from input
 def index():
     if request.method == 'POST':
         name = request.form['name']
@@ -151,25 +155,18 @@ def get_user(userId):
             return 'There was an issue adding your information'
 
 
-# @app.route('/login', methods=['GET', 'POST'])
-# def login():
-#     if request.method == 'POST':
-#         email = request.form['email']
-#         user = User.query.filter(User.email == email).first()
+# flask-login
+login_manager = LoginManager()
+login_manager.login_view = 'login'
+login_manager.login_message = 'Access denied'
+login_manager.login_message_category = 'info'
+login_manager.init_app(app)
 
-#         if user is not None and request.form['password'] == user['password']:
-#             curr_user = User()
-#             curr_user.email = email
 
-#             login_user(curr_user)
-
-#             return redirect('/')
-
-#         else:
-#             return "Incorrect username or password"
-
-#     # GET
-#     return render_template('login.html')
+@login_manager.user_loader
+def load_user(user_id):
+    user = User.query.filter(User.user_id == user_id).first()
+    return user
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -184,11 +181,19 @@ def login():
 
         # check password
         if user is not None and user_info['password'] == user['password']:
+            login_user(user)
             return {'status': 'success', 'user_id': user['user_id']}
         else:
             return 'fail'
     # GET
     return render_template('login.html')
+
+
+@app.route('/logout', methods=['GET', 'POST'])
+@login_required
+def logout():
+    logout_user()
+    return 'Successfully logged out'
 
 
 if __name__ == "__main__":
