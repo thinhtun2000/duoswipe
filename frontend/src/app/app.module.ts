@@ -8,6 +8,7 @@ import { AppComponent } from './app.component';
 import { AuthModule } from './auth/auth.module';
 import { CoreModule } from './core/core.module';
 import { MatchPageComponent } from './core/pages/match-page/match-page.component';
+import { SwipePageComponent } from './core/pages/swipe-page/swipe-page.component';
 
 @NgModule({
   declarations: [AppComponent],
@@ -20,6 +21,7 @@ import { MatchPageComponent } from './core/pages/match-page/match-page.component
     FormsModule,
     ReactiveFormsModule,
   ],
+
   providers: [],
   bootstrap: [AppComponent],
 })

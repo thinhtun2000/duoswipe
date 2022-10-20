@@ -1,0 +1,33 @@
+@media (min-width: 992px) {
+    .un-container {
+        max-width: inherit;
+        padding: inherit;
+        margin: inherit;
+    }
+}
+
+.other{
+    margin-left: 10%;
+    height: 33%;
+    width: 80%;
+    float: left;
+    position: relative;
+}
+.big-square{
+    height: 100%;
+    width: 80%;
+    margin-left: 52%;
+    float: right;
+}
+
+.collapsible {
+    background-color: #eee;
+    color: #444;
+    cursor: pointer;
+    padding: 18px;
+    width: 100%;
+    border: none;
+    text-align: left;
+    outline: none;
+    font-size: 15px;
+  }

@@ -24,25 +24,33 @@ db = SQLAlchemy(app)
 class Match(db.Model):
     __tablename__ = 'matches'
     match_id = db.Column(db.INTEGER, primary_key=True, autoincrement=True)
-    user_id_1 = db.Column(db.INTEGER)
-    user_id_2 = db.Column(db.INTEGER)
-    user1_match = db.Column(db.BOOLEAN)
-    user2_match = db.Column(db.BOOLEAN)
+    user_id_1 = db.Column(db.INTEGER, db.ForeignKey('user_id'))
+    user_id_2 = db.Column(db.INTEGER, db.ForeignKey('user_id'))
+    user1_status = db.Column(db.BOOLEAN, default=False)
+    user2_status = db.Column(db.BOOLEAN, default=False)
+    matched_status = db.column(db.BOOLEAN, default=False)
 
     def __repr__(self):
         return 'Match %r' % self.match_id
 
-
 # Insert into 'match'
-def create_match(user_id_1=None, user_id_2=None, user1_match=None, user2_match=None):
+def create_match(u1, u2):
     match = Match()
-    match.user_id_1 = user_id_1
-    match.user_id_2 = user_id_2
-    match.user1_match = user1_match
-    match.user2_match = user2_match
-
+    match.user_id_1 = u1
+    match.user_id_2 = u2
+    match.user1_status = True
     db.session.add(match)
     db.session.commit()
+
+# Finds if a match already exists
+def find_match(u1, u2):
+    match = match.Query.get(u1, u2)
+    if match is None:
+        create_match(u1, u2)
+    else:
+        match.user2_status = True
+        match.matched_status = True
+        db.session.commit()
 
 
 
