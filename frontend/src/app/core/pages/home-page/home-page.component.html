@@ -1,71 +1,85 @@
 <body>
-<div class="c">
-  <div class="d-flex flex-row justify-content-center">
-    <img src="/assets/images/logo1.png" />
-  </div>
-  <div class="d-flex flex-row justify-content-center mt-5">
-    <button
-      class="btn btn-primary"
-      data-bs-toggle="modal"
-      data-bs-target="#exampleModal"
+  <div class="row">
+    <img
+      class="img-fluid"
+      src="https://images.contentstack.io/v3/assets/blt731acb42bb3d1659/blt0060849db5c9144a/62bdda094673394f64680347/00_Header_SG2.jpg"
+      style="opacity: 0.8"
+    />
+    <div
+      class="d-flex flex-row align-self-start justify-content-center"
+      style="position: absolute; margin-top: 10rem"
     >
-      Get Started
-    </button>
+      <div style="font-size: 7rem; color: white">
+        <b>DuoSwipe</b>
+      </div>
+    </div>
+    <div
+      class="d-flex flex-row align-self-start justify-content-center"
+      style="position: absolute; margin-top: 20rem"
+    >
+      <div style="font-size: 1.25rem; color: white">*insert catch phrase*</div>
+    </div>
+    <div
+      class="d-flex flex-row align-self-start justify-content-center"
+      style="position: absolute; margin-top: 23rem"
+    >
+      <button
+        class="btn btn-outline-light btn-lg"
+        data-bs-toggle="modal"
+        data-bs-target="#exampleModal"
+      >
+        Get Started
+      </button>
+    </div>
   </div>
-  <div class="HPicture">
-    <img src="/assets/images/logo1.png" class="home"/>
-    <img src="/assets/images/logo1.png" class="home"/>
-    <img src="/assets/images/logo1.png" class="home"/>
-  </div>
-
-  <!-- Modal -->
-  <div
-    class="modal modal-lg fade"
-    id="exampleModal"
-    tabindex="-1"
-    aria-labelledby="exampleModalLabel"
-    aria-hidden="true"
-  >
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h3 class="modal-title text-center" id="exampleModalLabel">
-            Log in/Sign up
-          </h3>
-          <button
-            type="button"
-            class="btn-close"
-            data-bs-dismiss="modal"
-            aria-label="Close"
-          ></button>
-        </div>
-        <div class="modal-body">
-          <div class="container-fluid">
-            <div class="row">
-              <div class="col-6 text-center">
-                <div>Already have an account?</div>
-                <div>
-                  <button
-                    type="button"
-                    class="btn btn-secondary"
-                    routerLink="/auth"
-                    data-bs-dismiss="modal"
-                  >
-                    Log in
-                  </button>
-                </div>
+</body>
+<!-- Modal -->
+<div
+  class="modal modal-lg fade"
+  id="exampleModal"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title text-center" id="exampleModalLabel">
+          Log in/Sign up
+        </h3>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-6 text-center">
+              <div>Already have an account?</div>
+              <div>
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  routerLink="/auth"
+                  data-bs-dismiss="modal"
+                >
+                  Log in
+                </button>
               </div>
-              <div class="col-6 text-center">
-                <div>Create a new account.</div>
-                <div>
-                  <button
-                    type="button"
-                    class="btn btn-primary"
-                    routerLink="register"
-                  >
-                    Sign up
-                  </button>
-                </div>
+            </div>
+            <div class="col-6 text-center">
+              <div>Create a new account.</div>
+              <div>
+                <button
+                  type="button"
+                  class="btn btn-primary"
+                  routerLink="register"
+                >
+                  Sign up
+                </button>
               </div>
             </div>
           </div>
@@ -74,4 +88,3 @@
     </div>
   </div>
 </div>
-</body>
