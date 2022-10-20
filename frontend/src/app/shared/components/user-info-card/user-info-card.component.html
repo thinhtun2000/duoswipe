@@ -7,33 +7,67 @@
       <div class="d-flex flex-column justify-content-start align-items-center">
         <form [formGroup]="form" style="width: 100%">
           <div class="d-flex flex-row align-items-bottom">
-            <label for="firstName" class="col-form-label flex-grow-1"
-              >First Name:
+            <label for="name" class="col-form-label flex-grow-1"
+              >Name:
               <input
                 type="text"
-                id="firstName"
+                id="name"
                 class="form-control"
-                formControlName="firstName"
+                formControlName="name"
+                [value]="user?.name"
             /></label>
           </div>
           <div class="d-flex flex-row align-items-bottom">
-            <label for="lastName" class="col-form-label flex-grow-1"
-              >Last Name:
+            <label for="email" class="col-form-label flex-grow-1"
+              >Email:
               <input
                 type="text"
-                id="lastName"
+                id="email"
                 class="form-control"
-                formControlName="lastName"
+                formControlName="email"
+                [value]="user?.email"
             /></label>
           </div>
           <div class="d-flex flex-row align-items-bottom">
-            <label for="username" class="col-form-label flex-grow-1"
-              >Username:<input
-                type="email"
-                id="username"
+            <label for="language" class="col-form-label flex-grow-1"
+              >Language:
+              <input
+                type="text"
+                id="language"
                 class="form-control"
-                formControlName="userName"
+                formControlName="language"
+                [value]="user?.language_id"
             /></label>
+          </div>
+          <div class="d-flex flex-row align-items-bottom">
+            <label for="location" class="col-form-label flex-grow-1"
+              >Location:
+              <input
+                type="text"
+                id="location"
+                class="form-control"
+                formControlName="location"
+                [value]="user?.location_id"
+            /></label>
+          </div>
+          <div class="d-flex flex-row align-items-bottom">
+            <label for="position" class="col-form-label flex-grow-1"
+              >Position:
+              <input
+                type="text"
+                id="position"
+                class="form-control"
+                formControlName="pos_1"
+                [value]="user?.pos_1"
+              />
+              <input
+                type="text"
+                id="position"
+                class="form-control"
+                formControlName="pos_2"
+                [value]="user?.pos_2"
+              />
+            </label>
           </div>
         </form>
       </div>
