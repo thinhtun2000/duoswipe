@@ -13,7 +13,7 @@ import { ForbiddenComponent } from './pages/error-pages/forbidden/forbidden.comp
 import { NotFoundComponent } from './pages/error-pages/not-found/not-found.component';
 import { ErrorCardComponent } from './components/error-card/error-card/error-card.component';
 import { MatchPageComponent } from './pages/match-page/match-page.component';
-
+import { SwipePageComponent } from './pages/swipe-page/swipe-page.component';
 
 @NgModule({
   declarations: [
@@ -25,6 +25,8 @@ import { MatchPageComponent } from './pages/match-page/match-page.component';
     ForbiddenComponent,
     NotFoundComponent,
     ErrorCardComponent,
+    MatchPageComponent,
+    SwipePageComponent,
   ],
   imports: [
     CommonModule,

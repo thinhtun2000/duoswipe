@@ -1,5 +1,5 @@
 <div>
-  <h2>Welcome {{ user.name | titlecase }} to DuoSwipe</h2>
+  <h2>Welcome {{ (user$ | async)?.name | titlecase }} to DuoSwipe</h2>
 </div>
 <div>
   Test buttons

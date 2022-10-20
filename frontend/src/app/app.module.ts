@@ -10,7 +10,7 @@ import { CoreModule } from './core/core.module';
 import { MatchPageComponent } from './core/pages/match-page/match-page.component';
 
 @NgModule({
-  declarations: [AppComponent, MatchPageComponent],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

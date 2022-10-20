@@ -11,10 +11,7 @@ import { UserService } from 'src/app/core/services/user/user.service';
 export class UserProfileComponent implements OnInit {
   public user: User | null;
 
-  constructor(
-    private userApiSvc: UserApiService,
-    private userSvc: UserService
-  ) {}
+  constructor(private userSvc: UserService) {}
 
   ngOnInit(): void {
     this.userSvc.user$.subscribe((user) => {

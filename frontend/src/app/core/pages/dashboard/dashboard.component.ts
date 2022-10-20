@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
 import { User } from '../../models/user';
 import { UserApiService } from '../../services/user-api/user-api.service';
+import { UserService } from '../../services/user/user.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -8,14 +10,11 @@ import { UserApiService } from '../../services/user-api/user-api.service';
   styleUrls: ['./dashboard.component.scss'],
 })
 export class DashboardComponent implements OnInit {
-  public user: User;
+  public user$: Observable<User | null>;
 
-  constructor(private userApiSvc: UserApiService) {}
+  constructor(private userSvc: UserService) {}
 
   ngOnInit(): void {
-    this.userApiSvc.getUserById('1').subscribe((response) => {
-      this.user = response;
-      console.log(this.user);
-    });
+    this.user$ = this.userSvc.user$;
   }
 }
