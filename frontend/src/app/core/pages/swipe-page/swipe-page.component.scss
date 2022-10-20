@@ -1,0 +1,24 @@
+.lb{
+    float: left;
+}
+.rb{
+    float: right;
+}
+button{
+    position: relative;
+    text-align: center;
+    width: 10%;
+    top: 385px;
+}
+div{
+    position: absolute;
+    width: 50%; //should be 100% - (2 * left), so if left is 15%, width is 70% 
+    left: 25%; 
+}
+#usercontent{
+    top: 50px;
+    position: relative;
+    float: center;
+    text-align: center;
+    width: 100%;
+}

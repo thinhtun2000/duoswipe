@@ -5,6 +5,7 @@ import { DashboardComponent } from './core/pages/dashboard/dashboard.component';
 import { HomePageComponent } from './core/pages/home-page/home-page.component';
 import { UserProfileComponent } from './user/pages/user-profile/user-profile.component';
 import { MatchPageComponent } from './core/pages/match-page/match-page.component';
+import { SwipePageComponent } from './core/pages/swipe-page/swipe-page.component';
 
 const routes: Routes = [
   {
@@ -19,6 +20,7 @@ const routes: Routes = [
       { path: '', pathMatch: 'full', redirectTo: 'dashboard' },
       { path: 'dashboard', component: DashboardComponent },
       { path: 'matches', component: MatchPageComponent },
+      { path: 'swipe', component: SwipePageComponent },
       {
         path: 'user',
         loadChildren: () =>

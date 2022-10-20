@@ -2,7 +2,7 @@
   <nav class="navbar navbar-expand-md shadow-sm"> 
     <div class="container">
       <div class="headerDiv">
-        <a class="navbar-brand order-2" routerLink="/app/dashboard">DuoSwipe</a>
+        <a class="navbar-brand order-2" routerLink="/home">DuoSwipe</a>
         <button
           class="navbar-toggler order-1"
           type="button"
@@ -55,7 +55,7 @@
                 class="nav-link active text-dark"
                 data-bs-dismiss="offcanvas"
                 aria-current="page"
-                routerLink="/home"
+                routerLink="swipe"
                 >Swipe</a
               >
             </li>
@@ -91,7 +91,10 @@
             >
           </li>
           <li class="nav-item" *ngIf="true">
-            <a class="nav-link active" aria-current="page" routerLink=""
+            <a
+              class="nav-link active"
+              aria-current="page"
+              routerLink="swipe"
               >Swipe</a
             >
           </li>
@@ -146,7 +149,7 @@
   </nav>
 </header>
 
-<main class="container py-5">
+<main class="py-5 m-0">
   <router-outlet></router-outlet>
 </main>
 
