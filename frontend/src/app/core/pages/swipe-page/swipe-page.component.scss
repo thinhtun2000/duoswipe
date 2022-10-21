@@ -11,6 +11,7 @@ button{
     top: 385px;
 }
 div{
+    height: 100%;
     position: absolute;
     width: 50%; //should be 100% - (2 * left), so if left is 15%, width is 70% 
     left: 25%; 
@@ -21,4 +22,5 @@ div{
     float: center;
     text-align: center;
     width: 100%;
+    background-color: white;
 }

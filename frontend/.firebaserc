@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "duoswipe-9b59e": {
+      "hosting": {
+        "frontend": [
+          "duoswipe-9b59e"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "duoswipe-9b59e"
+  }
+}
