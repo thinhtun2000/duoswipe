@@ -3,7 +3,6 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS, cross_origin
 from flask_login import LoginManager, login_user, logout_user, login_required
 
-
 # Connect to Mysql
 DIALECT = 'mysql'
 DRIVER = 'pymysql'
@@ -194,6 +193,63 @@ def login():
 def logout():
     logout_user()
     return 'Successfully logged out'
+
+
+@app.route('/user', methods=['GET', 'POST'])
+def return_user():
+    if request.method == 'GET':
+        try:
+            users = User.query.order_by(User.user_id).all()
+
+            res = []
+            for user in users:
+                res.append(User.as_dict(user))
+            return res
+
+        except:
+            return 'There was an issue getting your information'
+
+
+
+class Match(db.Model):
+    __tablename__ = 'matches'
+    match_id = db.Column(db.INTEGER, primary_key=True, autoincrement=True)
+    user_id_1 = db.Column(db.INTEGER)
+    user_id_2 = db.Column(db.INTEGER)
+    user1_match = db.Column(db.BOOLEAN)
+    user2_match = db.Column(db.BOOLEAN)
+
+    def __repr__(self):
+        return 'Match %r' % self.match_id
+
+
+# Insert into 'match'
+def create_match(user_id_1=None, user_id_2=None, user1_match=None, user2_match=None):
+    match = Match()
+    match.user_id_1 = user_id_1
+    match.user_id_2 = user_id_2
+    match.user1_match = user1_match
+    match.user2_match = user2_match
+
+    db.session.add(match)
+    db.session.commit()
+
+@app.route('/matched//<int:user_id_1>', methods=['GET', 'POST'])
+# matched user
+def return_user_matched(user_id_1):
+    if request.method == 'GET':
+        try:
+            if Match.user1_match == True and Match.user2_match == True:
+                users = User.query.order_by(Match.user_id_2).all()
+
+        except:
+            return 'There was an issue getting your information'
+
+
+
+
+
+
 
 
 if __name__ == "__main__":
