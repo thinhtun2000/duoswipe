@@ -1,10 +1,5 @@
 <body>
   <div class="row">
-    <img
-      class="img-fluid"
-      src="https://images.contentstack.io/v3/assets/blt731acb42bb3d1659/blt0060849db5c9144a/62bdda094673394f64680347/00_Header_SG2.jpg"
-      style="opacity: 0.8"
-    />
     <div
       class="d-flex flex-row align-self-start justify-content-center"
       style="position: absolute; margin-top: 10rem"
@@ -33,15 +28,16 @@
     </div>
   </div>
 </body>
+
 <!-- Modal -->
 <div
-  class="modal modal-lg fade"
+  class="modal modal-md fade"
   id="exampleModal"
   tabindex="-1"
   aria-labelledby="exampleModalLabel"
   aria-hidden="true"
 >
-  <div class="modal-dialog modal-dialog-centered">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
     <div class="modal-content">
       <div class="modal-header">
         <h3 class="modal-title text-center" id="exampleModalLabel">
@@ -62,7 +58,7 @@
               <div>
                 <button
                   type="button"
-                  class="btn btn-secondary"
+                  class="btn btn-outline-dark"
                   routerLink="/auth"
                   data-bs-dismiss="modal"
                 >
@@ -75,7 +71,7 @@
               <div>
                 <button
                   type="button"
-                  class="btn btn-primary"
+                  class="btn btn-outline-primary"
                   routerLink="register"
                 >
                   Sign up
