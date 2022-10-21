@@ -180,7 +180,7 @@ def login():
 
 
         # check password
-        if user is not None and user_info['password'] == user.password: #['password']:
+        if user is not None and user_info['password'] == user.password:
             login_user(user)
             return {'status': 'success', 'user_id': user.user_id}
         else:
