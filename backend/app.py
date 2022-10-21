@@ -7,7 +7,7 @@ from flask_login import LoginManager, login_user, logout_user, login_required
 DIALECT = 'mysql'
 DRIVER = 'pymysql'
 USERNAME = 'root'
-PASSWORD = 'root'
+PASSWORD = ''
 HOST = '127.0.0.1'
 PORT = '3306'
 DATABASE = 'duoswipe'
@@ -176,12 +176,13 @@ def login():
         user_info = request.get_json()
         user_email = user_info['email']
         user = User.query.filter(User.email == user_email).first()
-        user = User.as_dict(user)
+        # user = User.as_dict(user)
+
 
         # check password
-        if user is not None and user_info['password'] == user['password']:
+        if user is not None and user_info['password'] == user.password: #['password']:
             login_user(user)
-            return {'status': 'success', 'user_id': user['user_id']}
+            return {'status': 'success', 'user_id': user.user_id}
         else:
             return 'fail'
     # GET
@@ -253,4 +254,6 @@ def return_user_matched(user_id_1):
 
 
 if __name__ == "__main__":
+    app.secret_key = 'super secret key'
+    app.config['SESSION_TYPE'] = 'filesystem'
     app.run(debug=True)
