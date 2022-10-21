@@ -14,6 +14,7 @@ import { NotFoundComponent } from './pages/error-pages/not-found/not-found.compo
 import { ErrorCardComponent } from './components/error-card/error-card/error-card.component';
 import { MatchPageComponent } from './pages/match-page/match-page.component';
 import { SwipePageComponent } from './pages/swipe-page/swipe-page.component';
+import { ProfileCardComponent } from './components/profile-card/profile-card.component';
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import { SwipePageComponent } from './pages/swipe-page/swipe-page.component';
     ErrorCardComponent,
     MatchPageComponent,
     SwipePageComponent,
+    ProfileCardComponent,
   ],
   imports: [
     CommonModule,

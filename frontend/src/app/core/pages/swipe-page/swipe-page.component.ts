@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { User } from '../../models/user';
+import { SwipeService } from '../../services/swipe/swipe.service';
 
 @Component({
   selector: 'app-swipe-page',
@@ -7,24 +8,16 @@ import { User } from '../../models/user';
   styleUrls: ['./swipe-page.component.scss'],
 })
 export class SwipePageComponent implements OnInit {
-  public users: Array<User> = [
-    {
-      user_id: '',
-      name: '',
-      password: '',
-      email: '',
-      language_id: 1,
-      location_id: 1,
-      pref_pos: 1,
-      pref_lang: 1,
-      pref_day: '',
-      pref_time: '',
-      pos_1: 1,
-      pos_2: 1,
-    },
-  ];
+  public users: User[];
+  public index: number = 0;
+  @Output() changeUser: EventEmitter<number> = new EventEmitter<number>();
 
-  constructor() {}
+  constructor(private swipeSvc: SwipeService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.swipeSvc.getUsers().subscribe((response) => {
+      this.users = response;
+      console.log(response);
+    });
+  }
 }
