@@ -210,6 +210,42 @@ def return_user():
             return 'There was an issue getting your information'
 
 
+@app.route('/signup', methods=['POST', 'GET'])
+def signup():
+    if request.method == 'POST':
+        name = request.form['name']
+        pwd = request.form['password']
+        email = request.form['email']
+        try:
+            create_user(name, pwd, email)
+            return redirect('/')
+        except:
+            return 'There was an issue'
+
+
+# Matching algorithm
+def matching(user: User):
+    # language_id = db.Column(db.INTEGER)
+    # location_id = db.Column(db.INTEGER)
+    # pref_pos = db.Column(db.INTEGER)
+    # pref_lang = db.Column(db.INTEGER)
+    # pref_day = db.Column(db.String(16))
+    # pref_time = db.Column(db.String(16))
+    # pos_1 = db.Column(db.INTEGER)
+    # pos_2 = db.Column(db.INTEGER)
+
+    total_score = 100
+    weights = [1, 1, 1, 1, 1, 1, 1]
+    current_score = total_score
+    other_users = User.query.order_by(User.user_id).all()
+
+    # result will be a list of user_id
+    result = []
+    return result
+
+
+
+
 
 class Match(db.Model):
     __tablename__ = 'matches'
