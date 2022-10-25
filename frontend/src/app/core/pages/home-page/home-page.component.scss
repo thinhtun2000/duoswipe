@@ -2,8 +2,9 @@ body {
   background-image: url("https://images.contentstack.io/v3/assets/blt731acb42bb3d1659/blt0060849db5c9144a/62bdda094673394f64680347/00_Header_SG2.jpg");
   background-repeat: no-repeat;
   background-attachment: fixed;
-  background-size: auto 100%;
-  min-height: 100vh;
+  background-size: 100% 100%;
+  min-height: calc(100vh - 100px);
+  height: auto;
   padding: 0;
   opacity: 0.8;
 }
