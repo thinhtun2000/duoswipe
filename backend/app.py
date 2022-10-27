@@ -169,7 +169,7 @@ def load_user(user_id):
 
 
 @app.route('/login', methods=['GET', 'POST'])
-@cross_origin(origin='localhost',headers=['Content- Type','Authorization'])
+@cross_origin(origin='localhost', headers=['Content- Type','Authorization'])
 def login():
     if request.method == 'POST':
         # query user
@@ -223,52 +223,55 @@ def signup():
             return 'There was an issue'
 
 
+def compare(value_1, value_2):
+    if value_1 is None or value_2 is None:
+        return 0
+    if int(value_1) == int(value_2):
+        return 1
+    else:
+        return 0
+
+
 # Matching algorithm
 def matching(user: User):
-    # language_id = db.Column(db.INTEGER)
-    # location_id = db.Column(db.INTEGER)
-    # pref_pos = db.Column(db.INTEGER)
-    # pref_lang = db.Column(db.INTEGER)
-    # pref_day = db.Column(db.String(16))
-    # pref_time = db.Column(db.String(16))
-    # pos_1 = db.Column(db.INTEGER)
-    # pos_2 = db.Column(db.INTEGER)
+    # 0. location  location_id  int
+    # 1. position  pref_pos     int
+    #              pos_1        int
+    #              pos_2        int
+    # 2. language  pref_lang    int
+    #              language_id  int
+    # 3. day       pref_day     String(16): later on
+    # 4. time      pref_time    String(16): later on
+    # 5. rank: later on
 
-    total_score = 100
-    weights = [1, 1, 1, 1, 1, 1, 1]
-    current_score = total_score
-    other_users = User.query.order_by(User.user_id).all()
+    # index -- 0  1  2  3  4  5
+    weights = [1, 1, 1, 1, 1, 1]
+    target_users = User.query.order_by(User.user_id).all()
+    result = []  # return a list of user that has scores from highest to lowest
 
-    # result will be a list of user_id
-    result = []
-    return result
+    for curr_target in target_users:
+        # do not match with yourself
+        if curr_target.user_id == user.user_id:
+            continue
+
+        # generate a score for every target_user
+        score = 0
+        score = score + weights[0] * compare(user.location_id, curr_target.location_id)
+        score = score + weights[1] * compare(user.pref_pos, curr_target.pos_1)
+        score = score + weights[1] * compare(user.pref_pos, curr_target.pos_2)
+        score = score + weights[2] * compare(user.pref_lang, curr_target.language_id)
+
+        # elements are tuples: (score, user_id)
+        result.append((score, curr_target.user_id))
+
+    result = sorted(result, key=lambda x: x[0], reverse=True)  # sort
+    result_id = [x[1] for x in result]  # only return user_id
+
+    return result_id
 
 
+from matches import Match
 
-
-
-class Match(db.Model):
-    __tablename__ = 'matches'
-    match_id = db.Column(db.INTEGER, primary_key=True, autoincrement=True)
-    user_id_1 = db.Column(db.INTEGER)
-    user_id_2 = db.Column(db.INTEGER)
-    user1_match = db.Column(db.BOOLEAN)
-    user2_match = db.Column(db.BOOLEAN)
-
-    def __repr__(self):
-        return 'Match %r' % self.match_id
-
-
-# Insert into 'match'
-def create_match(user_id_1=None, user_id_2=None, user1_match=None, user2_match=None):
-    match = Match()
-    match.user_id_1 = user_id_1
-    match.user_id_2 = user_id_2
-    match.user1_match = user1_match
-    match.user2_match = user2_match
-
-    db.session.add(match)
-    db.session.commit()
 
 @app.route('/matched//<int:user_id_1>', methods=['GET', 'POST'])
 # matched user
@@ -280,12 +283,6 @@ def return_user_matched(user_id_1):
 
         except:
             return 'There was an issue getting your information'
-
-
-
-
-
-
 
 
 if __name__ == "__main__":
