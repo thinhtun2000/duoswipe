@@ -1,5 +1,5 @@
 <header>
-  <nav class="navbar navbar-expand-md shadow-sm">
+  <nav class="navbar navbar-expand-md shadow-sm bg-*">
     <div class="container">
       <div class="headerDiv">
         <a class="navbar-brand order-2" routerLink="home">DuoSwipe</a>
@@ -92,12 +92,12 @@
   </nav>
 </header>
 
-<main class="py-5 m-0">
+<main>
   <router-outlet></router-outlet>
 </main>
 
 <footer class="bg-light py-3">
-  <div style="text-align:center;">
+  <div style="text-align: center">
     Copyright &copy; {{ currentDate | date: "y" }} | All rights reserved.
   </div>
 </footer>

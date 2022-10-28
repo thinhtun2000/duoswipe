@@ -2,6 +2,7 @@ from flask import render_template, request, redirect
 from flask_cors import cross_origin
 from flask_login import LoginManager, login_user, logout_user, login_required
 
+
 # # Connect to Mysql
 # DIALECT = 'mysql'
 # DRIVER = 'pymysql'
@@ -25,6 +26,7 @@ from flask_login import LoginManager, login_user, logout_user, login_required
 
 
 from connToDB import db, app, cors
+
 
 
 # Table 'users'
@@ -178,12 +180,13 @@ def login():
         user_info = request.get_json()
         user_email = user_info['email']
         user = User.query.filter(User.email == user_email).first()
-        user = User.as_dict(user)
+        # user = User.as_dict(user)
+
 
         # check password
-        if user is not None and user_info['password'] == user['password']:
+        if user is not None and user_info['password'] == user.password:
             login_user(user)
-            return {'status': 'success', 'user_id': user['user_id']}
+            return {'status': 'success', 'user_id': user.user_id}
         else:
             return 'fail'
     # GET
@@ -295,4 +298,6 @@ def return_user_matched(user_id):
 
 
 if __name__ == "__main__":
+    app.secret_key = 'super secret key'
+    app.config['SESSION_TYPE'] = 'filesystem'
     app.run(debug=True)

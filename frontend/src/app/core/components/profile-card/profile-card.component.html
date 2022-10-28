@@ -1,0 +1,42 @@
+<div
+  class="d-flex flex-col justify-content-center align-items-center flex-grow-1"
+>
+  <button class="btn btn-outline-danger" (click)="onClick()">
+    <i class="bi bi-x-circle" style="font-size: 75px"></i>
+  </button>
+</div>
+<div class="d-flex flex-col">
+  <div
+    class="card mt-5"
+    style="
+      width: 400px;
+      background-color: transparent;
+      border-color: transparent;
+    "
+  >
+    <img
+      src="../../assets/images/card.png"
+      width="400px"
+      height="600px"
+      style="border-radius: 2%"
+    />
+    <div
+      style="
+        position: absolute;
+        left: 50px;
+        bottom: 25px;
+        color: white;
+        font-size: 40px;
+      "
+    >
+      {{ users[index].name | titlecase }}
+    </div>
+  </div>
+</div>
+<div
+  class="d-flex flex-col justify-content-center align-items-center flex-grow-1"
+>
+  <button class="btn btn-outline-success" (click)="onClick()">
+    <i class="bi bi-check-circle" style="font-size: 75px"></i>
+  </button>
+</div>
