@@ -1,6 +1,5 @@
-from flask import Flask, render_template, request, redirect
-from flask_sqlalchemy import SQLAlchemy
-from flask_cors import CORS, cross_origin
+from flask import render_template, request, redirect
+from flask_cors import cross_origin
 from flask_login import LoginManager, login_user, logout_user, login_required
 
 # # Connect to Mysql
@@ -25,7 +24,8 @@ from flask_login import LoginManager, login_user, logout_user, login_required
 # db = SQLAlchemy(app)
 
 
-from connToDB import db, app
+from connToDB import db, app, cors
+
 
 # Table 'users'
 class User(db.Model):
@@ -171,7 +171,7 @@ def load_user(user_id):
 
 
 @app.route('/login', methods=['GET', 'POST'])
-@cross_origin(origin='localhost', headers=['Content- Type','Authorization'])
+@cross_origin(origin='localhost', headers=['Content- Type', 'Authorization'])
 def login():
     if request.method == 'POST':
         # query user
