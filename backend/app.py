@@ -3,27 +3,29 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS, cross_origin
 from flask_login import LoginManager, login_user, logout_user, login_required
 
-# Connect to Mysql
-DIALECT = 'mysql'
-DRIVER = 'pymysql'
-USERNAME = 'root'
-PASSWORD = 'root'
-HOST = '127.0.0.1'
-PORT = '3306'
-DATABASE = 'duoswipe'
-URI = '{}+{}://{}:{}@{}:{}/{}?charset=UTF8MB4'.format(
-    DIALECT, DRIVER, USERNAME, PASSWORD, HOST, PORT, DATABASE
-)
+# # Connect to Mysql
+# DIALECT = 'mysql'
+# DRIVER = 'pymysql'
+# USERNAME = 'root'
+# PASSWORD = 'Crd19991206.'
+# HOST = '127.0.0.1'
+# PORT = '3306'
+# DATABASE = 'duoswipe'
+# URI = '{}+{}://{}:{}@{}:{}/{}?charset=UTF8MB4'.format(
+#     DIALECT, DRIVER, USERNAME, PASSWORD, HOST, PORT, DATABASE
+# )
+#
+# app = Flask(__name__)
+# app.config['SQLALCHEMY_DATABASE_URI'] = URI
+# app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+# app.config['CORS_HEADERS'] = 'Content-Type'
+#
+# cors = CORS(app, origins=["http://localhost:4200"])
+#
+# db = SQLAlchemy(app)
 
-app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = URI
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['CORS_HEADERS'] = 'Content-Type'
 
-cors = CORS(app, origins=["http://localhost:4200"])
-
-db = SQLAlchemy(app)
-
+from connToDB import db, app
 
 # Table 'users'
 class User(db.Model):
@@ -273,14 +275,21 @@ def matching(user: User):
 from matches import Match
 
 
-@app.route('/matched//<int:user_id_1>', methods=['GET', 'POST'])
+@app.route('/matched/<int:user_id>', methods=['GET', 'POST'])
 # matched user
-def return_user_matched(user_id_1):
+def return_user_matched(user_id):
     if request.method == 'GET':
         try:
-            if Match.user1_match == True and Match.user2_match == True:
-                users = User.query.order_by(Match.user_id_2).all()
-
+            matches_1 = Match.query.filter(Match.user_id_1 == user_id).all()
+            matches_2 = Match.query.filter(Match.user_id_2 == user_id).all()
+            results = []
+            for M in matches_1:
+                if M.user1_match is True and M.user2_match is True:
+                    results.append(User.as_dict(load_user(M.user_id_2)))
+            for M in matches_2:
+                if M.user1_match is True and M.user2_match is True:
+                    results.append(User.as_dict(load_user(M.user_id_1)))
+            return results
         except:
             return 'There was an issue getting your information'
 
