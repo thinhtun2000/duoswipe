@@ -8,7 +8,7 @@ import { User } from '../../models/user';
 })
 export class ProfileCardComponent implements OnInit {
   @Input() users: User[];
-  public index: number = 0;
+  public index: number = 1;
 
   constructor() {}
 
