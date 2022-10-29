@@ -1,3 +1,46 @@
-<div class="d-flex flex-row justify-content-center">
-  <app-profile-card [users]="users" (newIndex)="($event)"> </app-profile-card>
+<div class="d-flex flex-column align-items-center" style="margin-top: 10vh">
+  <div class="d-flex flex-row align-items-center">
+    <div id="swiper">
+      <div
+        id="first"
+        class="card no-select"
+        style="--i: 0"
+        (mousedown)="handleMousePress($event)"
+      >
+        <img
+          draggable="false"
+          src="https://source.unsplash.com/random/1000x1000/?gamer"
+          alt=""
+        />
+      </div>
+      <div class="card" style="--i: 1">
+        <img
+          draggable="false"
+          src="https://source.unsplash.com/random/1000x1000/?pc"
+          alt=""
+        />
+      </div>
+      <div class="card" style="--i: 2">
+        <img
+          draggable="false"
+          src="https://source.unsplash.com/random/1000x1000/?tech"
+          alt=""
+        />
+      </div>
+      <div class="card" style="--i: 3">
+        <img
+          draggable="false"
+          src="https://source.unsplash.com/random/1000x1000/?keyboard"
+          alt=""
+        />
+      </div>
+      <div class="card" style="--i: 4">
+        <img
+          draggable="false"
+          src="https://source.unsplash.com/random/1000x1000/?game"
+          alt=""
+        />
+      </div>
+    </div>
+  </div>
 </div>
