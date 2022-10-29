@@ -1,28 +1,32 @@
-from flask import Flask, render_template, request, redirect
-from flask_sqlalchemy import SQLAlchemy
-from flask_cors import CORS, cross_origin
+from flask import render_template, request, redirect
+from flask_cors import cross_origin
 from flask_login import LoginManager, login_user, logout_user, login_required
 
-# Connect to Mysql
-DIALECT = 'mysql'
-DRIVER = 'pymysql'
-USERNAME = 'root'
-PASSWORD = ''
-HOST = '127.0.0.1'
-PORT = '3306'
-DATABASE = 'duoswipe'
-URI = '{}+{}://{}:{}@{}:{}/{}?charset=UTF8MB4'.format(
-    DIALECT, DRIVER, USERNAME, PASSWORD, HOST, PORT, DATABASE
-)
 
-app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = URI
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['CORS_HEADERS'] = 'Content-Type'
+# # Connect to Mysql
+# DIALECT = 'mysql'
+# DRIVER = 'pymysql'
+# USERNAME = 'root'
+# PASSWORD = 'Crd19991206.'
+# HOST = '127.0.0.1'
+# PORT = '3306'
+# DATABASE = 'duoswipe'
+# URI = '{}+{}://{}:{}@{}:{}/{}?charset=UTF8MB4'.format(
+#     DIALECT, DRIVER, USERNAME, PASSWORD, HOST, PORT, DATABASE
+# )
+#
+# app = Flask(__name__)
+# app.config['SQLALCHEMY_DATABASE_URI'] = URI
+# app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+# app.config['CORS_HEADERS'] = 'Content-Type'
+#
+# cors = CORS(app, origins=["http://localhost:4200"])
+#
+# db = SQLAlchemy(app)
 
-cors = CORS(app, origins=["http://localhost:4200"])
 
-db = SQLAlchemy(app)
+from connToDB import db, app, cors
+
 
 
 # Table 'users'
@@ -169,7 +173,7 @@ def load_user(user_id):
 
 
 @app.route('/login', methods=['GET', 'POST'])
-@cross_origin(origin='localhost',headers=['Content- Type','Authorization'])
+@cross_origin(origin='localhost', headers=['Content- Type', 'Authorization'])
 def login():
     if request.method == 'POST':
         # query user
@@ -211,46 +215,86 @@ def return_user():
             return 'There was an issue getting your information'
 
 
+@app.route('/signup', methods=['POST', 'GET'])
+def signup():
+    if request.method == 'POST':
+        name = request.form['name']
+        pwd = request.form['password']
+        email = request.form['email']
+        try:
+            create_user(name, pwd, email)
+            return redirect('/')
+        except:
+            return 'There was an issue'
 
-class Match(db.Model):
-    __tablename__ = 'matches'
-    match_id = db.Column(db.INTEGER, primary_key=True, autoincrement=True)
-    user_id_1 = db.Column(db.INTEGER)
-    user_id_2 = db.Column(db.INTEGER)
-    user1_match = db.Column(db.BOOLEAN)
-    user2_match = db.Column(db.BOOLEAN)
 
-    def __repr__(self):
-        return 'Match %r' % self.match_id
+def compare(value_1, value_2):
+    if value_1 is None or value_2 is None:
+        return 0
+    if int(value_1) == int(value_2):
+        return 1
+    else:
+        return 0
 
 
-# Insert into 'match'
-def create_match(user_id_1=None, user_id_2=None, user1_match=None, user2_match=None):
-    match = Match()
-    match.user_id_1 = user_id_1
-    match.user_id_2 = user_id_2
-    match.user1_match = user1_match
-    match.user2_match = user2_match
+# Matching algorithm
+def matching(user: User):
+    # 0. location  location_id  int
+    # 1. position  pref_pos     int
+    #              pos_1        int
+    #              pos_2        int
+    # 2. language  pref_lang    int
+    #              language_id  int
+    # 3. day       pref_day     String(16): later on
+    # 4. time      pref_time    String(16): later on
+    # 5. rank: later on
 
-    db.session.add(match)
-    db.session.commit()
+    # index -- 0  1  2  3  4  5
+    weights = [1, 1, 1, 1, 1, 1]
+    target_users = User.query.order_by(User.user_id).all()
+    result = []  # return a list of user that has scores from highest to lowest
 
-@app.route('/matched//<int:user_id_1>', methods=['GET', 'POST'])
+    for curr_target in target_users:
+        # do not match with yourself
+        if curr_target.user_id == user.user_id:
+            continue
+
+        # generate a score for every target_user
+        score = 0
+        score = score + weights[0] * compare(user.location_id, curr_target.location_id)
+        score = score + weights[1] * compare(user.pref_pos, curr_target.pos_1)
+        score = score + weights[1] * compare(user.pref_pos, curr_target.pos_2)
+        score = score + weights[2] * compare(user.pref_lang, curr_target.language_id)
+
+        # elements are tuples: (score, user_id)
+        result.append((score, curr_target.user_id))
+
+    result = sorted(result, key=lambda x: x[0], reverse=True)  # sort
+    result_id = [x[1] for x in result]  # only return user_id
+
+    return result_id
+
+
+from matches import Match
+
+
+@app.route('/matched/<int:user_id>', methods=['GET', 'POST'])
 # matched user
-def return_user_matched(user_id_1):
+def return_user_matched(user_id):
     if request.method == 'GET':
         try:
-            if Match.user1_match == True and Match.user2_match == True:
-                users = User.query.order_by(Match.user_id_2).all()
-
+            matches_1 = Match.query.filter(Match.user_id_1 == user_id).all()
+            matches_2 = Match.query.filter(Match.user_id_2 == user_id).all()
+            results = []
+            for M in matches_1:
+                if M.user1_match is True and M.user2_match is True:
+                    results.append(User.as_dict(load_user(M.user_id_2)))
+            for M in matches_2:
+                if M.user1_match is True and M.user2_match is True:
+                    results.append(User.as_dict(load_user(M.user_id_1)))
+            return results
         except:
             return 'There was an issue getting your information'
-
-
-
-
-
-
 
 
 if __name__ == "__main__":

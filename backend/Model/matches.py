@@ -1,5 +1,5 @@
-from flask import Flask, render_template, request
-from app import db, app
+from connToDB import db
+
 
 # Table 'matches'
 class Match(db.Model):
