@@ -1,6 +1,7 @@
 import { Component, ElementRef, OnInit } from '@angular/core';
 import { Point } from '../../models/point';
 import { User } from '../../models/user';
+import { MatchingService } from '../../services/matching/matching.service';
 import { SwipeService } from '../../services/swipe/swipe.service';
 
 @Component({
@@ -16,7 +17,11 @@ export class SwipePageComponent implements OnInit {
   public static startPoint: any;
   public moved = false;
 
-  constructor(private swipeSvc: SwipeService, private element: ElementRef) {}
+  constructor(
+    private swipeSvc: SwipeService,
+    private element: ElementRef,
+    private matching: MatchingService
+  ) {}
 
   ngOnInit(): void {
     this.swipeSvc.getUsers().subscribe((response) => {
@@ -25,43 +30,11 @@ export class SwipePageComponent implements OnInit {
     });
   }
 
-  public swipeLeft() {
-    const card = document.getElementById('first')!;
-    card.animate(
-      [
-        // keyframes
-        { transform: 'translateX(0px) translateY(0px) rotate(0deg)' },
-        { transform: 'translateX(-500px) translateY(200px) rotate(-70deg)' },
-      ],
-      {
-        // timing options
-        duration: 500,
-        iterations: 1,
-      }
-    );
-  }
-
-  public swipeRight() {
-    const card = document.getElementById('first')!;
-    card.animate(
-      [
-        // keyframes
-        { transform: 'translateX(0px) translateY(0px) rotate(0deg)' },
-        { transform: 'translateX(500px) translateY(200px) rotate(70deg)' },
-      ],
-      {
-        // timing options
-        duration: 500,
-        iterations: 1,
-      }
-    );
-  }
-
   public handleMousePress(event: MouseEvent) {
     SwipePageComponent.startPoint = { x: event.x, y: event.y };
+    // Mouse could be up before it ever moves
     document.addEventListener('mouseup', this.handleMouseUp);
     document.addEventListener('mousemove', this.handleMouseMove, true);
-    //document.getElementById('first')!.onmousemove = this.handleMouseMove;
   }
 
   public handleMouseMove(event: MouseEvent) {
@@ -69,22 +42,38 @@ export class SwipePageComponent implements OnInit {
     if (SwipePageComponent.startPoint != null) {
       this.offsetX = event.x - SwipePageComponent.startPoint.x;
       this.offsetY = event.y - SwipePageComponent.startPoint.y;
-      if (Math.abs(this.offsetX) > card.clientWidth * 0.7) {
-        () => {
-          document.getElementById(
-            'first'
-          )!.style.transform = `translate(0px, 0px) rotate(0deg)`;
-        };
-      }
       const rotate = this.offsetX * 0.1;
       card.style.transform = `translate(${this.offsetX}px, ${this.offsetY}px) rotate(${rotate}deg)`;
     }
   }
 
   public handleMouseUp(event: MouseEvent) {
-    SwipePageComponent.startPoint = null;
-    document.removeEventListener('mousemove', this.handleMouseMove, true);
-    //document.getElementById('first')!.onmousemove = null;
-    document.getElementById('first')!.style.transform = '';
+    const card = document.getElementById('first')!;
+    console.log(event.x);
+    if (
+      event.x > SwipePageComponent.startPoint.x &&
+      event.x - SwipePageComponent.startPoint.x > card.clientWidth * 0.4
+    ) {
+      console.log('right');
+      () => this.handleSwipeRight();
+    } else if (
+      event.x < SwipePageComponent.startPoint.x &&
+      SwipePageComponent.startPoint.x - event.x > card.clientWidth * 0.4
+    ) {
+      console.log('left');
+      () => this.handleSwipeLeft();
+    } else {
+      SwipePageComponent.startPoint = null;
+      document.removeEventListener('mousemove', this.handleMouseMove, true);
+      document.getElementById('first')!.style.transform = '';
+    }
+  }
+
+  public handleSwipeRight(): void {
+    console.log('swiped right');
+  }
+
+  public handleSwipeLeft(): void {
+    console.log('swipe left');
   }
 }
