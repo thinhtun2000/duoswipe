@@ -182,7 +182,6 @@ def login():
         user = User.query.filter(User.email == user_email).first()
         # user = User.as_dict(user)
 
-
         # check password
         if user is not None and user_info['password'] == user.password:
             login_user(user)
@@ -275,6 +274,20 @@ def matching(user: User):
     return result_id
 
 
+@app.route('/match/<int:user_id>', methods=['POST', 'GET'])
+def match(user_id):
+    if request.method == 'GET':
+        try:
+            user = load_user(user_id)
+            return_users = matching(user)
+            if return_users is None:
+                return {'type': 'user_id', 'content': []}
+            else:
+                return {'type': 'user_id', 'content': return_users}
+        except:
+            return 'Error'
+
+
 sys.path.insert(0, '../../duoswipe/backend/Model')
 from matches import Match
 
@@ -296,6 +309,35 @@ def return_user_matched(user_id):
             return results
         except:
             return 'There was an issue getting your information'
+
+
+@app.route('/matched_update/<int:id_1>/<int:id_2>', methods=['GET', 'POST'])
+def matched_update(id_1, id_2):
+    if request.method == 'GET':
+        id_1 = int(id_1)
+        id_2 = int(id_2)
+        # id_1 should be smaller than id_2
+        if id_1 > id_2:
+            temp = id_1
+            id_1 = id_2
+            id_2 = temp
+
+        try:
+            # check if the table exist
+            match_tbs = Match.query.filter(Match.user_id_1 == id_1).all()
+            if match_tbs is None:
+                return {'message': 'Table does not exist'}
+            for tb in match_tbs:
+                if int(tb.user_id_2) == id_2:
+                    tb.user1_match = True
+                    db.session.commit()
+                    if tb.user2_match is True:
+                        return {'type': 'bool', 'content': True}
+                    else:
+                        return {'type': 'bool', 'content': False}
+            return {'message': 'Table does not exist'}
+        except:
+            return 'There was an issue updating your matched table'
 
 
 if __name__ == "__main__":
