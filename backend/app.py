@@ -1,7 +1,7 @@
 from flask import render_template, request, redirect
 from flask_cors import cross_origin
 from flask_login import LoginManager, login_user, logout_user, login_required
-
+import sys
 
 # # Connect to Mysql
 # DIALECT = 'mysql'
@@ -288,6 +288,7 @@ def match(user_id):
             return 'Error'
 
 
+sys.path.insert(0, '../../duoswipe/backend/Model')
 from matches import Match
 
 

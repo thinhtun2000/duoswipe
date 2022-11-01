@@ -1,4 +1,4 @@
-<div
+<!-- <div
   class="d-flex flex-col justify-content-center align-items-center flex-grow-1"
 >
   <button class="btn btn-outline-danger" (click)="onClick()">
@@ -39,4 +39,27 @@
   <button class="btn btn-outline-success" (click)="onClick()">
     <i class="bi bi-check-circle" style="font-size: 75px"></i>
   </button>
+</div> -->
+
+<!-- <div class="card" style="--i: 0">
+  <img src="https://source.unsplash.com/random/1000x1000/?gamer" alt="" />
 </div>
+<div class="card" style="--i: 1">
+  <img src="https://source.unsplash.com/random/1000x1000/?gamer" alt="" />
+</div>
+<div class="card" style="--i: 2">
+  <img src="https://source.unsplash.com/random/1000x1000/?gamer" alt="" />
+</div>
+<div class="card" style="--i: 3">
+  <img src="https://source.unsplash.com/random/1000x1000/?gamer" alt="" />
+</div>
+<div class="card" style="--i: 4">
+  <img src="https://source.unsplash.com/random/1000x1000/?gamer" alt="" />
+</div> -->
+
+<ng-container *ngFor="let user of users">
+  <div class="card" style="--i: index">
+    <img src="https://source.unsplash.com/random/1000x1000/?gamer" alt="" />
+    {{ user.name }}
+  </div>
+</ng-container>
