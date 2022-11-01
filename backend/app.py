@@ -182,7 +182,6 @@ def login():
         user = User.query.filter(User.email == user_email).first()
         # user = User.as_dict(user)
 
-
         # check password
         if user is not None and user_info['password'] == user.password:
             login_user(user)
@@ -273,6 +272,20 @@ def matching(user: User):
     result_id = [x[1] for x in result]  # only return user_id
 
     return result_id
+
+
+@app.route('/match/<int:user_id>', methods=['POST', 'GET'])
+def match(user_id):
+    if request.method == 'GET':
+        try:
+            user = load_user(user_id)
+            return_users = matching(user)
+            if return_users is None:
+                return {'type': 'user_id', 'content': []}
+            else:
+                return {'type': 'user_id', 'content': return_users}
+        except:
+            return 'Error'
 
 
 from matches import Match
