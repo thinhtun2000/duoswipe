@@ -310,6 +310,35 @@ def return_user_matched(user_id):
             return 'There was an issue getting your information'
 
 
+@app.route('/matched_update/<int:id_1>/<int:id_2>', methods=['GET', 'POST'])
+def matched_update(id_1, id_2):
+    if request.method == 'GET':
+        id_1 = int(id_1)
+        id_2 = int(id_2)
+        # id_1 should be smaller than id_2
+        if id_1 > id_2:
+            temp = id_1
+            id_1 = id_2
+            id_2 = temp
+
+        try:
+            # check if the table exist
+            match_tbs = Match.query.filter(Match.user_id_1 == id_1).all()
+            if match_tbs is None:
+                return {'message': 'Table does not exist'}
+            for tb in match_tbs:
+                if int(tb.user_id_2) == id_2:
+                    tb.user1_match = True
+                    db.session.commit()
+                    if tb.user2_match is True:
+                        return {'type': 'bool', 'content': True}
+                    else:
+                        return {'type': 'bool', 'content': False}
+            return {'message': 'Table does not exist'}
+        except:
+            return 'There was an issue updating your matched table'
+
+
 if __name__ == "__main__":
     app.secret_key = 'super secret key'
     app.config['SESSION_TYPE'] = 'filesystem'
