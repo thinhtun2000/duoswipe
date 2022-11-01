@@ -9,18 +9,20 @@ class Match(db.Model):
     user_id_2 = db.Column(db.INTEGER)
     user1_match = db.Column(db.BOOLEAN)
     user2_match = db.Column(db.BOOLEAN)
+    match = db.Column(db.BOOLEAN)
 
     def __repr__(self):
         return 'Match %r' % self.match_id
 
 
 # Insert into 'match'
-def create_match(user_id_1=None, user_id_2=None, user1_match=None, user2_match=None):
+def create_match(user_id_1=None, user_id_2=None, user1_match=None, user2_match=None, match=None):
     match = Match()
     match.user_id_1 = user_id_1
     match.user_id_2 = user_id_2
     match.user1_match = user1_match
     match.user2_match = user2_match
+    match.match = match
 
     db.session.add(match)
     db.session.commit()
