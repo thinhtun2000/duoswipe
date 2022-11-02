@@ -8,11 +8,11 @@ import { User } from '../../models/user';
   providedIn: 'root',
 })
 export class SwipeService {
-  private USERS_API = `${environment.apiBaseURL}user`;
+  private SWIPE_API = `${environment.apiBaseURL}match`;
 
   constructor(private http: HttpClient) {}
 
-  public getUsers(): Observable<User[]> {
-    return this.http.get<User[]>(`${this.USERS_API}`);
+  public getUsers(user_id: any): Observable<User[]> {
+    return this.http.get<User[]>(`${this.SWIPE_API}/${user_id}`);
   }
 }

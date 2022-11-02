@@ -12,6 +12,26 @@
           src="https://source.unsplash.com/random/1000x1000/?gamer"
           alt=""
         />
+        <div class="content">
+          <h1>{{ users[0].name | titlecase }}</h1>
+          <p>League of Legends</p>
+        </div>
+        <div class="like">
+          <img
+            id="like"
+            draggable="false"
+            src="../../../../assets/images/like.png"
+            alt=""
+          />
+        </div>
+        <div class="nope">
+          <img
+            id="nope"
+            draggable="false"
+            src="../../../../assets/images/nope.png"
+            alt=""
+          />
+        </div>
       </div>
       <div class="card" style="--i: 1">
         <img
@@ -19,6 +39,10 @@
           src="https://source.unsplash.com/random/1000x1000/?pc"
           alt=""
         />
+        <div class="content">
+          <h1>{{ users[1].name | titlecase }}</h1>
+          <p>League of Legends</p>
+        </div>
       </div>
       <div class="card" style="--i: 2">
         <img
