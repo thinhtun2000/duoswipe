@@ -16,13 +16,13 @@ class Match(db.Model):
 
 
 # Insert into 'match'
-def create_match(user_id_1=None, user_id_2=None, user1_match=None, user2_match=None, match=None):
+def create_match(user_id_1=None, user_id_2=None, user1_match=None, user2_match=None, match_h= None ):
     match = Match()
     match.user_id_1 = user_id_1
     match.user_id_2 = user_id_2
     match.user1_match = user1_match
     match.user2_match = user2_match
-    match.match = match
+    match.match_h = match_h
 
     db.session.add(match)
     db.session.commit()
