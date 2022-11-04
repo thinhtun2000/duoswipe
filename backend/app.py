@@ -190,6 +190,25 @@ def login():
     # GET
     return render_template('login.html')
 
+@app.route('/register', methods=['GET', 'POST'])
+@cross_origin(origin='localhost', headers=['Content- Type', 'Authorization'])
+def register():
+    if request.method == 'POST':
+        # query user
+        user_info = request.get_json()
+        user_email = user_info['email']
+        user = User.query.filter(User.email == user_email).first()
+        # user = User.as_dict(user)
+
+        # check password
+        if user is not None and user_info['password'] == user.password:
+            login_user(user)
+            return {'status': 'success', 'user_id': user.user_id}
+        else:
+            return 'fail'
+    # GET
+    return render_template('login.html')
+
 
 @app.route('/logout', methods=['GET', 'POST'])
 @login_required

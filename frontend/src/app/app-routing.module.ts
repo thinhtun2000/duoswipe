@@ -10,6 +10,7 @@ import { HomePageComponent } from './core/pages/home-page/home-page.component';
 import { UserProfileComponent } from './user/pages/user-profile/user-profile.component';
 import { MatchPageComponent } from './core/pages/match-page/match-page.component';
 import { SwipePageComponent } from './core/pages/swipe-page/swipe-page.component';
+import { RegisterComponent } from './auth/pages/register/register.component';
 
 const routes: Routes = [
   {
@@ -34,7 +35,7 @@ const routes: Routes = [
         loadChildren: () =>
           import('./user/user.module').then((m) => m.UserModule),
       },
-    ],
+    ], 
   },
   {
     path: '',
@@ -51,6 +52,10 @@ const routes: Routes = [
       {
         path: 'unauthorized',
         component: UnauthorizedComponent,
+      },
+      {
+        path: 'register',
+        component: RegisterComponent,
       },
     ],
   },
