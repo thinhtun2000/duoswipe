@@ -310,34 +310,37 @@ def return_user_matched(user_id):
             return 'There was an issue getting your information'
 
 
-@app.route('/matched_update/<int:id_1>', methods=['GET', 'POST'])
-def matched_update(id_1):
+@app.route('/matched_update', methods=['GET', 'POST'])
+def matched_update():
     if request.method == 'GET':
+        # receive an object {current_user: id, to_match_user: id}
         input_id = request.get_json()
-        id_2 = input_id['user_id']
+        id_1 = input_id['current_user']
+        id_2 = input_id['to_match_user']
+        # make sure they are int values
         id_1 = int(id_1)
         id_2 = int(id_2)
-        # id_1 should be smaller than id_2
-        flag_swiped = False
+        # id_1 must be the smaller integer
+        flag_swapped = False  # Record whether they swapped values
+        id_2_found = False  # Record if id_2 exist when id_1 = current_user
         if id_1 > id_2:
             temp = id_1
             id_1 = id_2
             id_2 = temp
-            flag_swiped = True
+            flag_swapped = True
 
         try:
-            id_2_found = False
             # check if the table exist
             match_tbs = Match.query.filter(Match.user_id_1 == id_1).all()
-            if match_tbs is None:
-                if flag_swiped:
+            if match_tbs is None:  # no match record
+                if flag_swapped:
                     create_match(id_1, id_2, False, True, False)
                 else:
                     create_match(id_1, id_2, True, False, False)
                 return {'type': 'bool', 'content': False}
 
             for tb in match_tbs:
-                if not flag_swiped:
+                if not flag_swapped:
                     if int(tb.user_id_2) == id_2:
                         id_2_found = True
                         tb.user1_match = True
@@ -346,14 +349,13 @@ def matched_update(id_1):
                             tb.match_h = True
                             db.session.commit()
                             return {'type': 'bool', 'content': True}
-                    else:
-                        tb.match_h = False
-                        db.session.commit()
-                        return {'type': 'bool', 'content': False}
-
-                if flag_swiped:
-                    if int(tb.user_id_1) == id_1:
-                        tb.user2_match = True
+                        else:
+                            tb.match_h = False
+                            db.session.commit()
+                            return {'type': 'bool', 'content': False}
+                else:  # flag_swapped is True
+                    if int(tb.user_id_2) == id_2:
+                        tb.user2_match = True  # id_2 is current_user that wanna match with id_1
                         db.session.commit()
                         if tb.user1_match is True:
                             tb.match_h = True
@@ -364,8 +366,8 @@ def matched_update(id_1):
                             db.session.commit()
                             return {'type': 'bool', 'content': False}
 
-            if not id_2_found:
-                if not flag_swiped:
+            if not id_2_found:  # no match record
+                if not flag_swapped:
                     create_match(id_1, id_2, True, False, False)
                 else:
                     create_match(id_1, id_2, False, True, False)
