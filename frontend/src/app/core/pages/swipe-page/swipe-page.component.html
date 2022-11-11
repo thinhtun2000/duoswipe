@@ -1,11 +1,31 @@
 <div class="d-flex flex-column align-items-center" style="margin-top: 10vh">
   <div class="d-flex flex-row align-items-center">
-    <div id="swiper">
+    <div id="swiper" *ngIf="users">
+      <!-- <div *ngFor="let user_id of users.slice().reverse(); let i = index">
+        <app-profile-card
+          [user_id]="user_id"
+          [index]="i"
+          [max]="max"
+          (newMatch)="submitNewMatch($event)"
+        ></app-profile-card>
+      </div> -->
+      <div class="card">
+        <img
+          draggable="false"
+          src="https://source.unsplash.com/random/1000x1000/?game"
+          alt=""
+        />
+        <div class="content">
+          <h1>{{ toMatch2.name | titlecase }}</h1>
+          <p>League of Legends nn</p>
+        </div>
+      </div>
       <div
         id="first"
-        class="card no-select"
-        style="--i: 0"
-        (mousedown)="handleMousePress($event)"
+        class="card"
+        (mousedown)="handleMouseDown($event)"
+        (mousemove)="handleMouseMove($event)"
+        (mouseup)="handleMouseUp($event)"
       >
         <img
           draggable="false"
@@ -13,7 +33,7 @@
           alt=""
         />
         <div class="content">
-          <h1>{{ users[0].name | titlecase }}</h1>
+          <h1>{{ toMatch1.name | titlecase }}</h1>
           <p>League of Legends</p>
         </div>
         <div class="like">
@@ -22,6 +42,7 @@
             draggable="false"
             src="../../../../assets/images/like.png"
             alt=""
+            style="opacity: 0"
           />
         </div>
         <div class="nope">
@@ -30,40 +51,9 @@
             draggable="false"
             src="../../../../assets/images/nope.png"
             alt=""
+            style="opacity: 0"
           />
         </div>
-      </div>
-      <div class="card" style="--i: 1">
-        <img
-          draggable="false"
-          src="https://source.unsplash.com/random/1000x1000/?pc"
-          alt=""
-        />
-        <div class="content">
-          <h1>{{ users[1].name | titlecase }}</h1>
-          <p>League of Legends</p>
-        </div>
-      </div>
-      <div class="card" style="--i: 2">
-        <img
-          draggable="false"
-          src="https://source.unsplash.com/random/1000x1000/?tech"
-          alt=""
-        />
-      </div>
-      <div class="card" style="--i: 3">
-        <img
-          draggable="false"
-          src="https://source.unsplash.com/random/1000x1000/?keyboard"
-          alt=""
-        />
-      </div>
-      <div class="card" style="--i: 4">
-        <img
-          draggable="false"
-          src="https://source.unsplash.com/random/1000x1000/?game"
-          alt=""
-        />
       </div>
     </div>
   </div>

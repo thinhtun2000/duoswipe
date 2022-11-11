@@ -1,5 +1,4 @@
 import { Component, ElementRef, OnInit } from '@angular/core';
-import { Point } from '../../models/point';
 import { User } from '../../models/user';
 import { MatchingService } from '../../services/matching/matching.service';
 import { SwipeService } from '../../services/swipe/swipe.service';
@@ -13,51 +12,41 @@ import { UserService } from '../../services/user/user.service';
 })
 export class SwipePageComponent implements OnInit {
   public user: User | null;
-  public users: User[];
-  public index: number = 0;
+  public users: any;
+  public max: number;
   public offsetX: number = 0;
   public offsetY: number = 0;
   public static startPoint: any;
-  public userToDisplay1: User;
-  public userToDisplay2: User;
+  public toMatch1: User;
+  public toMatch2: User;
 
   constructor(
     private swipeSvc: SwipeService,
     private userSvc: UserService,
-    private userApiSvc: UserApiService,
-    private element: ElementRef,
+    private userApi: UserApiService,
     private matching: MatchingService
   ) {}
 
   ngOnInit(): void {
+    // fetch info of the user who is swiping
     this.userSvc.user$.subscribe((user) => {
       this.user = user;
-      console.log(this.user);
-    });
-    this.swipeSvc.getUsers(this.user?.user_id).subscribe((response) => {
-      this.users = response;
-      console.log(response);
-    });
-    const like = document.getElementById('like')!;
-    const nope = document.getElementById('nope')!;
-    like.style.opacity = '0';
-    nope.style.opacity = '0';
-  }
-
-  public fetchNextUsers(id1: string, id2: string) {
-    this.userApiSvc.getUserById(id1).subscribe((user) => {
-      this.userToDisplay1 = user;
-    });
-    this.userApiSvc.getUserById(id2).subscribe((user) => {
-      this.userToDisplay2 = user;
+      this.swipeSvc.getUsers(this.user!.user_id).subscribe((response) => {
+        this.users = response.content;
+        this.max = this.users.length - 1;
+        // fetch info of the first 2 best match users
+        this.userApi.getUserById(this.users[0]).subscribe((user) => {
+          this.toMatch1 = user;
+        });
+        this.userApi.getUserById(this.users[1]).subscribe((user) => {
+          this.toMatch2 = user;
+        });
+      });
     });
   }
 
-  public handleMousePress(event: MouseEvent) {
+  public handleMouseDown(event: MouseEvent) {
     SwipePageComponent.startPoint = { x: event.x, y: event.y };
-    // Mouse could be up before it ever moves
-    document.addEventListener('mouseup', this.handleMouseUp);
-    document.addEventListener('mousemove', this.handleMouseMove, true);
   }
 
   public handleMouseMove(event: MouseEvent) {
@@ -72,7 +61,10 @@ export class SwipePageComponent implements OnInit {
       // if swipe right then show Like tag, if left show Pass tag
       const opacity = Math.abs(this.offsetX / (card.clientWidth * 0.4));
       if (this.offsetX > 0) like.style.opacity = `${opacity}`;
-      else nope.style.opacity = `${opacity}`;
+      else if (this.offsetX == 0) {
+        like.style.opacity = '0';
+        nope.style.opacity = '0';
+      } else nope.style.opacity = `${opacity}`;
     }
   }
 
@@ -80,38 +72,33 @@ export class SwipePageComponent implements OnInit {
     const card = document.getElementById('first')!;
     const like = document.getElementById('like')!;
     const nope = document.getElementById('nope')!;
-    console.log(event.x);
     if (
       event.x > SwipePageComponent.startPoint.x &&
-      event.x - SwipePageComponent.startPoint.x > 400
+      event.x - SwipePageComponent.startPoint.x > 250
     ) {
-      console.log('right');
-      () => this.handleSwipeRight();
+      this.swipeRight();
     } else if (
       event.x < SwipePageComponent.startPoint.x &&
-      SwipePageComponent.startPoint.x - event.x > 400
+      SwipePageComponent.startPoint.x - event.x > 250
     ) {
-      console.log('left');
-      () => this.handleSwipeLeft();
-    } else {
-      SwipePageComponent.startPoint = null;
-      document.removeEventListener('mousemove', this.handleMouseMove, true);
-      document.getElementById('first')!.style.transform = '';
-      like.style.opacity = `0`;
-      nope.style.opacity = `0`;
+      this.swipeLeft();
     }
+    SwipePageComponent.startPoint = null;
+    document.removeEventListener('mousemove', this.handleMouseMove, true);
+    document.getElementById('first')!.style.transform = '';
+    like.style.opacity = `0`;
+    nope.style.opacity = `0`;
   }
 
-  public handleSwipeRight(): void {
-    console.log('swiped right');
-    // register the match
-    // remove the card
-    // fetch new users[]
+  public swipeRight() {
+    console.log('right');
   }
 
-  public handleSwipeLeft(): void {
+  public swipeLeft() {
     console.log('swipe left');
-    // remove the card
-    // fetch new users[]
+  }
+
+  public submitNewMatch(user_to_match: any) {
+    console.log(user_to_match);
   }
 }

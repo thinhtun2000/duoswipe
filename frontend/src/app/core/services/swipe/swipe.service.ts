@@ -12,7 +12,7 @@ export class SwipeService {
 
   constructor(private http: HttpClient) {}
 
-  public getUsers(user_id: any): Observable<User[]> {
-    return this.http.get<User[]>(`${this.SWIPE_API}/${user_id}`);
+  public getUsers(user_id: any): Observable<any> {
+    return this.http.get<any>(`${this.SWIPE_API}/${user_id}`);
   }
 }

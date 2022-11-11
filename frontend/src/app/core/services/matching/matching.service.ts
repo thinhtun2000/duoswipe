@@ -8,7 +8,7 @@ import { UserService } from '../user/user.service';
   providedIn: 'root',
 })
 export class MatchingService {
-  private MATCHING_API = `${environment.apiBaseURL}matches_update/`;
+  private MATCHING_API = `${environment.apiBaseURL}matched_update/`;
 
   public user: User | null;
 
@@ -20,6 +20,7 @@ export class MatchingService {
   }
 
   public update_match(id_1: string, matchingObject: any) {
+    console.log('update match');
     return this.http.get(this.MATCHING_API + `${id_1}`, matchingObject);
   }
 }
