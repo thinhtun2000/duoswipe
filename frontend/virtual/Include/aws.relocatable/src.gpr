@@ -1,0 +1,189 @@
+------------------------------------------------------------------------------
+--                              Ada Web Server                              --
+--                                                                          --
+--                     Copyright (C) 2003-2014, AdaCore                     --
+--                                                                          --
+--  This is free software;  you can redistribute it  and/or modify it       --
+--  under terms of the  GNU General Public License as published  by the     --
+--  Free Software  Foundation;  either version 3,  or (at your option) any  --
+--  later version.  This software is distributed in the hope  that it will  --
+--  be useful, but WITHOUT ANY WARRANTY;  without even the implied warranty --
+--  of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU     --
+--  General Public License for  more details.                               --
+--                                                                          --
+--  You should have  received  a copy of the GNU General  Public  License   --
+--  distributed  with  this  software;   see  file COPYING3.  If not, go    --
+--  to http://www.gnu.org/licenses for a complete copy of the license.      --
+------------------------------------------------------------------------------
+
+with "../.build/projects/aws_xmlada";
+
+with "../shared";
+with "../include/include";
+with "../ssl/ssl";
+
+library project Src is
+
+   for Languages use ("Ada", "Project file", "Makefile");
+
+   for Source_Dirs use
+     ("core", "extended", "../templates_parser/src", "../config/src",
+      "../config/ssl", "../" & Shared.Target_Dir & "/setup/src", ".");
+
+   --  XMLAda Installed, add xsrc and soap directories
+
+   case Shared.XMLAda is
+      when "Installed" =>
+         for Source_Dirs use project'Source_Dirs &
+           ("xsrc", "soap", "../templates_parser/xsrc");
+      when "Disabled" =>
+         null;
+   end case;
+
+   --  For Windows OS native build add the Win32 directory
+
+   case Shared.S_Target is
+      when "Windows_NT" =>
+         for Languages use Project'Languages & ("C");
+         for Source_Dirs use Project'Source_Dirs & ("win32");
+
+      when "vxworks" =>
+         for Languages use Project'Languages & ("C");
+         for Source_Dirs use Project'Source_Dirs & ("poll");
+
+      when others =>
+         null;
+   end case;
+
+   for Object_Dir use "../" & Shared'Object_Dir & "/src";
+   for Library_Dir use "../" & Shared'Library_Dir & "/src";
+   for Leading_Library_Options use Shared.Leading_Library_Options;
+
+   case Shared.Library_Type is
+      when "static" =>
+         null;
+
+      when "relocatable" =>
+         case Shared.S_Target is
+            when "Windows_NT" =>
+               for Library_Options use ("-lwsock32", "-lws2_32");
+            when others =>
+               null;
+         end case;
+
+         case Shared.LDAP is
+            when "Installed" =>
+               case Shared.S_Target is
+                  when "Windows_NT" =>
+                     for Library_Options use
+                       Project'Library_Options & ("-lwldap32");
+                  when others =>
+                     for Library_Options use
+                       Project'Library_Options & ("-lldap");
+               end case;
+
+            when "Disabled" =>
+               null;
+         end case;
+   end case;
+
+   case Shared.LDAP is
+      when "Installed" =>
+         for Source_Dirs use Project'Source_Dirs & ("ldap");
+      when others =>
+           null;
+   end case;
+
+   for Library_Name use "aws_src";
+   for Library_Kind use Shared.Library_Type;
+
+   ---------
+   -- Ide --
+   ---------
+
+   package Ide renames Shared.IDE;
+
+   --------------
+   -- Compiler --
+   --------------
+
+   package Compiler renames Shared.Compiler;
+
+   -------------
+   -- Builder --
+   -------------
+
+   package Builder renames Shared.Builder;
+
+   ------------
+   -- Naming --
+   ------------
+
+   package Naming is
+
+      for Implementation_Suffix ("Makefile") use ".txt";
+      for Implementation_Exceptions ("Makefile") use ("Makefile");
+
+      -- Templates Parser
+
+      for Specification ("Templates_Parser.Configuration")
+        use "templates_parser-configuration__aws.ads";
+
+      for Implementation ("Templates_Parser.Input")
+        use "templates_parser-input__aws.adb";
+
+      for Implementation ("Templates_Parser_Tasking")
+        use "templates_parser_tasking__standard_tasking.adb";
+
+      --  SOCKLIB
+
+      for Implementation ("AWS.Net.Std")
+        use "aws-net-std__" & Shared.SOCKLIB & ".adb";
+
+      --  Poll
+
+      case Shared.S_Target is
+         when "Windows_NT" =>
+            for Implementation ("AWS.Net.Poll_Events.Wait")
+              use "aws-net-poll_events-wait__win32.adb";
+
+           when "vxworks" =>
+              for Implementation ("AWS.Net.Poll_Events.Wait")
+                use "aws-net-poll_events-wait__posix.adb";
+
+           when others =>
+              for Implementation ("AWS.Net.Poll_Events.Wait")
+                use "aws-net-poll_events-wait__native.adb";
+      end case;
+
+      --  SSL Lib
+
+      case Shared.Socket is
+         when "std" =>
+            for Implementation ("AWS.Net.SSL")
+              use "aws-net-ssl__dummy.adb";
+            for Specification ("AWS.Net.SSL.Certificate.Impl")
+              use "aws-net-ssl-certificate-impl__dummy.ads";
+            for Implementation ("AWS.Net.SSL.Certificate.Impl")
+              use "aws-net-ssl-certificate-impl__dummy.adb";
+
+         when "ssl"| "openssl" =>
+            for Implementation ("AWS.Net.SSL")
+              use "aws-net-ssl__openssl.adb";
+            for Specification ("AWS.Net.SSL.Certificate.Impl")
+              use "aws-net-ssl-certificate-impl__openssl.ads";
+            for Implementation ("AWS.Net.SSL.Certificate.Impl")
+              use "aws-net-ssl-certificate-impl__openssl.adb";
+
+         when "gnutls" =>
+            for Implementation ("AWS.Net.SSL")
+              use "aws-net-ssl__gnutls.adb";
+            for Specification ("AWS.Net.SSL.Certificate.Impl")
+              use "aws-net-ssl-certificate-impl__gnutls.ads";
+            for Implementation ("AWS.Net.SSL.Certificate.Impl")
+              use "aws-net-ssl-certificate-impl__gnutls.adb";
+      end case;
+
+   end Naming;
+
+end Src;

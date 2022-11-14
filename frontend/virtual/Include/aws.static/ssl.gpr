@@ -1,0 +1,76 @@
+------------------------------------------------------------------------------
+--                              Ada Web Server                              --
+--                                                                          --
+--                     Copyright (C) 2003-2014, AdaCore                     --
+--                                                                          --
+--  This is free software;  you can redistribute it  and/or modify it       --
+--  under terms of the  GNU General Public License as published  by the     --
+--  Free Software  Foundation;  either version 3,  or (at your option) any  --
+--  later version.  This software is distributed in the hope  that it will  --
+--  be useful, but WITHOUT ANY WARRANTY;  without even the implied warranty --
+--  of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU     --
+--  General Public License for  more details.                               --
+--                                                                          --
+--  You should have  received  a copy of the GNU General  Public  License   --
+--  distributed  with  this  software;   see  file COPYING3.  If not, go    --
+--  to http://www.gnu.org/licenses for a complete copy of the license.      --
+------------------------------------------------------------------------------
+
+with "../shared";
+
+with "crypto_lib";
+with "ssl_lib";
+
+library project SSL is
+
+   case Shared.Socket is
+      when "std" =>
+         for Languages use ("Ada", "Project file");
+         for Source_Dirs use (".", "../config/ssl");
+      when "gnutls" =>
+         for Languages use ("Ada", "Project file", "C");
+         for Source_Dirs use (".", "../config/ssl", "../config/ssl/gnutls");
+      when others =>
+         for Languages use ("Ada", "Project file", "C");
+         for Source_Dirs use (".", "../config/ssl", "../config/ssl/openssl");
+   end case;
+
+   for Object_Dir use "../" & Shared'Object_Dir & "/ssl";
+   for Library_Dir use "../" & Shared'Library_Dir & "/ssl";
+
+   for Library_Name use "aws_ssl";
+   for Library_Kind use Shared.Library_Type;
+   for Leading_Library_Options use Shared.Leading_Library_Options;
+
+   ---------
+   -- Ide --
+   ---------
+
+   package Ide renames Shared.Ide;
+
+   --------------
+   -- Compiler --
+   --------------
+
+   package Compiler renames Shared.Compiler;
+
+   ------------
+   -- Naming --
+   ------------
+
+   package Naming is
+
+      --  SSL Lib
+
+      case Shared.Socket is
+         when "std" =>
+            for Specification ("SSL.Thin") use "ssl-thin__dummy.ads";
+         when "ssl" | "openssl" =>
+            for Specification ("SSL.Thin") use "ssl-thin__openssl.ads";
+         when "gnutls" =>
+            for Specification ("SSL.Thin") use "ssl-thin__gnutls.ads";
+      end case;
+
+   end Naming;
+
+end SSL;

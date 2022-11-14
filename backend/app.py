@@ -1,7 +1,14 @@
 from flask import render_template, request, redirect
-from flask_cors import cross_origin
 from flask_login import LoginManager, login_user, logout_user, login_required
 import sys
+from flask import Flask 
+from flask_cors import CORS, cross_origin
+from flask_sqlalchemy import SQLAlchemy
+from connToDB import db, app, cors
+
+#from flask_socketio import SocketIO
+
+
 
  # Connect to Mysql
 DIALECT = 'mysql'
@@ -19,14 +26,16 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = URI
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['CORS_HEADERS'] = 'Content-Type'
-
+#CORS(app)
 cors = CORS(app, origins=["http://localhost:4200"])
 
 db = SQLAlchemy(app)
 
 
-from connToDB import db, app, cors
 
+#from flask import request
+#request.headers.get('Access-Control-Allow-Origin: *')
+#from flask import make_response
 
 # Table 'users'
 class User(db.Model):
@@ -117,6 +126,10 @@ def index():
         # display user information ordered by user_id
         users = User.query.order_by(User.user_id).all()
         return render_template('index.html', users=users)
+    
+    #r = make_response(render_template('index.html'))
+    #r.headers.set('Access-Control-Allow-Origin', "*")
+    #return r
 
 
 @app.route('/delete/<int:user_id>')
@@ -199,20 +212,18 @@ def login():
 def register():
     if request.method == 'POST':
         # query user
-        user_info = request.get_json()
-        user_email = user_info['email']
-        user = User.query.filter(User.email == user_email).first()
+        name = request.form['username']
+        pwd = request.form['password']
+        email = request.form['email']
         # user = User.as_dict(user)
 
-        # check password
-        if user is not None and user_info['password'] == user.password:
-            login_user(user)
-            return {'status': 'success', 'user_id': user.user_id}
-        else:
-            return 'fail'
+        try:
+            create_user(name, pwd, email)
+            return redirect('/login')
+        except:
+            return 'There was an issue with registering'
     # GET
-    return render_template('login.html')
-
+    return render_template('register.html')
 
 
 
@@ -241,19 +252,6 @@ def return_user():
             return 'There was an issue getting your information'
 
 
-@app.route('/signup', methods=['POST', 'GET'])
-def signup():
-    if request.method == 'POST':
-        name = request.form['name']
-        pwd = request.form['password']
-        email = request.form['email']
-        try:
-            create_user(name, pwd, email)
-            return redirect('/')
-        except:
-            return 'There was an issue'
-
-
 def compare(value_1, value_2):
     if value_1 is None or value_2 is None:
         return 0
@@ -264,7 +262,7 @@ def compare(value_1, value_2):
 
 
 # Matching algorithm
-def matching(user: User):
+def matching(user, User):
     # 0. location  location_id  int
     # 1. position  pref_pos     int
     #              pos_1        int

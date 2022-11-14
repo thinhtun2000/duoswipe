@@ -3,8 +3,10 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { catchError, of } from 'rxjs';
-import { LoginRequest } from 'src/app/core/models/loginRequest';
-import { LoginResponse } from 'src/app/core/models/loginResponse';
+
+import { RegisterRequest } from 'src/app/core/models/registerRequest';
+import { RegisterResponse } from 'src/app/core/models/registerResponse';
+
 import { User } from 'src/app/core/models/user';
 import { AuthService } from 'src/app/core/services/auth/auth.service';
 import { UserApiService } from 'src/app/core/services/user-api/user-api.service';
@@ -35,34 +37,24 @@ export class RegisterComponent implements OnInit {
 
   ngOnInit(): void {
     this.form = this.fb.group({
+      username: ['', [Validators.required]],
       email: ['', [Validators.required]],
       password: ['', [Validators.required]],
     });
   }
 
   public onSubmit(): void {
-    const loginRequestObject = this.form.value as LoginRequest;
+    const registerRequestObject = this.form.value as RegisterRequest;
     this.authSvc
-      .login(loginRequestObject)
-      .subscribe((response: LoginResponse) => {
+      .register(registerRequestObject)
+      .subscribe((response: RegisterResponse) => {
         switch (response.status) {
           case 'success':
-            this.userApi
-              .getUserById(response.user_id)
-              .pipe(catchError((error: HttpErrorResponse) => of(error.error)))
-              .subscribe({
-                next: (response: User) => {
-                  console.log(response);
-                  if (response) {
-                    console.log('fetch user success');
-                    this.userSvc.setUser(response);
-                    this.router.navigateByUrl('/app');
-                  } else console.log('fetch user fail');
-                },
-              });
+            this.router.navigateByUrl('/login');
+            console.log('register user success');
             break;
           default:
-            console.log('fail');
+            console.log('register fail');
         }
       });
   }

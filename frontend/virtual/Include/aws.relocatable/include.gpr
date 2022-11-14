@@ -1,0 +1,85 @@
+------------------------------------------------------------------------------
+--                              Ada Web Server                              --
+--                                                                          --
+--                     Copyright (C) 2003-2014, AdaCore                     --
+--                                                                          --
+--  This is free software;  you can redistribute it  and/or modify it       --
+--  under terms of the  GNU General Public License as published  by the     --
+--  Free Software  Foundation;  either version 3,  or (at your option) any  --
+--  later version.  This software is distributed in the hope  that it will  --
+--  be useful, but WITHOUT ANY WARRANTY;  without even the implied warranty --
+--  of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU     --
+--  General Public License for  more details.                               --
+--                                                                          --
+--  You should have  received  a copy of the GNU General  Public  License   --
+--  distributed  with  this  software;   see  file COPYING3.  If not, go    --
+--  to http://www.gnu.org/licenses for a complete copy of the license.      --
+------------------------------------------------------------------------------
+
+with "../shared";
+
+with "zlib/zlib";
+
+library project Include is
+
+   for Languages use ("Ada", "Project file", "makefile");
+
+   for Source_Dirs use (".");
+
+   for Object_Dir use "../" & Shared'Object_Dir & "/include";
+   for Library_Dir use "../" & Shared'Library_Dir & "/include";
+
+   for Library_Name use "aws_include";
+   for Library_Kind use Shared.Library_Type;
+   for Leading_Library_Options use Shared.Leading_Library_Options;
+
+   ---------
+   -- Ide --
+   ---------
+
+   package Ide renames Shared.Ide;
+
+   --------------
+   -- Compiler --
+   --------------
+
+   package Compiler is
+
+      for Driver ("makefile") use "";
+
+      case Shared.Build is
+         when "Debug" =>
+            for Default_Switches ("Ada") use
+              ("-gnat2012", "-g") & Shared.Global_Options;
+
+         when "Release" =>
+            for Default_Switches ("Ada") use
+              ("-gnat2012", "-O2", "-gnatws", "-gnatn") & Shared.Global_Options;
+      end case;
+
+      case Shared.S_Target is
+         when "Darwin" =>
+            for Default_Switches ("Ada")
+              use Compiler'Default_Switches ("Ada") & ("-fno-common");
+         when others =>
+            null;
+      end case;
+
+      for Default_Switches ("Ada") use
+        Compiler'Default_Switches ("Ada")
+        & Shared.Adaflags;
+   end Compiler;
+
+   -------------
+   -- Builder --
+   -------------
+
+   package Builder renames Shared.Builder;
+
+   ------------
+   -- Naming --
+   ------------
+
+   package Naming renames Shared.Naming;
+
+end Include;
