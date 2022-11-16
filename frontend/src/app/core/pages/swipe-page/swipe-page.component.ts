@@ -1,4 +1,5 @@
 import { Component, ElementRef, OnInit } from '@angular/core';
+import { BehaviorSubject, map } from 'rxjs';
 import { User } from '../../models/user';
 import { MatchingService } from '../../services/matching/matching.service';
 import { SwipeService } from '../../services/swipe/swipe.service';
@@ -12,8 +13,7 @@ import { UserService } from '../../services/user/user.service';
 })
 export class SwipePageComponent implements OnInit {
   public user: User | null;
-  public users: any;
-  public max: number;
+  public users: Array<string>;
   public offsetX: number = 0;
   public offsetY: number = 0;
   public static startPoint: any;
@@ -31,10 +31,10 @@ export class SwipePageComponent implements OnInit {
     // fetch info of the user who is swiping
     this.userSvc.user$.subscribe((user) => {
       this.user = user;
-      this.swipeSvc.getUsers(this.user!.user_id).subscribe((response) => {
-        this.users = response.content;
-        this.max = this.users.length - 1;
-        // fetch info of the first 2 best match users
+      console.log(this.user);
+      this.userSvc.users$.subscribe((users) => {
+        this.users = users;
+        console.log(this.users);
         this.userApi.getUserById(this.users[0]).subscribe((user) => {
           this.toMatch1 = user;
         });
@@ -92,13 +92,20 @@ export class SwipePageComponent implements OnInit {
 
   public swipeRight() {
     console.log('right');
+    const matchObject = {
+      current_user: this.user?.user_id,
+      to_match_user: this.users[0],
+    };
+    console.log(matchObject);
+
+    this.matching.update_match(matchObject).subscribe((response) => {
+      console.log(response);
+    });
   }
 
   public swipeLeft() {
     console.log('swipe left');
-  }
-
-  public submitNewMatch(user_to_match: any) {
-    console.log(user_to_match);
+    this.users.shift();
+    console.log(this.users);
   }
 }
