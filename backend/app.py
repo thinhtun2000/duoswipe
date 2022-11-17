@@ -312,7 +312,7 @@ def return_user_matched(user_id):
 
 @app.route('/matched_update', methods=['GET', 'POST'])
 def matched_update():
-    if request.method == 'GET':
+    if request.method == 'POST':
         # receive an object {current_user: id, to_match_user: id}
         input_id = request.get_json()
         id_1 = input_id['current_user']

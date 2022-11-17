@@ -1,8 +1,8 @@
-import { Component, ElementRef, OnInit } from '@angular/core';
-import { BehaviorSubject, map } from 'rxjs';
+import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
+import { MatchingObject } from '../../models/matchingObject';
 import { User } from '../../models/user';
 import { MatchingService } from '../../services/matching/matching.service';
-import { SwipeService } from '../../services/swipe/swipe.service';
 import { UserApiService } from '../../services/user-api/user-api.service';
 import { UserService } from '../../services/user/user.service';
 
@@ -14,6 +14,7 @@ import { UserService } from '../../services/user/user.service';
 export class SwipePageComponent implements OnInit {
   public user: User | null;
   public users: Array<string>;
+  public test: Observable<any>;
   public offsetX: number = 0;
   public offsetY: number = 0;
   public static startPoint: any;
@@ -21,7 +22,6 @@ export class SwipePageComponent implements OnInit {
   public toMatch2: User;
 
   constructor(
-    private swipeSvc: SwipeService,
     private userSvc: UserService,
     private userApi: UserApiService,
     private matching: MatchingService
@@ -31,10 +31,8 @@ export class SwipePageComponent implements OnInit {
     // fetch info of the user who is swiping
     this.userSvc.user$.subscribe((user) => {
       this.user = user;
-      console.log(this.user);
       this.userSvc.users$.subscribe((users) => {
         this.users = users;
-        console.log(this.users);
         this.userApi.getUserById(this.users[0]).subscribe((user) => {
           this.toMatch1 = user;
         });
@@ -91,21 +89,22 @@ export class SwipePageComponent implements OnInit {
   }
 
   public swipeRight() {
-    console.log('right');
-    const matchObject = {
-      current_user: this.user?.user_id,
+    const matchObject: MatchingObject = {
+      current_user: this.user!.user_id,
       to_match_user: this.users[0],
     };
-    console.log(matchObject);
-
+    matchObject;
+    console.log('matchObject created', matchObject);
     this.matching.update_match(matchObject).subscribe((response) => {
       console.log(response);
     });
+    console.log('finish update match');
+    this.users.shift();
+    this.userSvc.setUsers(this.users);
   }
 
   public swipeLeft() {
-    console.log('swipe left');
     this.users.shift();
-    console.log(this.users);
+    this.userSvc.setUsers(this.users);
   }
 }
