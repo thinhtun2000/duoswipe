@@ -9,6 +9,7 @@ class Match(db.Model):
     user_id_2 = db.Column(db.INTEGER)
     user1_match = db.Column(db.BOOLEAN)
     user2_match = db.Column(db.BOOLEAN)
+    match_h = db.Column(db.BOOLEAN)
 
     def __repr__(self):
         return 'Match %r' % self.match_id

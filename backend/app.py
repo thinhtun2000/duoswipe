@@ -257,6 +257,16 @@ def matching(user: User):
         if curr_target.user_id == user.user_id:
             continue
 
+        # check if they matched before
+        id_1 = int(user.user_id)
+        id_2 = int(curr_target.user_id)
+        if id_2 < id_1:  # make sure id_1 < id_2
+            id_1, id_2 = id_2, id_1
+
+        matched = Match.query.filter(Match.user_id_1 == id_1 and Match.user_id_2 == id_2).first().match_h
+        if matched:
+            continue
+
         # generate a score for every target_user
         score = 0
         score = score + weights[0] * compare(user.location_id, curr_target.location_id)
@@ -296,8 +306,8 @@ from matches import Match, create_match
 def return_user_matched(user_id):
     if request.method == 'GET':
         try:
-            matches_1 = Match.query.filter(Match.user_id_1 == user_id).all()
-            matches_2 = Match.query.filter(Match.user_id_2 == user_id).all()
+            matches_1 = Match.query.filter(Match.user_id_1 == user_id).all()  # user is user_id_1
+            matches_2 = Match.query.filter(Match.user_id_2 == user_id).all()  # user is user_id_2
             results = []
             for M in matches_1:
                 if M.user1_match is True and M.user2_match is True:
