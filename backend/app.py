@@ -325,7 +325,6 @@ def matching(user, User):
                     matched = row.user2_match
                 else:
                     matched = row.user1_match
-        print(matched)
         if matched:
             continue
 
@@ -350,7 +349,9 @@ def match(user_id):
     if request.method == 'GET':
         try:
             user = load_user(user_id)
+            print(1)
             return_users = matching(user)
+            print(2)
             if return_users is None:
                 return {'type': 'user_id', 'content': []}
             else:
