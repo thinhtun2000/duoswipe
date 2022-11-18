@@ -10,23 +10,11 @@ import { UserService } from '../../services/user/user.service';
   styleUrls: ['./match-page.component.scss'],
 })
 export class MatchPageComponent implements OnInit {
-  public user: User | null;
   public matched: any;
 
-  constructor(
-    private userSvc: UserService,
-    private userApi: UserApiService,
-    private matchApi: MatchApiService
-  ) {}
+  constructor(private userSvc: UserService) {}
 
   ngOnInit(): void {
-    this.userSvc.user$.subscribe((user) => {
-      this.user = user;
-      console.log(this.user!.user_id);
-      this.matchApi.getMatched(this.user!.user_id).subscribe((response) => {
-        this.matched = response;
-        console.log(this.matched);
-      });
-    });
+    this.matched = this.userSvc.matched$;
   }
 }

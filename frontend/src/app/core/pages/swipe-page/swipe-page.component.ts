@@ -1,7 +1,9 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { catchError, Observable, of } from 'rxjs';
 import { MatchingObject } from '../../models/matchingObject';
 import { User } from '../../models/user';
+import { MatchApiService } from '../../services/match-api/match-api.service';
 import { MatchingService } from '../../services/matching/matching.service';
 import { UserApiService } from '../../services/user-api/user-api.service';
 import { UserService } from '../../services/user/user.service';
@@ -24,7 +26,8 @@ export class SwipePageComponent implements OnInit {
   constructor(
     private userSvc: UserService,
     private userApi: UserApiService,
-    private matching: MatchingService
+    private matching: MatchingService,
+    private matchApi: MatchApiService
   ) {}
 
   ngOnInit(): void {
@@ -101,6 +104,10 @@ export class SwipePageComponent implements OnInit {
     console.log('finish update match');
     this.users.shift();
     this.userSvc.setUsers(this.users);
+    this.matchApi.getMatched(this.user!.user_id).subscribe((response) => {
+      console.log(response);
+      this.userSvc.setMatched(response);
+    });
   }
 
   public swipeLeft() {

@@ -17,7 +17,7 @@
       <h2 class="card-title">Matches</h2>
     </div>
     <div id="chat-scroll">
-      <div *ngFor="let user of matched">
+      <div *ngFor="let user of matched | async">
         <app-chat-card [user]="user"></app-chat-card>
       </div>
     </div>

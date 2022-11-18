@@ -26,6 +26,16 @@ export class UserService {
     return this._users.asObservable();
   }
 
+  // list of users matched
+  public _matched: BehaviorSubject<Array<User> | null> =
+    new BehaviorSubject<Array<User> | null>(null);
+  get matchedSnapshot(): Array<User> | null {
+    return this._matched.value;
+  }
+  get matched$(): Observable<Array<User> | null> {
+    return this._matched.asObservable();
+  }
+
   constructor() {}
 
   public setUser(user: User | null) {
@@ -34,5 +44,9 @@ export class UserService {
 
   public setUsers(users: Array<string>) {
     this._users.next(users);
+  }
+
+  public setMatched(matched: Array<User> | null) {
+    this._matched.next(matched);
   }
 }

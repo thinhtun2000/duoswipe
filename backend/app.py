@@ -5,7 +5,7 @@ import sys
 from R_Dict import rank_ref, position_ref, location_ref, language_ref
 sys.path.insert(0, '../../duoswipe/backend/Model')
 from matches import Match, create_match
-from user_rank import U_R, create_user_rank
+# from user_rank import U_R, create_user_rank
 
 # # Connect to Mysql
 # DIALECT = 'mysql'
@@ -284,10 +284,21 @@ def matching(user: User):
         # check if they matched before
         id_1 = int(user.user_id)
         id_2 = int(curr_target.user_id)
+        flag = False
         if id_2 < id_1:  # make sure id_1 < id_2
             id_1, id_2 = id_2, id_1
+            flag = True
 
-        matched = Match.query.filter(Match.user_id_1 == id_1 and Match.user_id_2 == id_2).first().match_h
+        matched = False
+        
+        tables = Match.query.filter(Match.user_id_1 == id_1).all()
+        for row in tables:
+            if row.user_id_2 == id_2:
+                if flag:
+                    matched = row.user2_match
+                else:
+                    matched = row.user1_match
+        print(matched)
         if matched:
             continue
 
