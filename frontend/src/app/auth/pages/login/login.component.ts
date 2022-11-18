@@ -7,6 +7,7 @@ import { LoginRequest } from 'src/app/core/models/loginRequest';
 import { LoginResponse } from 'src/app/core/models/loginResponse';
 import { User } from 'src/app/core/models/user';
 import { AuthService } from 'src/app/core/services/auth/auth.service';
+import { MatchApiService } from 'src/app/core/services/match-api/match-api.service';
 import { SwipeService } from 'src/app/core/services/swipe/swipe.service';
 import { UserApiService } from 'src/app/core/services/user-api/user-api.service';
 import { UserService } from 'src/app/core/services/user/user.service';
@@ -26,7 +27,8 @@ export class LoginComponent implements OnInit {
     private userApi: UserApiService,
     private userSvc: UserService,
     private authSvc: AuthService,
-    private swipe: SwipeService
+    private swipe: SwipeService,
+    private matchApi: MatchApiService
   ) {}
 
   ngOnInit(): void {
@@ -56,8 +58,6 @@ export class LoginComponent implements OnInit {
                   } else console.log('fetch user fail');
                 },
               });
-            console.log('here');
-
             this.swipe
               .getUsers(response.user_id)
               .pipe(catchError((error: HttpErrorResponse) => of(error.error)))
@@ -67,8 +67,21 @@ export class LoginComponent implements OnInit {
                   if (response) {
                     console.log('fetch users to match success');
                     this.userSvc.setUsers(response.content);
+                    // this.router.navigateByUrl('/app');
+                  } else console.log('fetch users to match fail');
+                },
+              });
+            this.matchApi
+              .getMatched(response.user_id)
+              .pipe(catchError((error: HttpErrorResponse) => of(error.error)))
+              .subscribe({
+                next: (response) => {
+                  console.log(response);
+                  if (response) {
+                    console.log('fetch users matched success');
+                    this.userSvc.setMatched(response);
                     this.router.navigateByUrl('/app');
-                  } else console.log('fetch users fail');
+                  } else console.log('fetch users matched fail');
                 },
               });
             break;
