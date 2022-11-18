@@ -43,12 +43,33 @@ body {
   object-position: 50% 50%;
 }
 
-.no-select {
-  -webkit-touch-callout: none !important;
-  -webkit-user-select: none !important;
-  -webkit-user-drag: none !important;
-  -khtml-user-select: none !important;
-  -moz-user-select: none !important;
-  -ms-user-select: none !important;
-  user-select: none !important;
+.card .content {
+  position: absolute; /* Position the background text */
+  bottom: 0; /* At the bottom. Use top:0 to append it to the top */
+  background: rgb(0, 0, 0); /* Fallback color */
+  background: rgba(0, 0, 0, 0.5); /* Black background with 0.5 opacity */
+  color: #f1f1f1; /* Grey text */
+  width: 100%; /* Full width */
+  padding: 20px; /* Some padding */
+}
+
+.card .like {
+  position: absolute; /* Position the background text */
+  top: 0; /* At the bottom. Use top:0 to append it to the top */
+  //background: rgb(0, 0, 0); /* Fallback color */
+  //background: rgba(0, 0, 0, 0.5); /* Black background with 0.5 opacity */
+  //color: #399d03; /* Grey text */
+  width: 50%; /* Full width */
+  padding: 20px; /* Some padding */
+}
+
+.card .nope {
+  position: absolute; /* Position the background text */
+  top: 0; /* At the bottom. Use top:0 to append it to the top */
+  //background: rgb(0, 0, 0); /* Fallback color */
+  //background: rgba(0, 0, 0, 0.5); /* Black background with 0.5 opacity */
+  //color: #d10000; /* Grey text */
+  width: 50%; /* Full width */
+  padding: 10px; /* Some padding */
+  margin-left: 50%;
 }

@@ -1,10 +1,17 @@
 from flask import render_template, request, redirect
 from flask_login import LoginManager, login_user, logout_user, login_required
 import sys
+
 from flask import Flask 
 from flask_cors import CORS, cross_origin
 from flask_sqlalchemy import SQLAlchemy
 from connToDB import db, app, cors
+
+from R_Dict import rank_ref, position_ref, location_ref, language_ref
+sys.path.insert(0, '../../duoswipe/backend/Model')
+from matches import Match, create_match
+from user_rank import U_R, create_user_rank
+
 
 # # Connect to Mysql
 # DIALECT = 'mysql'
@@ -87,16 +94,34 @@ def create_user(name, pwd, email, language_id=None, location_id=None, pref_pos=N
 
 # Update user
 def update_profile(userId, language_id=None, location_id=None, pref_pos=None, pref_lang=None,
-                   pref_day=None, pref_time=None, pos_1=None, pos_2=None):
+                   pref_day=None, pref_time=None, pos_1=None, pos_2=None, rank_rift=None, rank_tft=None):
+
     user = User.query.get_or_404(userId)
-    user.language_id = language_id
-    user.location_id = location_id
-    user.pref_pos = pref_pos
-    user.pref_lang = pref_lang
+    if language_id in language_ref:
+        user.language_id = language_ref[language_id]
+    if location_id in location_ref:
+        user.location_id = location_ref[location_id]
+    if pos_1 in position_ref:
+        user.pos_1 = position_ref[pos_1]
+    if pos_2 in position_ref:
+        user.pos_2 = position_ref[pos_2]
+    if pref_pos in position_ref:
+        user.pref_pos = position_ref[pref_pos]
+    if pref_lang in language_ref:
+        user.pref_lang = language_ref[pref_lang]
+
     user.pref_day = pref_day
     user.pref_time = pref_time
-    user.pos_1 = pos_1
-    user.pos_2 = pos_2
+
+    # if rank_rift in rank_ref:
+    #     rank_rift_id = rank_ref[rank_rift]
+    # if rank_tft in rank_ref:
+    #     rank_tft_id = rank_ref[rank_tft]
+    #
+    # user_rank = U_R.query.filter(U_R.user_id == userId).first()
+    # if user_rank is None:
+    #     create_user_rank(userId)
+
     db.session.commit()
 
 
@@ -159,10 +184,12 @@ def get_user(userId):
         pref_time = request.form['pref_time']
         pos_1 = request.form['pos_1']
         pos_2 = request.form['pos_2']
+        rank_rift = request.form['rank_rift']
+        rank_tft = request.form['rank_tft']
 
         try:
             update_profile(userId, language_id, location_id, pref_pos, pref_lang,
-                           pref_day, pref_time, pos_1, pos_2)
+                           pref_day, pref_time, pos_1, pos_2, rank_tft, rank_tft)
             return redirect('/profile/' + str(userId))
         except:
             return 'There was an issue adding your information'
@@ -281,6 +308,16 @@ def matching(user, User):
         if curr_target.user_id == user.user_id:
             continue
 
+        # check if they matched before
+        id_1 = int(user.user_id)
+        id_2 = int(curr_target.user_id)
+        if id_2 < id_1:  # make sure id_1 < id_2
+            id_1, id_2 = id_2, id_1
+
+        matched = Match.query.filter(Match.user_id_1 == id_1 and Match.user_id_2 == id_2).first().match_h
+        if matched:
+            continue
+
         # generate a score for every target_user
         score = 0
         score = score + weights[0] * compare(user.location_id, curr_target.location_id)
@@ -311,17 +348,13 @@ def match(user_id):
             return 'Error'
 
 
-sys.path.insert(0, '../../duoswipe/backend/Model')
-from matches import Match, create_match
-
-
 @app.route('/matched/<int:user_id>', methods=['GET', 'POST'])
 # matched user
 def return_user_matched(user_id):
     if request.method == 'GET':
         try:
-            matches_1 = Match.query.filter(Match.user_id_1 == user_id).all()
-            matches_2 = Match.query.filter(Match.user_id_2 == user_id).all()
+            matches_1 = Match.query.filter(Match.user_id_1 == user_id).all()  # user is user_id_1
+            matches_2 = Match.query.filter(Match.user_id_2 == user_id).all()  # user is user_id_2
             results = []
             for M in matches_1:
                 if M.user1_match is True and M.user2_match is True:
@@ -334,34 +367,37 @@ def return_user_matched(user_id):
             return 'There was an issue getting your information'
 
 
-@app.route('/matched_update/<int:id_1>', methods=['GET', 'POST'])
-def matched_update(id_1):
-    if request.method == 'GET':
+@app.route('/matched_update', methods=['GET', 'POST'])
+def matched_update():
+    if request.method == 'POST':
+        # receive an object {current_user: id, to_match_user: id}
         input_id = request.get_json()
-        id_2 = input_id['user_id']
+        id_1 = input_id['current_user']
+        id_2 = input_id['to_match_user']
+        # make sure they are int values
         id_1 = int(id_1)
         id_2 = int(id_2)
-        # id_1 should be smaller than id_2
-        flag_swiped = False
+        # id_1 must be the smaller integer
+        flag_swapped = False  # Record whether they swapped values
+        id_2_found = False  # Record if id_2 exist when id_1 = current_user
         if id_1 > id_2:
             temp = id_1
             id_1 = id_2
             id_2 = temp
-            flag_swiped = True
+            flag_swapped = True
 
         try:
-            id_2_found = False
             # check if the table exist
             match_tbs = Match.query.filter(Match.user_id_1 == id_1).all()
-            if match_tbs is None:
-                if flag_swiped:
+            if match_tbs is None:  # no match record
+                if flag_swapped:
                     create_match(id_1, id_2, False, True, False)
                 else:
                     create_match(id_1, id_2, True, False, False)
                 return {'type': 'bool', 'content': False}
 
             for tb in match_tbs:
-                if not flag_swiped:
+                if not flag_swapped:
                     if int(tb.user_id_2) == id_2:
                         id_2_found = True
                         tb.user1_match = True
@@ -370,14 +406,13 @@ def matched_update(id_1):
                             tb.match_h = True
                             db.session.commit()
                             return {'type': 'bool', 'content': True}
-                    else:
-                        tb.match_h = False
-                        db.session.commit()
-                        return {'type': 'bool', 'content': False}
-
-                if flag_swiped:
-                    if int(tb.user_id_1) == id_1:
-                        tb.user2_match = True
+                        else:
+                            tb.match_h = False
+                            db.session.commit()
+                            return {'type': 'bool', 'content': False}
+                else:  # flag_swapped is True
+                    if int(tb.user_id_2) == id_2:
+                        tb.user2_match = True  # id_2 is current_user that wanna match with id_1
                         db.session.commit()
                         if tb.user1_match is True:
                             tb.match_h = True
@@ -388,8 +423,8 @@ def matched_update(id_1):
                             db.session.commit()
                             return {'type': 'bool', 'content': False}
 
-            if not id_2_found:
-                if not flag_swiped:
+            if not id_2_found:  # no match record
+                if not flag_swapped:
                     create_match(id_1, id_2, True, False, False)
                 else:
                     create_match(id_1, id_2, False, True, False)

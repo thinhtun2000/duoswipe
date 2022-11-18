@@ -7,6 +7,7 @@ import { LoginRequest } from 'src/app/core/models/loginRequest';
 import { LoginResponse } from 'src/app/core/models/loginResponse';
 import { User } from 'src/app/core/models/user';
 import { AuthService } from 'src/app/core/services/auth/auth.service';
+import { SwipeService } from 'src/app/core/services/swipe/swipe.service';
 import { UserApiService } from 'src/app/core/services/user-api/user-api.service';
 import { UserService } from 'src/app/core/services/user/user.service';
 
@@ -24,7 +25,8 @@ export class LoginComponent implements OnInit {
     private router: Router,
     private userApi: UserApiService,
     private userSvc: UserService,
-    private authSvc: AuthService
+    private authSvc: AuthService,
+    private swipe: SwipeService
   ) {}
 
   ngOnInit(): void {
@@ -50,8 +52,23 @@ export class LoginComponent implements OnInit {
                   if (response) {
                     console.log('fetch user success');
                     this.userSvc.setUser(response);
-                    this.router.navigateByUrl('/app');
+                    //this.router.navigateByUrl('/app');
                   } else console.log('fetch user fail');
+                },
+              });
+            console.log('here');
+
+            this.swipe
+              .getUsers(response.user_id)
+              .pipe(catchError((error: HttpErrorResponse) => of(error.error)))
+              .subscribe({
+                next: (response) => {
+                  console.log(response);
+                  if (response) {
+                    console.log('fetch users to match success');
+                    this.userSvc.setUsers(response.content);
+                    this.router.navigateByUrl('/app');
+                  } else console.log('fetch users fail');
                 },
               });
             break;
