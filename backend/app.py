@@ -1,11 +1,17 @@
 from flask import render_template, request, redirect
-from flask_cors import cross_origin
 from flask_login import LoginManager, login_user, logout_user, login_required
 import sys
+
+from flask import Flask 
+from flask_cors import CORS, cross_origin
+from flask_sqlalchemy import SQLAlchemy
+from connToDB import db, app, cors
+
 from R_Dict import rank_ref, position_ref, location_ref, language_ref
 sys.path.insert(0, '../../duoswipe/backend/Model')
 from matches import Match, create_match
 from user_rank import U_R, create_user_rank
+
 
 # # Connect to Mysql
 # DIALECT = 'mysql'
@@ -27,10 +33,14 @@ from user_rank import U_R, create_user_rank
 # cors = CORS(app, origins=["http://localhost:4200"])
 #
 # db = SQLAlchemy(app)
+# CORS(app)
 
 
-from connToDB import db, app, cors
 
+
+#from flask import request
+#request.headers.get('Access-Control-Allow-Origin: *')
+#from flask import make_response
 
 # Table 'users'
 class User(db.Model):
@@ -139,6 +149,10 @@ def index():
         # display user information ordered by user_id
         users = User.query.order_by(User.user_id).all()
         return render_template('index.html', users=users)
+    
+    #r = make_response(render_template('index.html'))
+    #r.headers.set('Access-Control-Allow-Origin', "*")
+    #return r
 
 
 @app.route('/delete/<int:user_id>')
@@ -215,6 +229,32 @@ def login():
     return render_template('login.html')
 
 
+
+
+
+@app.route('/register', methods=['GET', 'POST'])
+@cross_origin(origin='localhost', headers=['Content- Type', 'Authorization'])
+def register():
+    if request.method == 'POST':
+        # query user
+        name = request.form['username']
+        pwd = request.form['password']
+        email = request.form['email']
+        # user = User.as_dict(user)
+
+        try:
+            create_user(name, pwd, email)
+            return redirect('/login')
+        except:
+            return 'There was an issue with registering'
+    # GET
+    return render_template('register.html')
+
+
+
+
+
+
 @app.route('/logout', methods=['GET', 'POST'])
 @login_required
 def logout():
@@ -237,19 +277,6 @@ def return_user():
             return 'There was an issue getting your information'
 
 
-@app.route('/signup', methods=['POST', 'GET'])
-def signup():
-    if request.method == 'POST':
-        name = request.form['name']
-        pwd = request.form['password']
-        email = request.form['email']
-        try:
-            create_user(name, pwd, email)
-            return redirect('/')
-        except:
-            return 'There was an issue'
-
-
 def compare(value_1, value_2):
     if value_1 is None or value_2 is None:
         return 0
@@ -260,7 +287,7 @@ def compare(value_1, value_2):
 
 
 # Matching algorithm
-def matching(user: User):
+def matching(user, User):
     # 0. location  location_id  int
     # 1. position  pref_pos     int
     #              pos_1        int
