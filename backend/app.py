@@ -2,6 +2,10 @@ from flask import render_template, request, redirect
 from flask_cors import cross_origin
 from flask_login import LoginManager, login_user, logout_user, login_required
 import sys
+from R_Dict import rank_ref, position_ref, location_ref, language_ref
+sys.path.insert(0, '../../duoswipe/backend/Model')
+from matches import Match, create_match
+from user_rank import U_R, create_user_rank
 
 # # Connect to Mysql
 # DIALECT = 'mysql'
@@ -80,16 +84,34 @@ def create_user(name, pwd, email, language_id=None, location_id=None, pref_pos=N
 
 # Update user
 def update_profile(userId, language_id=None, location_id=None, pref_pos=None, pref_lang=None,
-                   pref_day=None, pref_time=None, pos_1=None, pos_2=None):
+                   pref_day=None, pref_time=None, pos_1=None, pos_2=None, rank_rift=None, rank_tft=None):
+
     user = User.query.get_or_404(userId)
-    user.language_id = language_id
-    user.location_id = location_id
-    user.pref_pos = pref_pos
-    user.pref_lang = pref_lang
+    if language_id in language_ref:
+        user.language_id = language_ref[language_id]
+    if location_id in location_ref:
+        user.location_id = location_ref[location_id]
+    if pos_1 in position_ref:
+        user.pos_1 = position_ref[pos_1]
+    if pos_2 in position_ref:
+        user.pos_2 = position_ref[pos_2]
+    if pref_pos in position_ref:
+        user.pref_pos = position_ref[pref_pos]
+    if pref_lang in language_ref:
+        user.pref_lang = language_ref[pref_lang]
+
     user.pref_day = pref_day
     user.pref_time = pref_time
-    user.pos_1 = pos_1
-    user.pos_2 = pos_2
+
+    # if rank_rift in rank_ref:
+    #     rank_rift_id = rank_ref[rank_rift]
+    # if rank_tft in rank_ref:
+    #     rank_tft_id = rank_ref[rank_tft]
+    #
+    # user_rank = U_R.query.filter(U_R.user_id == userId).first()
+    # if user_rank is None:
+    #     create_user_rank(userId)
+
     db.session.commit()
 
 
@@ -148,10 +170,12 @@ def get_user(userId):
         pref_time = request.form['pref_time']
         pos_1 = request.form['pos_1']
         pos_2 = request.form['pos_2']
+        rank_rift = request.form['rank_rift']
+        rank_tft = request.form['rank_tft']
 
         try:
             update_profile(userId, language_id, location_id, pref_pos, pref_lang,
-                           pref_day, pref_time, pos_1, pos_2)
+                           pref_day, pref_time, pos_1, pos_2, rank_tft, rank_tft)
             return redirect('/profile/' + str(userId))
         except:
             return 'There was an issue adding your information'
@@ -295,10 +319,6 @@ def match(user_id):
                 return {'type': 'user_id', 'content': return_users}
         except:
             return 'Error'
-
-
-sys.path.insert(0, '../../duoswipe/backend/Model')
-from matches import Match, create_match
 
 
 @app.route('/matched/<int:user_id>', methods=['GET', 'POST'])
