@@ -15,6 +15,7 @@ import { ErrorCardComponent } from './components/error-card/error-card/error-car
 import { MatchPageComponent } from './pages/match-page/match-page.component';
 import { SwipePageComponent } from './pages/swipe-page/swipe-page.component';
 import { ProfileCardComponent } from './components/profile-card/profile-card.component';
+import { ChatCardComponent } from './components/chat-card/chat-card.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import { ProfileCardComponent } from './components/profile-card/profile-card.com
     MatchPageComponent,
     SwipePageComponent,
     ProfileCardComponent,
+    ChatCardComponent,
   ],
   imports: [
     CommonModule,

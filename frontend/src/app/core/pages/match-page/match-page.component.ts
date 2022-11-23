@@ -1,21 +1,20 @@
 import { Component, OnInit } from '@angular/core';
+import { User } from '../../models/user';
+import { MatchApiService } from '../../services/match-api/match-api.service';
+import { UserApiService } from '../../services/user-api/user-api.service';
+import { UserService } from '../../services/user/user.service';
 
 @Component({
   selector: 'app-match-page',
   templateUrl: './match-page.component.html',
-  styleUrls: ['./match-page.component.scss']
+  styleUrls: ['./match-page.component.scss'],
 })
 export class MatchPageComponent implements OnInit {
+  public matched: any;
+
+  constructor(private userSvc: UserService) {}
 
   ngOnInit(): void {
+    this.matched = this.userSvc.matched$;
   }
-  
-  myScriptElement: HTMLScriptElement;
- 
-  constructor(){
-     this.myScriptElement = document.createElement("script");
-     this.myScriptElement.src = "/assets/js/myjs.js";
-     document.body.appendChild(this.myScriptElement);
-  }
-
 }
