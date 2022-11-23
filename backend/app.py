@@ -175,7 +175,7 @@ def get_user(userId):
 
         try:
             update_profile(userId, language_id, location_id, pref_pos, pref_lang,
-                           pref_day, pref_time, pos_1, pos_2, rank_tft, rank_tft)
+                           pref_day, pref_time, pos_1, pos_2, rank_rift, rank_tft)
             return redirect('/profile/' + str(userId))
         except:
             return 'There was an issue adding your information'
