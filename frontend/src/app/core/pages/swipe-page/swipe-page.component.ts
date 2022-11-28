@@ -22,6 +22,8 @@ export class SwipePageComponent implements OnInit {
   public static startPoint: any;
   public toMatch1: User;
   public toMatch2: User;
+  public url1: string = 'gamer';
+  public url2: string = 'game';
 
   constructor(
     private userSvc: UserService,
@@ -77,11 +79,13 @@ export class SwipePageComponent implements OnInit {
       event.x > SwipePageComponent.startPoint.x &&
       event.x - SwipePageComponent.startPoint.x > 250
     ) {
+      this.url1 = 'keyboard';
       this.swipeRight();
     } else if (
       event.x < SwipePageComponent.startPoint.x &&
       SwipePageComponent.startPoint.x - event.x > 250
     ) {
+      this.url1 = 'sky';
       this.swipeLeft();
     }
     SwipePageComponent.startPoint = null;
@@ -97,20 +101,17 @@ export class SwipePageComponent implements OnInit {
       to_match_user: this.users[0],
     };
     matchObject;
-    console.log('matchObject created', matchObject);
-    this.matching.update_match(matchObject).subscribe((response) => {
-      console.log(response);
-    });
-    console.log('finish update match');
+    this.matching.update_match(matchObject).subscribe((response) => {});
     this.users.shift();
     this.userSvc.setUsers(this.users);
     this.matchApi.getMatched(this.user!.user_id).subscribe((response) => {
-      console.log(response);
       this.userSvc.setMatched(response);
     });
   }
 
   public swipeLeft() {
+    // const top = document.getElementById('img1')!;
+    // const second = document.getElementById('img2')!;
     this.users.shift();
     this.userSvc.setUsers(this.users);
   }

@@ -11,7 +11,7 @@ import { MatchPageComponent } from './core/pages/match-page/match-page.component
 import { RegisterComponent } from './auth/pages/register/register.component';
 
 @NgModule({
-  declarations: [AppComponent, RegisterComponent],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

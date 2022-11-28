@@ -125,12 +125,11 @@ def delete_user(userId):
 @app.route('/', methods=['POST', 'GET'])
 def index():
     if request.method == 'POST':
-        name = request.form['name']
+        username = request.form['username']
         pwd = request.form['password']
         email = request.form['email']
-
         try:
-            create_user(name, pwd, email)
+            create_user(username, pwd, email)
             return redirect('/')
         except:
             return 'There was an issue adding your information'
@@ -240,12 +239,14 @@ def return_user():
 @app.route('/signup', methods=['POST', 'GET'])
 def signup():
     if request.method == 'POST':
-        name = request.form['name']
-        pwd = request.form['password']
-        email = request.form['email']
+        input_form = request.get_json();
+        name = input_form['username']
+        pwd = input_form['password']
+        email = input_form['email']
         try:
             create_user(name, pwd, email)
-            return redirect('/')
+            user = User.query.filter(User.email == email).first()
+            return {'status': 'success', 'user_id': user.user_id}
         except:
             return 'There was an issue'
 

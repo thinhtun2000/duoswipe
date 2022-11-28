@@ -20,7 +20,8 @@ const routes: Routes = [
   },
   {
     path: 'auth',
-    redirectTo: 'login',
+    component: SimpleAppLayoutComponent,
+    loadChildren: () => import('./auth/auth.module').then((m) => m.AuthModule),
   },
   {
     path: 'app',
@@ -35,7 +36,7 @@ const routes: Routes = [
         loadChildren: () =>
           import('./user/user.module').then((m) => m.UserModule),
       },
-    ], 
+    ],
   },
   {
     path: '',
@@ -52,10 +53,6 @@ const routes: Routes = [
       {
         path: 'unauthorized',
         component: UnauthorizedComponent,
-      },
-      {
-        path: 'register',
-        component: RegisterComponent,
       },
     ],
   },

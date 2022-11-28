@@ -11,6 +11,7 @@
       </div> -->
       <div class="card">
         <img
+          id="img2"
           draggable="false"
           src="https://source.unsplash.com/random/1000x1000/?game"
           alt=""
@@ -28,8 +29,11 @@
         (mouseup)="handleMouseUp($event)"
       >
         <img
+          id="img1"
           draggable="false"
-          src="https://source.unsplash.com/random/1000x1000/?gamer"
+          src="{{
+            'https://source.unsplash.com/random/1000x1000/?' + this.url1
+          }}"
           alt=""
         />
         <div class="content">

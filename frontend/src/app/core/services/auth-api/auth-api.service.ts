@@ -17,6 +17,6 @@ export class AuthApiService {
     return this.http.post<any>(`${this.AUTH_API}login`, loginRequestBody);
   }
   public register(registerRequestBody: RegisterRequest): Observable<any> {
-    return this.http.post<any>(`${this.AUTH_API}login`, registerRequestBody);
+    return this.http.post<any>(`${this.AUTH_API}signup`, registerRequestBody);
   }
 }

@@ -17,15 +17,13 @@ import { UserService } from '../user/user.service';
 export class AuthService {
   constructor(private authApi: AuthApiService, private userSvc: UserService) {}
 
-
-
-  public register(registerRequestObject: RegisterRequest): Observable<RegisterResponse> {
+  public register(
+    registerRequestObject: RegisterRequest
+  ): Observable<RegisterResponse> {
     return this.authApi
       .register(registerRequestObject)
       .pipe(map((response: RegisterResponse) => response));
   }
-
-
 
   public login(loginRequestObject: LoginRequest): Observable<LoginResponse> {
     return this.authApi
