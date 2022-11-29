@@ -235,7 +235,7 @@ def return_user():
 
             res = []
             for user in users:
-                res.append(User.as_dict(user))
+                res.append(User.as_dict_safe(user))
             return res
 
         except:
@@ -318,7 +318,7 @@ def matching(user: User):
         result.append((score, curr_target.user_id))
 
     result = sorted(result, key=lambda x: x[0], reverse=True)  # sort
-    result_id = [x[1] for x in result]  # only return user_id
+    result_id = [User.as_dict_safe(load_user(x[1])) for x in result]  # x[1] is user_id
 
     return result_id
 
@@ -330,9 +330,9 @@ def match(user_id):
             user = load_user(user_id)
             return_users = matching(user)
             if return_users is None:
-                return {'type': 'user_id', 'content': []}
+                return {'type': 'user_info', 'content': []}
             else:
-                return {'type': 'user_id', 'content': return_users}
+                return {'type': 'user_info', 'content': return_users}
         except:
             return 'Error'
 
@@ -353,7 +353,7 @@ def return_user_matched(user_id):
                     results.append(User.as_dict(load_user(M.user_id_1)))
             return results
         except:
-            return 'There was an issue getting your information'
+            return 'There was an issue'
 
 
 @app.route('/matched_update', methods=['GET', 'POST'])
