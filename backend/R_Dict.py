@@ -19,8 +19,8 @@ position_ref = {"Tank": '1',
                 "Support": '6'}
 
 
-location_ref = {"Las Cruces": '1',
-                "El Paso": '2'}
+location_ref = {"Las Cruces": 1,
+                "El Paso": 2}
 
 
 language_ref = {"English": '1',
