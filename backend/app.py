@@ -59,11 +59,11 @@ class User(db.Model):
         return {'user_id': self.user_id,
                 'name': self.name,
                 'email': self.email,
-                'language': get_key(language_ref, self.language_id)[0],
-                'location': get_key(location_ref, self.location_id)[0],
-                'pos_1': get_key(position_ref, self.pos_1)[0],
-                'pos_2': get_key(position_ref, self.pos_2)[0],
-                'rank': get_key(rank_ref, self.rank_id)[0]
+                'language': get_key(language_ref, self.language_id),
+                'location': get_key(location_ref, self.location_id),
+                'pos_1': get_key(position_ref, self.pos_1),
+                'pos_2': get_key(position_ref, self.pos_2),
+                'rank': get_key(rank_ref, self.rank_id)
                 }
 
     def get_id(self):
@@ -169,7 +169,7 @@ def get_user(userId):
     if request.method == 'GET':
         try:
             user = User.query.get_or_404(userId)
-            return User.as_dict(user)
+            return User.as_dict_safe(user)
         except:
             return 'There was an issue getting your information'
 
