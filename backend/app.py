@@ -120,6 +120,7 @@ def update_profile(userId, language_id=None, location_id=None, pref_pos=None, pr
 
     db.session.commit()
 
+
 def update_profile_info(userId, language_id, location_id, pos_1, pos_2, rank):
 
     user = User.query.get_or_404(userId)
@@ -134,6 +135,7 @@ def update_profile_info(userId, language_id, location_id, pos_1, pos_2, rank):
     if rank in rank_ref.values():
         user.rank_id = rank
     db.session.commit()
+
 
 def update_profile_pref(userId, pref_pos, pref_lang, pref_day, pref_time):
     
@@ -207,9 +209,10 @@ def get_user(userId):
         try:
             update_profile(userId, language_id, location_id, pref_pos, pref_lang,
                            pref_day, pref_time, pos_1, pos_2, rank)
-            return {'status': 'success', 'user_id': user.user_id}
+            return {'status': 'success', 'user_id': userId}
         except:
             return 'There was an issue adding your information'
+
 
 @app.route('/profile-info/<int:userId>', methods=['GET', 'POST'])
 # get user profile
@@ -227,7 +230,8 @@ def update_user_info(userId):
             return {'status': 'success', 'user_id': userId}
         except:
             return 'There was an issue adding your information'
-        
+
+
 @app.route('/profile-pref/<int:userId>', methods=['GET', 'POST'])
 # get user profile
 def update_user_pref(userId):
@@ -304,7 +308,7 @@ def return_user():
 @app.route('/signup', methods=['POST', 'GET'])
 def signup():
     if request.method == 'POST':
-        input_form = request.get_json();
+        input_form = request.get_json()
         name = input_form['username']
         pwd = input_form['password']
         email = input_form['email']
