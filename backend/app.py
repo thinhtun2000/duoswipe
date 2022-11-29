@@ -96,7 +96,7 @@ def create_user(name, pwd, email, language_id=None, location_id=None, pref_pos=N
 
 # Update user
 def update_profile(userId, language_id=None, location_id=None, pref_pos=None, pref_lang=None,
-                   pref_day=None, pref_time=None, pos_1=None, pos_2=None, rank_rift=None, rank_tft=None):
+                   pref_day=None, pref_time=None, pos_1=None, pos_2=None, rank=None):
 
     user = User.query.get_or_404(userId)
     if language_id in language_ref:
@@ -115,14 +115,8 @@ def update_profile(userId, language_id=None, location_id=None, pref_pos=None, pr
     user.pref_day = pref_day
     user.pref_time = pref_time
 
-    # if rank_rift in rank_ref:
-    #     rank_rift_id = rank_ref[rank_rift]
-    # if rank_tft in rank_ref:
-    #     rank_tft_id = rank_ref[rank_tft]
-    #
-    # user_rank = U_R.query.filter(U_R.user_id == userId).first()
-    # if user_rank is None:
-    #     create_user_rank(userId)
+    if rank in rank_ref:
+        user.rank_id = rank_ref[rank]
 
     db.session.commit()
 
@@ -182,12 +176,11 @@ def get_user(userId):
         pref_time = request.form['pref_time']
         pos_1 = request.form['pos_1']
         pos_2 = request.form['pos_2']
-        rank_rift = request.form['rank_rift']
-        rank_tft = request.form['rank_tft']
+        rank = request.form['rank']
 
         try:
             update_profile(userId, language_id, location_id, pref_pos, pref_lang,
-                           pref_day, pref_time, pos_1, pos_2, rank_rift, rank_tft)
+                           pref_day, pref_time, pos_1, pos_2, rank)
             return redirect('/profile/' + str(userId))
         except:
             return 'There was an issue adding your information'
