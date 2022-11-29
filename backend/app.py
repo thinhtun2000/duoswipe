@@ -2,7 +2,7 @@ from flask import render_template, request, redirect
 from flask_cors import cross_origin
 from flask_login import LoginManager, login_user, logout_user, login_required
 import sys
-from R_Dict import rank_ref, position_ref, location_ref, language_ref
+from R_Dict import rank_ref, position_ref, location_ref, language_ref, get_key
 sys.path.insert(0, '../../duoswipe/backend/Model')
 from matches import Match, create_match
 # from user_rank import U_R, create_user_rank
@@ -47,12 +47,24 @@ class User(db.Model):
     pref_time = db.Column(db.String(16))
     pos_1 = db.Column(db.INTEGER)
     pos_2 = db.Column(db.INTEGER)
+    rank_id = db.Column(db.INTEGER)
 
     def __repr__(self):
         return 'User %r' % self.user_id
 
     def as_dict(self):
         return {c.name: getattr(self, c.name) for c in self.__table__.columns}
+
+    def as_dict_safe(self):
+        return {'user_id': self.user_id,
+                'name': self.name,
+                'email': self.email,
+                'language': get_key(language_ref, self.language_id),
+                'location': get_key(location_ref, self.location_id),
+                'pos_1': get_key(position_ref, self.pos_1),
+                'pos_2': get_key(position_ref, self.pos_2),
+                'rank': get_key(rank_ref, self.rank_id)
+                }
 
     def get_id(self):
         return self.user_id
@@ -84,7 +96,7 @@ def create_user(name, pwd, email, language_id=None, location_id=None, pref_pos=N
 
 # Update user
 def update_profile(userId, language_id=None, location_id=None, pref_pos=None, pref_lang=None,
-                   pref_day=None, pref_time=None, pos_1=None, pos_2=None, rank_rift=None, rank_tft=None):
+                   pref_day=None, pref_time=None, pos_1=None, pos_2=None, rank=None):
 
     user = User.query.get_or_404(userId)
     if language_id in language_ref:
@@ -103,14 +115,8 @@ def update_profile(userId, language_id=None, location_id=None, pref_pos=None, pr
     user.pref_day = pref_day
     user.pref_time = pref_time
 
-    # if rank_rift in rank_ref:
-    #     rank_rift_id = rank_ref[rank_rift]
-    # if rank_tft in rank_ref:
-    #     rank_tft_id = rank_ref[rank_tft]
-    #
-    # user_rank = U_R.query.filter(U_R.user_id == userId).first()
-    # if user_rank is None:
-    #     create_user_rank(userId)
+    if rank in rank_ref:
+        user.rank_id = rank_ref[rank]
 
     db.session.commit()
 
@@ -156,27 +162,25 @@ def get_user(userId):
     if request.method == 'GET':
         try:
             user = User.query.get_or_404(userId)
-            return User.as_dict(user)
+            return User.as_dict_safe(user)
         except:
             return 'There was an issue getting your information'
 
     elif request.method == 'POST':
-        updated_user = request.get_json()
-        language_id = updated_user['language_id']
-        location_id = updated_user['location_id']
-        pref_pos = updated_user['pref_pos']
-        pref_lang = updated_user['pref_lang']
-        pref_day = updated_user['pref_day']
-        pref_time = updated_user['pref_time']
-        pos_1 = updated_user['pos_1']
-        pos_2 = updated_user['pos_2']
-        rank_rift = updated_user['rank_rift']
-        rank_tft = updated_user['rank_tft']
+        language_id = request.form['language_id']
+        location_id = request.form['location_id']
+        pref_pos = request.form['pref_pos']
+        pref_lang = request.form['pref_lang']
+        pref_day = request.form['pref_day']
+        pref_time = request.form['pref_time']
+        pos_1 = request.form['pos_1']
+        pos_2 = request.form['pos_2']
+        rank = request.form['rank']
 
         try:
             update_profile(userId, language_id, location_id, pref_pos, pref_lang,
-                           pref_day, pref_time, pos_1, pos_2, rank_tft, rank_tft)
-            return {'status': 'success', 'user_id': user.user_id}
+                           pref_day, pref_time, pos_1, pos_2, rank)
+            return redirect('/profile/' + str(userId))
         except:
             return 'There was an issue adding your information'
 
@@ -230,7 +234,7 @@ def return_user():
 
             res = []
             for user in users:
-                res.append(User.as_dict(user))
+                res.append(User.as_dict_safe(user))
             return res
 
         except:
@@ -315,7 +319,7 @@ def matching(user: User):
         result.append((score, curr_target.user_id))
 
     result = sorted(result, key=lambda x: x[0], reverse=True)  # sort
-    result_id = [x[1] for x in result]  # only return user_id
+    result_id = [User.as_dict_safe(load_user(x[1])) for x in result]  # x[1] is user_id
 
     return result_id
 
@@ -327,9 +331,9 @@ def match(user_id):
             user = load_user(user_id)
             return_users = matching(user)
             if return_users is None:
-                return {'type': 'user_id', 'content': []}
+                return {'type': 'user_info', 'content': []}
             else:
-                return {'type': 'user_id', 'content': return_users}
+                return {'type': 'user_info', 'content': return_users}
         except:
             return 'Error'
 
@@ -350,7 +354,7 @@ def return_user_matched(user_id):
                     results.append(User.as_dict(load_user(M.user_id_1)))
             return results
         except:
-            return 'There was an issue getting your information'
+            return 'There was an issue'
 
 
 @app.route('/matched_update', methods=['GET', 'POST'])
