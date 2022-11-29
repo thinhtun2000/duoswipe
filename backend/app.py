@@ -2,7 +2,7 @@ from flask import render_template, request, redirect
 from flask_cors import cross_origin
 from flask_login import LoginManager, login_user, logout_user, login_required
 import sys
-from R_Dict import rank_ref, position_ref, location_ref, language_ref
+from R_Dict import rank_ref, position_ref, location_ref, language_ref, get_key
 sys.path.insert(0, '../../duoswipe/backend/Model')
 from matches import Match, create_match
 # from user_rank import U_R, create_user_rank
@@ -47,12 +47,24 @@ class User(db.Model):
     pref_time = db.Column(db.String(16))
     pos_1 = db.Column(db.INTEGER)
     pos_2 = db.Column(db.INTEGER)
+    rank_id = db.Column(db.INTEGER)
 
     def __repr__(self):
         return 'User %r' % self.user_id
 
     def as_dict(self):
         return {c.name: getattr(self, c.name) for c in self.__table__.columns}
+
+    def as_dict_safe(self):
+        return {'user_id': self.user_id,
+                'name': self.name,
+                'email': self.email,
+                'language': get_key(language_ref, self.language_id),
+                'location': get_key(location_ref, self.location_id),
+                'pos_1': get_key(position_ref, self.pos_1),
+                'pos_2': get_key(position_ref, self.pos_2),
+                'rank': get_key(rank_ref, self.rank_id)
+                }
 
     def get_id(self):
         return self.user_id
