@@ -19,4 +19,12 @@ export class UserApiService {
   public updateUser(id: string, user: User): Observable<any> {
     return this.http.post<any>(`${this.USER_API}/${id}`, user);
   }
+
+  public updateInfo(id: string, user: User): Observable<any> {
+    return this.http.post<any>(`${this.USER_API}-info/${id}`, user);
+  }
+
+  public updatePref(id: string, user: User): Observable<any> {
+    return this.http.post<any>(`${this.USER_API}-pref/${id}`, user);
+  }
 }

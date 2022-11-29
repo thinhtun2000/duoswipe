@@ -28,13 +28,13 @@ export class UserPreferencesCardComponent implements OnInit {
       pref_time: [''],
       pos_1: [''],
       pos_2: [''],
+      rank_id: [''],
     });
     if (this.user) this.form.patchValue(this.user);
   }
 
   public pref_submit() {
-    console.log('pref emitted');
     const user = new User(this.form.getRawValue());
-    this.prefEmitter.emit(user);
+    this.prefEmitter.emit({ type: 'pref', data: user });
   }
 }

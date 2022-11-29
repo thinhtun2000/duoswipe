@@ -20,10 +20,18 @@ export class UserProfileEditComponent implements OnInit {
     });
   }
 
-  public onSubmit(user: User) {
-    console.log(user);
-    this.userApi.updateUser(user.user_id, user).subscribe((response) => {
-      console.log(response);
-    });
+  public onSubmit(toChange: any) {
+    console.log(toChange);
+    if (toChange.type == 'info') {
+      const user = toChange.data;
+      this.userApi.updateInfo(user.user_id, user).subscribe((response) => {
+        console.log(response);
+      });
+    } else if (toChange.type == 'pref') {
+      const user = toChange.data;
+      this.userApi.updatePref(user.user_id, user).subscribe((response) => {
+        console.log(response);
+      });
+    }
   }
 }

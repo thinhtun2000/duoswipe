@@ -36,13 +36,13 @@ export class UserInfoCardComponent implements OnInit {
       pref_time: [''],
       pos_1: [''],
       pos_2: [''],
+      rank_id: [''],
     });
     if (this.user) this.form.patchValue(this.user);
   }
 
   public profile_submit() {
-    console.log('profile emitted');
     const user = new User(this.form.getRawValue());
-    this.profileEmitter.emit(user);
+    this.profileEmitter.emit({ type: 'info', data: user });
   }
 }

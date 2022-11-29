@@ -84,7 +84,7 @@ class User(db.Model):
 
 # Insert into 'users'
 def create_user(name, pwd, email, language_id=None, location_id=None, pref_pos=None, pref_lang=None,
-                pref_day=None, pref_time=None, pos_1=None, pos_2=None):
+                pref_day=None, pref_time=None, pos_1=None, pos_2=None, rank=None):
     user = User()
     user.name = name
     user.password = pwd
@@ -118,6 +118,32 @@ def update_profile(userId, language_id=None, location_id=None, pref_pos=None, pr
     if rank in rank_ref:
         user.rank_id = rank_ref[rank]
 
+    db.session.commit()
+
+def update_profile_info(userId, language_id, location_id, pos_1, pos_2, rank):
+
+    user = User.query.get_or_404(userId)
+    if language_id in language_ref.values():
+        user.language_id = int(language_id)
+    if location_id in location_ref.values():
+        user.location_id = location_id
+    if pos_1 in position_ref.values():
+        user.pos_1 = pos_1
+    if pos_2 in position_ref.values():
+        user.pos_2 = pos_2
+    if rank in rank_ref.values():
+        user.rank_id = rank
+    db.session.commit()
+
+def update_profile_pref(userId, pref_pos, pref_lang, pref_day, pref_time):
+    
+    user = User.query.get_or_404(userId)
+    if pref_pos in position_ref.values():
+        user.pref_pos = pref_pos
+    if pref_lang in language_ref.values():
+        user.pref_lang = pref_lang
+    user.pref_day = pref_day
+    user.pref_time = pref_time
     db.session.commit()
 
 
@@ -167,20 +193,54 @@ def get_user(userId):
             return 'There was an issue getting your information'
 
     elif request.method == 'POST':
-        language_id = request.form['language_id']
-        location_id = request.form['location_id']
-        pref_pos = request.form['pref_pos']
-        pref_lang = request.form['pref_lang']
-        pref_day = request.form['pref_day']
-        pref_time = request.form['pref_time']
-        pos_1 = request.form['pos_1']
-        pos_2 = request.form['pos_2']
-        rank = request.form['rank']
+        updated_user = request.get_json()
+        language_id = updated_user['language_id']
+        location_id = updated_user['location_id']
+        pref_pos = updated_user['pref_pos']
+        pref_lang = updated_user['pref_lang']
+        pref_day = updated_user['pref_day']
+        pref_time = updated_user['pref_time']
+        pos_1 = updated_user['pos_1']
+        pos_2 = updated_user['pos_2']
+        rank = updated_user['rank']
 
         try:
             update_profile(userId, language_id, location_id, pref_pos, pref_lang,
                            pref_day, pref_time, pos_1, pos_2, rank)
-            return redirect('/profile/' + str(userId))
+            return {'status': 'success', 'user_id': user.user_id}
+        except:
+            return 'There was an issue adding your information'
+
+@app.route('/profile-info/<int:userId>', methods=['GET', 'POST'])
+# get user profile
+def update_user_info(userId):
+    if request.method == 'POST':
+        updated_user = request.get_json()
+        language_id = updated_user['language_id']
+        location_id = updated_user['location_id']
+        pos_1 = updated_user['pos_1']
+        pos_2 = updated_user['pos_2']
+        rank = updated_user['rank_id']
+
+        try:
+            update_profile_info(userId, language_id, location_id, pos_1, pos_2, rank)
+            return {'status': 'success', 'user_id': userId}
+        except:
+            return 'There was an issue adding your information'
+        
+@app.route('/profile-pref/<int:userId>', methods=['GET', 'POST'])
+# get user profile
+def update_user_pref(userId):
+    if request.method == 'POST':
+        updated_user = request.get_json()
+        pref_pos = updated_user['pref_pos']
+        pref_lang = updated_user['pref_lang']
+        pref_day = updated_user['pref_day']
+        pref_time = updated_user['pref_time']
+
+        try:
+            update_profile_pref(userId, pref_pos, pref_lang, pref_day, pref_time)
+            return {'status': 'success', 'user_id': userId}
         except:
             return 'There was an issue adding your information'
 

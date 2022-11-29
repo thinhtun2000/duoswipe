@@ -3,28 +3,30 @@ export interface IUser {
   name: string;
   password: string;
   email: string;
-  language_id: number;
-  location_id: number;
-  pref_pos: number;
-  pref_lang: number;
+  language_id: string;
+  location_id: string;
+  pref_pos: string;
+  pref_lang: string;
   pref_day: string;
   pref_time: string;
-  pos_1: number;
-  pos_2: number;
+  pos_1: string;
+  pos_2: string;
+  rank_id: string;
 }
 export class User implements IUser {
   user_id: string;
   name: string;
   password: string;
   email: string;
-  language_id: number;
-  location_id: number;
-  pref_pos: number;
-  pref_lang: number;
+  language_id: string;
+  location_id: string;
+  pref_pos: string;
+  pref_lang: string;
   pref_day: string;
   pref_time: string;
-  pos_1: number;
-  pos_2: number;
+  pos_1: string;
+  pos_2: string;
+  rank_id: string;
 
   constructor(init?: any) {
     if (init?.user_id) this.user_id = init.user_id;
@@ -39,5 +41,6 @@ export class User implements IUser {
     if (init?.pref_time) this.pref_time = init.pref_time;
     if (init?.pos_1) this.pos_1 = init.pos_1;
     if (init?.pos_2) this.pos_2 = init.pos_2;
+    if (init?.rank_id) this.rank_id = init.rank_id;
   }
 }
