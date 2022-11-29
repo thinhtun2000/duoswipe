@@ -5,7 +5,7 @@
     </div>
     <div class="card-body">
       <div class="d-flex flex-column justify-content-start align-items-center">
-        <form [formGroup]="form" style="width: 100%">
+        <form [formGroup]="form" style="width: 100%" (ngSubmit)="pref_submit()">
           <div class="d-flex flex-row align-items-bottom">
             <label for="pref_pos" class="col-form-label flex-grow-1"
               >Preferred Position:
@@ -49,6 +49,11 @@
                 formControlName="pref_time"
                 [value]="user?.pref_time"
             /></label>
+          </div>
+          <div
+            class="d-flex flex-row align-items-bottom justify-content-center"
+          >
+            <ng-content select="[submit]"></ng-content>
           </div>
         </form>
       </div>

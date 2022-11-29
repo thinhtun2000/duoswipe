@@ -5,7 +5,11 @@
     </div>
     <div class="card-body">
       <div class="d-flex flex-column justify-content-start align-items-center">
-        <form [formGroup]="form" style="width: 100%">
+        <form
+          [formGroup]="form"
+          style="width: 100%"
+          (ngSubmit)="profile_submit()"
+        >
           <div class="d-flex flex-row align-items-bottom">
             <label for="name" class="col-form-label flex-grow-1"
               >Name:
@@ -29,24 +33,24 @@
             /></label>
           </div>
           <div class="d-flex flex-row align-items-bottom">
-            <label for="language" class="col-form-label flex-grow-1"
+            <label for="language_id" class="col-form-label flex-grow-1"
               >Language:
               <input
                 type="text"
-                id="language"
+                id="language_id"
                 class="form-control"
-                formControlName="language"
+                formControlName="language_id"
                 [value]="user?.language_id"
             /></label>
           </div>
           <div class="d-flex flex-row align-items-bottom">
-            <label for="location" class="col-form-label flex-grow-1"
+            <label for="location_id" class="col-form-label flex-grow-1"
               >Location:
               <input
                 type="text"
-                id="location"
+                id="location_id"
                 class="form-control"
-                formControlName="location"
+                formControlName="location_id"
                 [value]="user?.location_id"
             /></label>
           </div>
@@ -68,6 +72,11 @@
                 [value]="user?.pos_2"
               />
             </label>
+          </div>
+          <div
+            class="d-flex flex-row align-items-bottom justify-content-center"
+          >
+            <ng-content select="[submit]"></ng-content>
           </div>
         </form>
       </div>

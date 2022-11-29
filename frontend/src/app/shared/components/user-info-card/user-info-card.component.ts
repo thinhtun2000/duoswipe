@@ -2,8 +2,10 @@ import {
   AfterContentInit,
   AfterViewInit,
   Component,
+  EventEmitter,
   Input,
   OnInit,
+  Output,
 } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { User } from 'src/app/core/models/user';
@@ -16,6 +18,7 @@ import { User } from 'src/app/core/models/user';
 export class UserInfoCardComponent implements OnInit {
   public form: FormGroup;
   @Input() user: User | null;
+  @Output() profileEmitter: EventEmitter<any> = new EventEmitter<any>();
 
   constructor(private fb: FormBuilder) {}
 
@@ -35,5 +38,11 @@ export class UserInfoCardComponent implements OnInit {
       pos_2: [''],
     });
     if (this.user) this.form.patchValue(this.user);
+  }
+
+  public profile_submit() {
+    console.log('profile emitted');
+    const user = new User(this.form.getRawValue());
+    this.profileEmitter.emit(user);
   }
 }

@@ -1,0 +1,13 @@
+<app-user-info-card [user]="user" (profileEmitter)="onSubmit($event)">
+  <ng-container title> User Profile </ng-container>
+  <ng-container submit>
+    <button type="submit" class="btn btn-primary">Save</button>
+  </ng-container>
+</app-user-info-card>
+<br />
+<app-user-preferences-card [user]="user" (prefEmitter)="onSubmit($event)">
+  <ng-container title> User Preferences </ng-container>
+  <ng-container submit>
+    <button type="submit" class="btn btn-primary">Save</button>
+  </ng-container>
+</app-user-preferences-card>

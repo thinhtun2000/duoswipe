@@ -161,21 +161,22 @@ def get_user(userId):
             return 'There was an issue getting your information'
 
     elif request.method == 'POST':
-        language_id = request.form['language_id']
-        location_id = request.form['location_id']
-        pref_pos = request.form['pref_pos']
-        pref_lang = request.form['pref_lang']
-        pref_day = request.form['pref_day']
-        pref_time = request.form['pref_time']
-        pos_1 = request.form['pos_1']
-        pos_2 = request.form['pos_2']
-        rank_rift = request.form['rank_rift']
-        rank_tft = request.form['rank_tft']
+        updated_user = request.get_json()
+        language_id = updated_user['language_id']
+        location_id = updated_user['location_id']
+        pref_pos = updated_user['pref_pos']
+        pref_lang = updated_user['pref_lang']
+        pref_day = updated_user['pref_day']
+        pref_time = updated_user['pref_time']
+        pos_1 = updated_user['pos_1']
+        pos_2 = updated_user['pos_2']
+        rank_rift = updated_user['rank_rift']
+        rank_tft = updated_user['rank_tft']
 
         try:
             update_profile(userId, language_id, location_id, pref_pos, pref_lang,
                            pref_day, pref_time, pos_1, pos_2, rank_tft, rank_tft)
-            return redirect('/profile/' + str(userId))
+            return {'status': 'success', 'user_id': user.user_id}
         except:
             return 'There was an issue adding your information'
 

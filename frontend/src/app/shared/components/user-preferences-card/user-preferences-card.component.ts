@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { User } from 'src/app/core/models/user';
 
@@ -10,6 +10,7 @@ import { User } from 'src/app/core/models/user';
 export class UserPreferencesCardComponent implements OnInit {
   public form: FormGroup;
   @Input() user: User | null;
+  @Output() prefEmitter: EventEmitter<any> = new EventEmitter<any>();
 
   constructor(private fb: FormBuilder) {}
 
@@ -29,5 +30,11 @@ export class UserPreferencesCardComponent implements OnInit {
       pos_2: [''],
     });
     if (this.user) this.form.patchValue(this.user);
+  }
+
+  public pref_submit() {
+    console.log('pref emitted');
+    const user = new User(this.form.getRawValue());
+    this.prefEmitter.emit(user);
   }
 }
