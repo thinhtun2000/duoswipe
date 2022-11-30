@@ -124,26 +124,27 @@ def update_profile(userId, language_id=None, location_id=None, pref_pos=None, pr
 def update_profile_info(userId, language_id, location_id, pos_1, pos_2, rank):
 
     user = User.query.get_or_404(userId)
-    if language_id in language_ref.values():
-        user.language_id = int(language_id)
-    if location_id in location_ref.values():
-        user.location_id = location_id
-    if pos_1 in position_ref.values():
-        user.pos_1 = pos_1
-    if pos_2 in position_ref.values():
-        user.pos_2 = pos_2
-    if rank in rank_ref.values():
-        user.rank_id = rank
+    if language_id in language_ref:
+        user.language_id = language_ref[language_id]
+    if location_id in location_ref:
+        user.location_id = location_ref[location_id]
+    if pos_1 in position_ref:
+        user.pos_1 = position_ref[pos_1]
+    if pos_2 in position_ref:
+        user.pos_2 = position_ref[pos_2]
+    if rank in rank_ref:
+        user.rank_id = rank_ref[rank]
     db.session.commit()
 
 
 def update_profile_pref(userId, pref_pos, pref_lang, pref_day, pref_time):
     
     user = User.query.get_or_404(userId)
-    if pref_pos in position_ref.values():
-        user.pref_pos = pref_pos
-    if pref_lang in language_ref.values():
-        user.pref_lang = pref_lang
+    if pref_pos in position_ref:
+        user.pref_pos = position_ref[pref_pos]
+    if pref_lang in language_ref:
+        user.pref_lang = language_ref[pref_lang]
+
     user.pref_day = pref_day
     user.pref_time = pref_time
     db.session.commit()
@@ -190,6 +191,7 @@ def get_user(userId):
     if request.method == 'GET':
         try:
             user = User.query.get_or_404(userId)
+            print(User.as_dict_safe(user))
             return User.as_dict_safe(user)
         except:
             return 'There was an issue getting your information'
@@ -204,7 +206,7 @@ def get_user(userId):
         pref_time = updated_user['pref_time']
         pos_1 = updated_user['pos_1']
         pos_2 = updated_user['pos_2']
-        rank = updated_user['rank']
+        rank = updated_user['rank_id']
 
         try:
             update_profile(userId, language_id, location_id, pref_pos, pref_lang,

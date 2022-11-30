@@ -33,56 +33,74 @@
             /></label>
           </div>
           <div class="d-flex flex-row align-items-bottom">
-            <label for="language_id" class="col-form-label flex-grow-1"
+            <label for="language" class="col-form-label flex-grow-1"
               >Language:
-              <input
-                type="text"
-                id="language_id"
+              <select
+                id="language"
                 class="form-control"
-                formControlName="language_id"
-                [value]="user?.language_id"
-            /></label>
+                formControlName="language"
+              >
+                <option value="English">English</option>
+                <option value="Spanish">Español</option>
+              </select>
+            </label>
           </div>
           <div class="d-flex flex-row align-items-bottom">
-            <label for="location_id" class="col-form-label flex-grow-1"
+            <label for="location" class="col-form-label flex-grow-1"
               >Location:
-              <input
-                type="text"
-                id="location_id"
+              <select
+                id="location"
                 class="form-control"
-                formControlName="location_id"
-                [value]="user?.location_id"
-            /></label>
+                formControlName="location"
+              >
+                <option value="Las Cruces">Las Cruces</option>
+                <option value="El Paso">El Paso</option>
+              </select>
+            </label>
           </div>
           <div class="d-flex flex-row align-items-bottom">
             <label for="position" class="col-form-label flex-grow-1"
               >Position:
-              <input
-                type="text"
+              <select
                 id="position"
                 class="form-control"
                 formControlName="pos_1"
-                [value]="user?.pos_1"
-              />
-              <input
-                type="text"
+              >
+                <option value="Tank">Tank</option>
+                <option value="Bruiser">Bruiser</option>
+                <option value="Jungler">Jungler</option>
+                <option value="APC">APC</option>
+                <option value="ADC">ADC</option>
+                <option value="Support">Support</option>
+              </select>
+              <select
                 id="position"
                 class="form-control"
                 formControlName="pos_2"
-                [value]="user?.pos_2"
-              />
+              >
+                <option value="Tank">Tank</option>
+                <option value="Bruiser">Bruiser</option>
+                <option value="Jungler">Jungler</option>
+                <option value="APC">APC</option>
+                <option value="ADC">ADC</option>
+                <option value="Support">Support</option>
+              </select>
             </label>
           </div>
           <div class="d-flex flex-row align-items-bottom">
-            <label for="rank_id" class="col-form-label flex-grow-1"
+            <label for="rank" class="col-form-label flex-grow-1"
               >Rank:
-              <input
-                type="text"
-                id="rank_id"
-                class="form-control"
-                formControlName="rank_id"
-                [value]="user?.rank_id"
-              />
+              <select id="rank" class="form-control" formControlName="rank">
+                <option value="Iron">Iron</option>
+                <option value="Bronze">Bronze</option>
+                <option value="Silver">Silver</option>
+                <option value="Gold">Gold</option>
+                <option value="Platinum">Platinum</option>
+                <option value="Diamond">Diamond</option>
+                <option value="Master">Master</option>
+                <option value="Grandmaster">Grandmaster</option>
+                <option value="Challenger">Challenger</option>
+              </select>
             </label>
           </div>
           <div
