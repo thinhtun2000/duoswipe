@@ -28,4 +28,8 @@ language_ref = {"English": 1,
 
 
 def get_key(dictionary, value):
-    return [k for k, v in dictionary.items() if v == value]
+    key = [k for k, v in dictionary.items() if v == value]
+    if len(key) < 1:
+        return None
+    else:
+        return key[0]
