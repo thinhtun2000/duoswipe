@@ -61,6 +61,10 @@ class User(db.Model):
                 'email': self.email,
                 'language': get_key(language_ref, self.language_id),
                 'location': get_key(location_ref, self.location_id),
+                'pref_pos': get_key(position_ref, self.pref_pos),
+                'pref_lang': get_key(language_ref, self.pref_lang),
+                'pref_day': self.pref_day,
+                'pref_time': self.pref_time,
                 'pos_1': get_key(position_ref, self.pos_1),
                 'pos_2': get_key(position_ref, self.pos_2),
                 'rank': get_key(rank_ref, self.rank_id)
