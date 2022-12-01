@@ -96,7 +96,11 @@
             >
           </li>
           <li class="nav-item" *ngIf="true">
-            <a class="nav-link active" aria-current="page" routerLink="matches"
+            <a
+              class="nav-link active"
+              aria-current="page"
+              routerLink="matches"
+              (click)="fetchMatches()"
               >Matches</a
             >
           </li>

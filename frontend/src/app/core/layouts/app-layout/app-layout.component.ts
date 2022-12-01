@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { User } from '../../models/user';
 import { AuthService } from '../../services/auth/auth.service';
+import { MatchApiService } from '../../services/match-api/match-api.service';
 import { UserService } from '../../services/user/user.service';
 
 @Component({
@@ -13,16 +14,27 @@ import { UserService } from '../../services/user/user.service';
 export class AppLayoutComponent implements OnInit {
   public currentDate: Date = new Date();
   public user$: Observable<User | null>;
+  public user: User | null;
 
   constructor(
     private authSvc: AuthService,
     private router: Router,
-    private userSvc: UserService
+    private userSvc: UserService,
+    private matchSvc: MatchApiService
   ) {}
 
   ngOnInit(): void {
     this.user$ = this.userSvc.user$;
-    this.user$.subscribe((user) => {});
+    this.user$.subscribe((user) => {
+      this.user = user;
+    });
+  }
+
+  fetchMatches() {
+    this.matchSvc.getMatched(this.user!.user_id).subscribe((response) => {
+      console.log(response);
+      this.userSvc.setMatched(response);
+    });
   }
 
   logout() {
