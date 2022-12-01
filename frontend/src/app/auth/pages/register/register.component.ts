@@ -32,8 +32,6 @@ export class RegisterComponent implements OnInit {
   }
 
   public onSubmit(): void {
-    console.log(this.form.value);
-
     if (this.form.value.confirm_password == this.form.value.password) {
       const registerRequestObject = {
         username: this.form.value.username,
@@ -44,16 +42,10 @@ export class RegisterComponent implements OnInit {
       this.authSvc
         .register(registerRequestObject)
         .subscribe((response: RegisterResponse) => {
-          console.log(response);
-
-          switch (response.status) {
-            case 'success':
-              this.router.navigateByUrl('/login');
-              console.log('register user success');
-              break;
-            default:
-              console.log('register fail');
-          }
+          console.log(response.status);
+          if (response.status === 'success') {
+            this.router.navigateByUrl('/auth/login');
+          } else console.log('register fail');
         });
     }
   }

@@ -18,11 +18,13 @@ export class UserService {
   }
 
   // list of users to match with
-  public _users: BehaviorSubject<Array<string>> = new BehaviorSubject(['']);
-  get usersSnapshot(): Array<string> {
+  public _users: BehaviorSubject<Array<User | null>> = new BehaviorSubject<
+    Array<User | null>
+  >([]);
+  get usersSnapshot(): Array<User | null> {
     return this._users.value;
   }
-  get users$(): Observable<Array<string>> {
+  get users$(): Observable<Array<User | null>> {
     return this._users.asObservable();
   }
 
@@ -42,7 +44,7 @@ export class UserService {
     this._user.next(user);
   }
 
-  public setUsers(users: Array<string>) {
+  public setUsers(users: Array<User | null>) {
     this._users.next(users);
   }
 

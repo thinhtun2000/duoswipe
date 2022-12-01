@@ -26,12 +26,16 @@ export class UserProfileEditComponent implements OnInit {
     if (toChange.type == 'info') {
       const user = toChange.data;
       this.userApi.updateInfo(user.user_id, user).subscribe((response) => {
-        console.log(response);
+        if (response.status === 'success') {
+          console.log(user);
+
+          this.userSvc.setUser(user);
+        }
       });
     } else if (toChange.type == 'pref') {
       const user = toChange.data;
       this.userApi.updatePref(user.user_id, user).subscribe((response) => {
-        console.log(response);
+        this.userSvc.setUser(user);
       });
     }
   }

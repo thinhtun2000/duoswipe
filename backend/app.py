@@ -202,15 +202,15 @@ def get_user(userId):
 
     elif request.method == 'POST':
         updated_user = request.get_json()
-        language_id = updated_user['language_id']
-        location_id = updated_user['location_id']
+        language_id = updated_user['language']
+        location_id = updated_user['location']
         pref_pos = updated_user['pref_pos']
         pref_lang = updated_user['pref_lang']
         pref_day = updated_user['pref_day']
         pref_time = updated_user['pref_time']
         pos_1 = updated_user['pos_1']
         pos_2 = updated_user['pos_2']
-        rank = updated_user['rank_id']
+        rank = updated_user['rank']
 
         try:
             update_profile(userId, language_id, location_id, pref_pos, pref_lang,
@@ -225,11 +225,11 @@ def get_user(userId):
 def update_user_info(userId):
     if request.method == 'POST':
         updated_user = request.get_json()
-        language_id = updated_user['language_id']
-        location_id = updated_user['location_id']
+        language_id = updated_user['language']
+        location_id = updated_user['location']
         pos_1 = updated_user['pos_1']
         pos_2 = updated_user['pos_2']
-        rank = updated_user['rank_id']
+        rank = updated_user['rank']
 
         try:
             update_profile_info(userId, language_id, location_id, pos_1, pos_2, rank)
