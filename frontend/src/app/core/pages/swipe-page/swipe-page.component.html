@@ -1,14 +1,6 @@
 <div class="d-flex flex-column align-items-center" style="margin-top: 10vh">
   <div class="d-flex flex-row align-items-center">
-    <div id="swiper" *ngIf="toMatch2">
-      <!-- <div *ngFor="let user_id of users.slice().reverse(); let i = index">
-        <app-profile-card
-          [user_id]="user_id"
-          [index]="i"
-          [max]="max"
-          (newMatch)="submitNewMatch($event)"
-        ></app-profile-card>
-      </div> -->
+    <div id="swiper" *ngIf="toMatch1 && toMatch2">
       <div class="card">
         <img
           id="img2"
@@ -17,8 +9,145 @@
           alt=""
         />
         <div class="content">
-          <h1>{{ toMatch2.name | titlecase }}</h1>
+          <h1>
+            {{ toMatch2.name | titlecase }}
+            <span
+              *ngIf="toMatch2.pos_1 == 'Tank' || toMatch2.pos_1 == 'Bruiser'"
+            >
+              <img
+                draggable="false"
+                src="../../../../assets/images/positions/TOP.png"
+                alt=""
+                style="width: 25px; height: 25px"
+              />
+            </span>
+            <span *ngIf="toMatch2.pos_1 == 'Jungler'">
+              <img
+                draggable="false"
+                src="../../../../assets/images/positions/JUNGLE.png"
+                alt=""
+                style="width: 25px; height: 25px"
+              />
+            </span>
+            <span *ngIf="toMatch2.pos_1 == 'APC'">
+              <img
+                draggable="false"
+                src="../../../../assets/images/positions/MIDDLE.png"
+                alt=""
+                style="width: 25px; height: 25px"
+              />
+            </span>
+            <span *ngIf="toMatch2.pos_1 == 'ADC'">
+              <img
+                draggable="false"
+                src="../../../../assets/images/positions/ADC.png"
+                alt=""
+                style="width: 25px; height: 25px"
+              />
+            </span>
+            <span *ngIf="toMatch2.pos_1 == 'Support'">
+              <img
+                draggable="false"
+                src="../../../../assets/images/positions/SUPPORT.png"
+                alt=""
+                style="width: 25px; height: 25px"
+              />
+            </span>
+
+            <span
+              *ngIf="toMatch2.pos_2 == 'Tank' || toMatch1.pos_2 == 'Bruiser'"
+            >
+              <img
+                draggable="false"
+                src="../../../../assets/images/positions/TOP.png"
+                alt=""
+                style="width: 25px; height: 25px"
+              />
+            </span>
+            <span *ngIf="toMatch2.pos_2 == 'Jungler'">
+              <img
+                draggable="false"
+                src="../../../../assets/images/positions/JUNGLE.png"
+                alt=""
+                style="width: 25px; height: 25px"
+              />
+            </span>
+            <span *ngIf="toMatch2.pos_2 == 'APC'">
+              <img
+                draggable="false"
+                src="../../../../assets/images/positions/MIDDLE.png"
+                alt=""
+                style="width: 25px; height: 25px"
+              />
+            </span>
+            <span *ngIf="toMatch2.pos_2 == 'ADC'">
+              <img
+                draggable="false"
+                src="../../../../assets/images/positions/ADC.png"
+                alt=""
+                style="width: 25px; height: 25px"
+              />
+            </span>
+            <span *ngIf="toMatch2.pos_2 == 'Support'">
+              <img
+                draggable="false"
+                src="../../../../assets/images/positions/SUPPORT.png"
+                alt=""
+                style="width: 25px; height: 25px"
+              />
+            </span>
+          </h1>
           <p>League of Legends</p>
+          <p>
+            Looking for:
+            <span
+              *ngIf="
+                toMatch2.pref_pos == 'Tank' || toMatch2.pref_pos == 'Bruiser'
+              "
+            >
+              <img
+                draggable="false"
+                src="../../../../assets/images/positions/TOP.png"
+                alt=""
+                style="width: 25px; height: 25px"
+              />
+            </span>
+            <span *ngIf="toMatch2.pref_pos == 'Jungler'">
+              <img
+                draggable="false"
+                src="../../../../assets/images/positions/JUNGLE.png"
+                alt=""
+                style="width: 25px; height: 25px"
+              />
+            </span>
+            <span *ngIf="toMatch2.pref_pos == 'APC'">
+              <img
+                draggable="false"
+                src="../../../../assets/images/positions/MIDDLE.png"
+                alt=""
+                style="width: 25px; height: 25px"
+              />
+            </span>
+            <span *ngIf="toMatch2.pref_pos == 'ADC'">
+              <img
+                draggable="false"
+                src="../../../../assets/images/positions/ADC.png"
+                alt=""
+                style="width: 25px; height: 25px"
+              />
+            </span>
+            <span *ngIf="toMatch2.pref_pos == 'Support'">
+              <img
+                draggable="false"
+                src="../../../../assets/images/positions/SUPPORT.png"
+                alt=""
+                style="width: 25px; height: 25px"
+              />
+            </span>
+          </p>
+          <p><b>Preferred Day:</b> {{ toMatch2.pref_day }}</p>
+          <p><b>Preferred Day:</b> {{ toMatch2.pref_time }}</p>
+          <p><b>Language:</b> {{ toMatch2.language }}</p>
         </div>
       </div>
       <div
@@ -37,8 +166,145 @@
           alt=""
         />
         <div class="content">
-          <h1>{{ toMatch1.name | titlecase }}</h1>
+          <h1>
+            {{ toMatch1.name | titlecase }}
+            <span
+              *ngIf="toMatch1.pos_1 == 'Tank' || toMatch1.pos_1 == 'Bruiser'"
+            >
+              <img
+                draggable="false"
+                src="../../../../assets/images/positions/TOP.png"
+                alt=""
+                style="width: 25px; height: 25px"
+              />
+            </span>
+            <span *ngIf="toMatch1.pos_1 == 'Jungler'">
+              <img
+                draggable="false"
+                src="../../../../assets/images/positions/JUNGLE.png"
+                alt=""
+                style="width: 25px; height: 25px"
+              />
+            </span>
+            <span *ngIf="toMatch1.pos_1 == 'APC'">
+              <img
+                draggable="false"
+                src="../../../../assets/images/positions/MIDDLE.png"
+                alt=""
+                style="width: 25px; height: 25px"
+              />
+            </span>
+            <span *ngIf="toMatch1.pos_1 == 'ADC'">
+              <img
+                draggable="false"
+                src="../../../../assets/images/positions/ADC.png"
+                alt=""
+                style="width: 25px; height: 25px"
+              />
+            </span>
+            <span *ngIf="toMatch1.pos_1 == 'Support'">
+              <img
+                draggable="false"
+                src="../../../../assets/images/positions/SUPPORT.png"
+                alt=""
+                style="width: 25px; height: 25px"
+              />
+            </span>
+
+            <span
+              *ngIf="toMatch1.pos_2 == 'Tank' || toMatch1.pos_2 == 'Bruiser'"
+            >
+              <img
+                draggable="false"
+                src="../../../../assets/images/positions/TOP.png"
+                alt=""
+                style="width: 25px; height: 25px"
+              />
+            </span>
+            <span *ngIf="toMatch1.pos_2 == 'Jungler'">
+              <img
+                draggable="false"
+                src="../../../../assets/images/positions/JUNGLE.png"
+                alt=""
+                style="width: 25px; height: 25px"
+              />
+            </span>
+            <span *ngIf="toMatch1.pos_2 == 'APC'">
+              <img
+                draggable="false"
+                src="../../../../assets/images/positions/MIDDLE.png"
+                alt=""
+                style="width: 25px; height: 25px"
+              />
+            </span>
+            <span *ngIf="toMatch1.pos_2 == 'ADC'">
+              <img
+                draggable="false"
+                src="../../../../assets/images/positions/ADC.png"
+                alt=""
+                style="width: 25px; height: 25px"
+              />
+            </span>
+            <span *ngIf="toMatch1.pos_2 == 'Support'">
+              <img
+                draggable="false"
+                src="../../../../assets/images/positions/SUPPORT.png"
+                alt=""
+                style="width: 25px; height: 25px"
+              />
+            </span>
+          </h1>
           <p>League of Legends</p>
+          <p>
+            Looking for:
+            <span
+              *ngIf="
+                toMatch1.pref_pos == 'Tank' || toMatch1.pref_pos == 'Bruiser'
+              "
+            >
+              <img
+                draggable="false"
+                src="../../../../assets/images/positions/TOP.png"
+                alt=""
+                style="width: 25px; height: 25px"
+              />
+            </span>
+            <span *ngIf="toMatch1.pref_pos == 'Jungler'">
+              <img
+                draggable="false"
+                src="../../../../assets/images/positions/JUNGLE.png"
+                alt=""
+                style="width: 25px; height: 25px"
+              />
+            </span>
+            <span *ngIf="toMatch1.pref_pos == 'APC'">
+              <img
+                draggable="false"
+                src="../../../../assets/images/positions/MIDDLE.png"
+                alt=""
+                style="width: 25px; height: 25px"
+              />
+            </span>
+            <span *ngIf="toMatch1.pref_pos == 'ADC'">
+              <img
+                draggable="false"
+                src="../../../../assets/images/positions/ADC.png"
+                alt=""
+                style="width: 25px; height: 25px"
+              />
+            </span>
+            <span *ngIf="toMatch1.pref_pos == 'Support'">
+              <img
+                draggable="false"
+                src="../../../../assets/images/positions/SUPPORT.png"
+                alt=""
+                style="width: 25px; height: 25px"
+              />
+            </span>
+          </p>
+          <p><b>Preferred Day:</b> {{ toMatch1.pref_day }}</p>
+          <p><b>Preferred Day:</b> {{ toMatch1.pref_time }}</p>
+          <p><b>Language:</b> {{ toMatch1.language }}</p>
         </div>
         <div class="like">
           <img
