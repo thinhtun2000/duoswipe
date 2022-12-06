@@ -5,50 +5,72 @@
     </div>
     <div class="card-body">
       <div class="d-flex flex-column justify-content-start align-items-center">
-        <form [formGroup]="form" style="width: 100%">
+        <form [formGroup]="form" style="width: 100%" (ngSubmit)="pref_submit()">
           <div class="d-flex flex-row align-items-bottom">
             <label for="pref_pos" class="col-form-label flex-grow-1"
               >Preferred Position:
-              <input
-                type="text"
+              <select
                 id="pref_pos"
                 class="form-control"
                 formControlName="pref_pos"
-                [value]="user?.pref_pos"
-            /></label>
+              >
+                <option value="Tank">Tank</option>
+                <option value="Bruiser">Bruiser</option>
+                <option value="Jungler">Jungler</option>
+                <option value="APC">APC</option>
+                <option value="ADC">ADC</option>
+                <option value="Support">Support</option>
+              </select>
+            </label>
           </div>
           <div class="d-flex flex-row align-items-bottom">
             <label for="pref_lang" class="col-form-label flex-grow-1"
               >Preferred Language:
-              <input
-                type="text"
+              <select
                 id="pref_lang"
                 class="form-control"
                 formControlName="pref_lang"
-                [value]="user?.pref_lang"
-            /></label>
+              >
+                <option value="English">English</option>
+                <option value="Spanish">Español</option>
+              </select>
+            </label>
           </div>
           <div class="d-flex flex-row align-items-bottom">
             <label for="pref_day" class="col-form-label flex-grow-1"
               >Preferred Day:
-              <input
-                type="text"
+              <select
                 id="pref_day"
                 class="form-control"
                 formControlName="pref_day"
-                [value]="user?.pref_day"
-            /></label>
+              >
+                <option value="Sunday">Sunday</option>
+                <option value="Monday">Monday</option>
+                <option value="Tuesday">Tuesday</option>
+                <option value="Wednesday">Wednesday</option>
+                <option value="Thursday">Thursday</option>
+                <option value="Friday">Friday</option>
+                <option value="Saturday">Saturday</option>
+              </select>
+            </label>
           </div>
           <div class="d-flex flex-row align-items-bottom">
             <label for="pref_time" class="col-form-label flex-grow-1"
               >Preferred Time:
-              <input
-                type="text"
+              <select
                 id="pref_time"
                 class="form-control"
                 formControlName="pref_time"
-                [value]="user?.pref_time"
-            /></label>
+              >
+                <option value="Day">Day</option>
+                <option value="Night">Night</option>
+              </select>
+            </label>
+          </div>
+          <div
+            class="d-flex flex-row align-items-bottom justify-content-center"
+          >
+            <ng-content select="[submit]"></ng-content>
           </div>
         </form>
       </div>

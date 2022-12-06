@@ -15,7 +15,7 @@ import { UserService } from '../../services/user/user.service';
 })
 export class SwipePageComponent implements OnInit {
   public user: User | null;
-  public users: Array<string>;
+  public users: Array<User | null>;
   public test: Observable<any>;
   public offsetX: number = 0;
   public offsetY: number = 0;
@@ -38,12 +38,8 @@ export class SwipePageComponent implements OnInit {
       this.user = user;
       this.userSvc.users$.subscribe((users) => {
         this.users = users;
-        this.userApi.getUserById(this.users[0]).subscribe((user) => {
-          this.toMatch1 = user;
-        });
-        this.userApi.getUserById(this.users[1]).subscribe((user) => {
-          this.toMatch2 = user;
-        });
+        this.toMatch1 = this.users[0]!;
+        this.toMatch2 = this.users[1]!;
       });
     });
   }
@@ -79,13 +75,11 @@ export class SwipePageComponent implements OnInit {
       event.x > SwipePageComponent.startPoint.x &&
       event.x - SwipePageComponent.startPoint.x > 250
     ) {
-      this.url1 = 'keyboard';
       this.swipeRight();
     } else if (
       event.x < SwipePageComponent.startPoint.x &&
       SwipePageComponent.startPoint.x - event.x > 250
     ) {
-      this.url1 = 'sky';
       this.swipeLeft();
     }
     SwipePageComponent.startPoint = null;
@@ -98,20 +92,15 @@ export class SwipePageComponent implements OnInit {
   public swipeRight() {
     const matchObject: MatchingObject = {
       current_user: this.user!.user_id,
-      to_match_user: this.users[0],
+      to_match_user: this.users[0]!.user_id,
     };
     matchObject;
     this.matching.update_match(matchObject).subscribe((response) => {});
     this.users.shift();
     this.userSvc.setUsers(this.users);
-    this.matchApi.getMatched(this.user!.user_id).subscribe((response) => {
-      this.userSvc.setMatched(response);
-    });
   }
 
   public swipeLeft() {
-    // const top = document.getElementById('img1')!;
-    // const second = document.getElementById('img2')!;
     this.users.shift();
     this.userSvc.setUsers(this.users);
   }

@@ -63,7 +63,7 @@ export class LoginComponent implements OnInit {
               .pipe(catchError((error: HttpErrorResponse) => of(error.error)))
               .subscribe({
                 next: (response) => {
-                  console.log(response);
+                  console.log(response.content);
                   if (response) {
                     console.log('fetch users to match success');
                     this.userSvc.setUsers(response.content);

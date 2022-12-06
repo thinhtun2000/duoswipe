@@ -10,6 +10,7 @@ import { UserService } from 'src/app/core/services/user/user.service';
 })
 export class UserProfileComponent implements OnInit {
   public user: User | null;
+  public disable = true;
 
   constructor(private userSvc: UserService) {}
 

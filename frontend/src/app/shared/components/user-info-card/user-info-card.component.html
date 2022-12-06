@@ -5,7 +5,11 @@
     </div>
     <div class="card-body">
       <div class="d-flex flex-column justify-content-start align-items-center">
-        <form [formGroup]="form" style="width: 100%">
+        <form
+          [formGroup]="form"
+          style="width: 100%"
+          (ngSubmit)="profile_submit()"
+        >
           <div class="d-flex flex-row align-items-bottom">
             <label for="name" class="col-form-label flex-grow-1"
               >Name:
@@ -31,43 +35,78 @@
           <div class="d-flex flex-row align-items-bottom">
             <label for="language" class="col-form-label flex-grow-1"
               >Language:
-              <input
-                type="text"
+              <select
                 id="language"
                 class="form-control"
                 formControlName="language"
-                [value]="user?.language_id"
-            /></label>
+              >
+                <option value="English">English</option>
+                <option value="Spanish">Español</option>
+              </select>
+            </label>
           </div>
           <div class="d-flex flex-row align-items-bottom">
             <label for="location" class="col-form-label flex-grow-1"
               >Location:
-              <input
-                type="text"
+              <select
                 id="location"
                 class="form-control"
                 formControlName="location"
-                [value]="user?.location_id"
-            /></label>
+              >
+                <option value="Las Cruces">Las Cruces</option>
+                <option value="El Paso">El Paso</option>
+              </select>
+            </label>
           </div>
           <div class="d-flex flex-row align-items-bottom">
             <label for="position" class="col-form-label flex-grow-1"
               >Position:
-              <input
-                type="text"
+              <select
                 id="position"
                 class="form-control"
                 formControlName="pos_1"
-                [value]="user?.pos_1"
-              />
-              <input
-                type="text"
+              >
+                <option value="Tank">Tank</option>
+                <option value="Bruiser">Bruiser</option>
+                <option value="Jungler">Jungler</option>
+                <option value="APC">APC</option>
+                <option value="ADC">ADC</option>
+                <option value="Support">Support</option>
+              </select>
+              <select
                 id="position"
                 class="form-control"
                 formControlName="pos_2"
-                [value]="user?.pos_2"
-              />
+              >
+                <option value="Tank">Tank</option>
+                <option value="Bruiser">Bruiser</option>
+                <option value="Jungler">Jungler</option>
+                <option value="APC">APC</option>
+                <option value="ADC">ADC</option>
+                <option value="Support">Support</option>
+              </select>
             </label>
+          </div>
+          <div class="d-flex flex-row align-items-bottom">
+            <label for="rank" class="col-form-label flex-grow-1"
+              >Rank:
+              <select id="rank" class="form-control" formControlName="rank">
+                <option value="Iron">Iron</option>
+                <option value="Bronze">Bronze</option>
+                <option value="Silver">Silver</option>
+                <option value="Gold">Gold</option>
+                <option value="Platinum">Platinum</option>
+                <option value="Diamond">Diamond</option>
+                <option value="Master">Master</option>
+                <option value="Grandmaster">Grandmaster</option>
+                <option value="Challenger">Challenger</option>
+              </select>
+            </label>
+          </div>
+          <div
+            class="d-flex flex-row align-items-bottom justify-content-center"
+          >
+            <ng-content select="[submit]"></ng-content>
           </div>
         </form>
       </div>

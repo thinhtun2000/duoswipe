@@ -12,9 +12,9 @@ import { UserService } from '../../services/user/user.service';
 export class MatchPageComponent implements OnInit {
   public matched: any;
 
-  constructor(private userSvc: UserService) {}
-
-  ngOnInit(): void {
-    this.matched = this.userSvc.matched$;
+  constructor(private userSvc: UserService) {
+    this.matched = this.userSvc._matched;
   }
+
+  ngOnInit(): void {}
 }
