@@ -29,6 +29,8 @@
 > + Return user_id.  
 
 #### Match
+##### Note: user_id_1 is always the smaller integer  
+    
     __tablename__ = 'matches'
     match_id = db.Column(db.INTEGER, primary_key=True, autoincrement=True)
     user_id_1 = db.Column(db.INTEGER)
@@ -199,7 +201,7 @@
 > + Methods: POST
 > + Request Parameters: json object  
 {'email': 'xxxx@xx@.com', 'password': 123}
-> + Return example:
+> + Return example:  
 {'status': 'success', 'user_id': 123}
 > 
 > `/logout`
@@ -208,19 +210,43 @@
 > 
 > `/user`
 > - 
-> + Description:
+> + Description: Return all the users information
+> + Return example:  
+[  
+  {  
+    "email": "test1",  
+    "language": "English",  
+    "location": "Las Cruces",  
+    "name": "test1",  
+    "pos_1": "Tank",  
+    "pos_2": "Bruiser",  
+    "pref_day": null,  
+    "pref_lang": null,  
+    "pref_pos": null,  
+    "pref_time": null,  
+    "rank": "Iron",  
+    "user_id": 1  
+  }  
+]  
 > 
 > `/signup`
 > - 
-> + Description:
+> + Description: user signup
+> + Methods: POST
+> + Request Parameters: json object  
+{'username': 'xxx', 'email': 'xxxx@xx@.com', 'password': 123}
+> + Return example:  
+{'status': 'success', 'user_id': 123}
 > 
 > `/match/<int:user_id>`
 > - 
-> + Description:
+> + Description: Matching for the user (id = user_id)
+> + Return example:  
+{'type': 'user_info', 'content': []}
 > 
 > `/matched/<int:user_id>`
 > - 
-> + Description:
+> + Description: Returns users who matched successfully with the current user
 > 
 > `/matched_update`
 > - 
