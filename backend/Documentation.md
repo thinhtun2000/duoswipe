@@ -133,7 +133,6 @@
 
 ## API
 
-#### Matching Function
 > `/`
 > - 
 > + Description: Register new user
