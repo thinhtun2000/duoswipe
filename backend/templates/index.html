@@ -5,27 +5,14 @@
 {% block body %}
 <div class="content">
   <h1 style="text-align: center">Duoswipe</h1>
-  <table>
-    <tr>
-      <th>Name</th>
-      <th>Password</th>
-      <th>Email</th>
-    </tr>
-    {% for user in users %}
-    <tr>
-      <td>{{ user.name }}</td>
-      <td>{{ user.password }}</td>
-      <td>{{ user.email }}</td>
-    </tr>
-    {% endfor %}
-  </table>
+
 
   <div class="form">
     <form action="/" method="POST">
       <input type="text" name="name" id="name" />
       <input type="text" name="password" id="password" />
       <input type="text" name="email" id="email" />
-      <input type="submit" value="Add Task" />
+      <input type="submit" value="Add User" />
     </form>
   </div>
 </div>
