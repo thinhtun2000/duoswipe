@@ -418,10 +418,10 @@ def return_user_matched(user_id):
             results = []
             for M in matches_1:
                 if M.user1_match is True and M.user2_match is True:
-                    results.append(User.as_dict(load_user(M.user_id_2)))
+                    results.append(User.as_dict_safe(load_user(M.user_id_2)))
             for M in matches_2:
                 if M.user1_match is True and M.user2_match is True:
-                    results.append(User.as_dict(load_user(M.user_id_1)))
+                    results.append(User.as_dict_safe(load_user(M.user_id_1)))
             return results
         except:
             return 'There was an issue'
