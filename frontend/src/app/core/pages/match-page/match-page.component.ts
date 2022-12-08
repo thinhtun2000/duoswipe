@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { User } from '../../models/user';
-import { MatchApiService } from '../../services/match-api/match-api.service';
+import { MatchApiService } from '../../services/matched/match-api.service';
 import { UserApiService } from '../../services/user-api/user-api.service';
 import { UserService } from '../../services/user/user.service';
 

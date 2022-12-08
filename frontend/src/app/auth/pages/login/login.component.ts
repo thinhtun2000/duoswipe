@@ -7,7 +7,7 @@ import { LoginRequest } from 'src/app/core/models/loginRequest';
 import { LoginResponse } from 'src/app/core/models/loginResponse';
 import { User } from 'src/app/core/models/user';
 import { AuthService } from 'src/app/core/services/auth/auth.service';
-import { MatchApiService } from 'src/app/core/services/match-api/match-api.service';
+import { MatchApiService } from 'src/app/core/services/matched/match-api.service';
 import { SwipeService } from 'src/app/core/services/swipe/swipe.service';
 import { UserApiService } from 'src/app/core/services/user-api/user-api.service';
 import { UserService } from 'src/app/core/services/user/user.service';

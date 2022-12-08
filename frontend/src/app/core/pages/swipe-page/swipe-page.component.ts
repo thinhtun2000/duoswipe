@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { catchError, Observable, of } from 'rxjs';
 import { MatchingObject } from '../../models/matchingObject';
 import { User } from '../../models/user';
-import { MatchApiService } from '../../services/match-api/match-api.service';
+import { MatchApiService } from '../../services/matched/match-api.service';
 import { MatchingService } from '../../services/matching/matching.service';
 import { UserApiService } from '../../services/user-api/user-api.service';
 import { UserService } from '../../services/user/user.service';
