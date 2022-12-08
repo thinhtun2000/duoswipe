@@ -250,4 +250,9 @@
 > 
 > `/matched_update`
 > - 
-> + Description:
+> + Description: update match record 
+> + Methods: POST
+> + Request Parameters: json object  
+{'current_user': 123, 'to_match_user': 456}
+> + Return example:  
+{'type': 'bool', 'content': False}

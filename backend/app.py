@@ -343,12 +343,10 @@ def matching(user: User):
     #              pos_2        int
     # 2. language  pref_lang    int
     #              language_id  int
-    # 3. day       pref_day     String(16): later on
-    # 4. time      pref_time    String(16): later on
-    # 5. rank: later on
+    # 3. rank      rank_id      int
 
-    # index -- 0  1  2  3  4  5
-    weights = [1, 1, 1, 1, 1, 1]
+    # index -- 0  1  2  3
+    weights = [1, 1, 1, 1]
     target_users = User.query.order_by(User.user_id).all()
     result = []  # return a list of user that has scores from highest to lowest
 
@@ -384,6 +382,7 @@ def matching(user: User):
         score = score + weights[1] * compare(user.pref_pos, curr_target.pos_1)
         score = score + weights[1] * compare(user.pref_pos, curr_target.pos_2)
         score = score + weights[2] * compare(user.pref_lang, curr_target.language_id)
+        score = score + weights[3] * compare(user.rank_id, curr_target.rank_id)
 
         # elements are tuples: (score, user_id)
         result.append((score, curr_target.user_id))
