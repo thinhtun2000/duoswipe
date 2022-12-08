@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { User } from '../../models/user';
 import { AuthService } from '../../services/auth/auth.service';
-import { MatchApiService } from '../../services/match-api/match-api.service';
+import { MatchApiService } from '../../services/matched/match-api.service';
 import { UserService } from '../../services/user/user.service';
 
 @Component({
