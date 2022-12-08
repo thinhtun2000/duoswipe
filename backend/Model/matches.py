@@ -16,7 +16,7 @@ class Match(db.Model):
 
 
 # Insert into 'match'
-def create_match(user_id_1=None, user_id_2=None, user1_match=None, user2_match=None, match_h=None ):
+def create_match(user_id_1=None, user_id_2=None, user1_match=None, user2_match=None, match_h=None):
     match = Match()
     match.user_id_1 = user_id_1
     match.user_id_2 = user_id_2

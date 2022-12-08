@@ -175,8 +175,8 @@ def index():
 
     elif request.method == 'GET':
         # display user information ordered by user_id
-        users = User.query.order_by(User.user_id).all()
-        return render_template('index.html', users=users)
+        # users = User.query.order_by(User.user_id).all()
+        return render_template('index.html')
 
 
 @app.route('/delete/<int:user_id>')

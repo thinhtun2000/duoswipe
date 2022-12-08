@@ -3,7 +3,7 @@ from connToDB import db
 
 # Table 'Language'
 class Language(db.Model):
-    __tablename__ = 'position'
+    __tablename__ = 'language'
     language_id = db.Column(db.INTEGER, primary_key=True)
     name = db.Column(db.VARCHAR(16))
 
