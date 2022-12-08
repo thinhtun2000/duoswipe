@@ -1,0 +1,43 @@
+{% block body %}
+<div class="content">
+  <h1 style="text-align: center">Duoswipe</h1>
+  <table>
+    <tr>
+      <th>Name</th>
+      <th>Email</th>
+    </tr>
+    <tr>
+      <td>{{ user.name }}</td>
+      <td>{{ user.email }}</td>
+    </tr>
+  </table>
+
+</div>
+
+
+<tr>
+  <th>language_id &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</th>
+  <th>location_id &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</th>
+  <th>pref_pos    &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; </th>
+  <th>pref_lang &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; </th>
+  <th>pref_day     &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</th>
+  <th>pref_time    &emsp;&emsp;&emsp;&emsp;&emsp; &emsp;&emsp;</th>
+  <th>pos_1        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</th>
+  <th>pos_2    &emsp;&emsp;&emsp;&emsp;&emsp; </th>
+</tr>
+
+
+<div class="form">
+  <form action="/profile/{{user.user_id}}" method="POST">
+    <input type="text" name="language_id" id="language_id" />
+    <input type="text" name="location_id" id="location_id" />
+    <input type="text" name="pref_pos" id="pref_pos" />
+    <input type="text" name="pref_lang" id="pref_lang" />
+    <input type="text" name="pref_day" id="pref_day" />
+    <input type="text" name="pref_time" id="pref_time" />
+    <input type="text" name="pos_1" id="pos_1" />
+    <input type="text" name="pos_2" id="pos_2" />
+    <input type="submit" value="Update" />
+  </form>
+</div>
+{% endblock %}

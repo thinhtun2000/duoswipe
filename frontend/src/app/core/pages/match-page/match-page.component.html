@@ -1,0 +1,28 @@
+<div class="row mt-1 mb-1">
+  <div class="card p-0">
+    <div class="card-header">
+      <h2>People you have matched with</h2>
+    </div>
+    <div class="card-body">
+      <p class="card-text">
+        Some quick example text to build on the card title and make up the bulk
+        of the card's content.
+      </p>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-4 p-0">
+    <div class="card shadow-sm py-1" style="text-align: center">
+      <h2 class="card-title">Matches</h2>
+    </div>
+    <div id="chat-scroll">
+      <div *ngFor="let user of matched | async">
+        <app-chat-card [user]="user"></app-chat-card>
+      </div>
+    </div>
+  </div>
+  <div id="chat-box" class="col-8 ps-1 pe-0">
+    <div class="card" style="height: 70vh">Hi</div>
+  </div>
+</div>

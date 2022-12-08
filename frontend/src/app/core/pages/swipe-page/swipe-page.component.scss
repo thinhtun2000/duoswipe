@@ -1,0 +1,75 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  background: linear-gradient(0deg, #ff6036, #fd267a);
+}
+
+#swiper {
+  height: 70vh;
+  aspect-ratio: 2 / 3;
+  perspective: 1000px;
+  perspective-origin: center 50%;
+  transform-style: preserve-3d;
+  position: relative;
+}
+
+.card {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  border-radius: 20px;
+  overflow: hidden;
+  transform: translateZ(calc(-30px * var(--i)))
+    translateY(calc(-20px * var(--i))) rotate(calc(-2deg * var(--i)));
+  filter: drop-shadow(2px 2px 20px rgba(0, 0, 0, 0.5));
+  cursor: pointer;
+  user-select: none;
+}
+
+.card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 50%;
+}
+
+.card .content {
+  position: absolute; /* Position the background text */
+  bottom: 0; /* At the bottom. Use top:0 to append it to the top */
+  background: rgb(0, 0, 0); /* Fallback color */
+  background: rgba(0, 0, 0, 0.5); /* Black background with 0.5 opacity */
+  color: #f1f1f1; /* Grey text */
+  width: 100%; /* Full width */
+  padding: 20px; /* Some padding */
+}
+
+.card .like {
+  position: absolute; /* Position the background text */
+  top: 0; /* At the bottom. Use top:0 to append it to the top */
+  //background: rgb(0, 0, 0); /* Fallback color */
+  //background: rgba(0, 0, 0, 0.5); /* Black background with 0.5 opacity */
+  //color: #399d03; /* Grey text */
+  width: 50%; /* Full width */
+  padding: 20px; /* Some padding */
+}
+
+.card .nope {
+  position: absolute; /* Position the background text */
+  top: 0; /* At the bottom. Use top:0 to append it to the top */
+  //background: rgb(0, 0, 0); /* Fallback color */
+  //background: rgba(0, 0, 0, 0.5); /* Black background with 0.5 opacity */
+  //color: #d10000; /* Grey text */
+  width: 50%; /* Full width */
+  padding: 10px; /* Some padding */
+  margin-left: 50%;
+}
